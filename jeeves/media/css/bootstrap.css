@@ -986,6 +986,19 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+table th {
+  font-weight: bold;
+  vertical-align: bottom;
+  text-align: left;
+  padding: 0px 5px 0px 5px;
+}
+table td {
+  vertical-align: top;
+  padding: 5px;
+}
+table .error {
+  color: #F00;
+}
 .table {
   width: 100%;
   margin-bottom: 18px;
@@ -995,13 +1008,6 @@ table {
   line-height: 18px;
   text-align: left;
   border-top: 1px solid #ddd;
-}
-.table th {
-  font-weight: bold;
-  vertical-align: bottom;
-}
-.table td {
-  vertical-align: top;
 }
 .table thead:first-child tr th, .table thead:first-child tr td {
   border-top: 0;

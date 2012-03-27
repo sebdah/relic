@@ -7,7 +7,7 @@ class Account(models.Model):
     def __unicode__(self):
         return self.email
     
-    email               = models.EmailField(blank = False)
+    email               = models.EmailField(blank = False, unique = True)
     first_name          = models.CharField(blank = False, max_length = 50)
     last_name           = models.CharField(blank = False, max_length = 50)
     last_updated        = models.DateTimeField(blank = True, auto_now = True)

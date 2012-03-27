@@ -1,3 +1,4 @@
+import settings
 from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
@@ -5,10 +6,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'jeeves.views.home', name='home'),
-    # url(r'^jeeves/', include('jeeves.foo.urls')),
-    
+    (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     url(r'^$', 'core.views.index'),
 
     # Uncomment the admin/doc line below to enable admin documentation:

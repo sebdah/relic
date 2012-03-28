@@ -8,6 +8,9 @@ admin.autodiscover()
 urlpatterns = patterns('',
     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     url(r'^$', 'core.views.index'),
+
+	url(r'^login$', 'core.views.login'),
+
     url(r'^register$', 'core.views.register'),
     url(r'^register/complete$', 'core.views.register_complete'),
 

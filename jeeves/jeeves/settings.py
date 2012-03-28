@@ -157,3 +157,6 @@ LOGGING = {
         },
     }
 }
+
+AUTHENTICATION_BACKENDS = ('core.authentication.JeevesAuthenticationBackend',)
+

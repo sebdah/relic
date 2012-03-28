@@ -1,20 +1,30 @@
 from django.views.generic.simple import direct_to_template
-from django.http import HttpResponseRedirect
+from django.views.generic import list_detail, create_update
+from django.shortcuts import redirect
 from core import forms
 
 def index(request):
-    return direct_to_template(request, 'core/index.html')
+	"""
+	The very index
+	"""
+	return direct_to_template(request, 'core/index.html')
 
 def register(request):
-	if request.method == 'POST':
-		form = forms.AccountForm(request.POST)
-		
-		if form.is_valid():
-			form.save()
-			HttpResponseRedirect("http://www.google.com")
-	else:
-		form = forms.AccountForm()
+	"""
+	Registration form for a new Jeeves account
+	"""
+	return create_update.create_object(
+        request,
+        login_required = False,
+        form_class = forms.AccountForm,
+        post_save_redirect = "/register/complete",
+        template_name ="core/register.html",
+        extra_context = {}
+        )
 
-	return direct_to_template(	request,
-    							'core/register.html',
-    							{'form': form})
+def register_complete(request):
+	"""
+	This is the page users are redirected to after
+	a successful account registration
+	"""
+	return direct_to_template(request, 'core/register_complete.html')

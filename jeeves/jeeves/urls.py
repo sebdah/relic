@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     url(r'^$', 'core.views.index'),
     url(r'^register$', 'core.views.register'),
+    url(r'^register/complete$', 'core.views.register_complete'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

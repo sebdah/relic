@@ -12,13 +12,7 @@ def account_index(request):
     """
     return direct_to_template(request, 'core/account_index.html', {'request': request})
 
-def index(request):
-    """
-    The very index
-    """
-    return direct_to_template(request, 'core/index.html', {'request': request})
-
-def login(request):
+def account_login(request):
     """
     Method for logging in to Jeeves
     """
@@ -41,20 +35,20 @@ def login(request):
             error_message = "Your username and password were incorrect."
     
     return direct_to_template(  request,
-                                'core/login.html',
+                                'core/account_login.html',
                                 {'form': forms.AuthenticationForm(),
                                 'error': error,
                                 'error_message': error_message,
                                 'request': request})
 
-def logout(request):
+def account_logout(request):
     """
     Logout an Account
     """
     auth.logout(request)
-    return direct_to_template(request, 'core/logout.html', {'request': request})
+    return direct_to_template(request, 'core/account_logout.html', {'request': request})
 
-def register(request):
+def account_register(request):
     """
     Registration form for a new Jeeves account
     """
@@ -62,14 +56,20 @@ def register(request):
         request,
         login_required = False,
         form_class = forms.AccountForm,
-        post_save_redirect = "/register/complete",
-        template_name ="core/register.html",
+        post_save_redirect = "/account/register/complete",
+        template_name ="core/account_register.html",
         extra_context = {'request': request}
         )
 
-def register_complete(request):
+def account_register_complete(request):
     """
     This is the page users are redirected to after
     a successful account registration
     """
-    return direct_to_template(request, 'core/register_complete.html', {'request': request})
+    return direct_to_template(request, 'core/account_register_complete.html', {'request': request})
+
+def index(request):
+    """
+    The very index
+    """
+    return direct_to_template(request, 'core/index.html', {'request': request})

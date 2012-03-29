@@ -10,11 +10,10 @@ urlpatterns = patterns('',
     url(r'^$', 'core.views.index'),
     
     url(r'^account$', 'core.views.account_index'),
-    url(r'^login$', 'core.views.login'),
-    url(r'^logout$', 'core.views.logout'),
-
-    url(r'^register$', 'core.views.register'),
-    url(r'^register/complete$', 'core.views.register_complete'),
+    url(r'^account/login$', 'core.views.account_login'),
+    url(r'^account/logout$', 'core.views.account_logout'),
+    url(r'^account/register$', 'core.views.account_register'),
+    url(r'^account/register/complete$', 'core.views.account_register_complete'),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

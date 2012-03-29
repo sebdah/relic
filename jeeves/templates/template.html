@@ -40,11 +40,11 @@
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="/">Start page</a></li>
-              <li><a href="/register">Register</a></li>
+              <li><a href="/account/register">Register</a></li>
               {% if request.user.is_authenticated %}
-                <li><a href="/logout">Logout</a></li>
+                <li><a href="/account/logout">Logout</a></li>
               {% else %}
-                <li><a href="/login">Login</a></li>
+                <li><a href="/account/login">Login</a></li>
               {% endif %}
             </ul>
           </div><!--/.nav-collapse -->

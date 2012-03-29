@@ -8,7 +8,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     url(r'^$', 'core.views.index'),
-
+    
+    url(r'^account$', 'core.views.account_index'),
     url(r'^login$', 'core.views.login'),
     url(r'^logout$', 'core.views.logout'),
 

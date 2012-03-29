@@ -1,8 +1,16 @@
 from core import forms
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 from django.views.generic.simple import direct_to_template
 from django.views.generic import list_detail, create_update
 from django.contrib import auth
+
+@login_required
+def account_index(request):
+    """
+    The 'startpage' for logged in users
+    """
+    return direct_to_template(request, 'core/account_index.html', {'request': request})
 
 def index(request):
     """
@@ -24,7 +32,7 @@ def login(request):
         if account:
             if account.is_active:
                 auth.login(request, account)
-                return redirect("/")
+                return redirect("/account")
             else:
                 error = True
                 error_message = "Your account has been disabled!"

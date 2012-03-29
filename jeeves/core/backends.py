@@ -10,6 +10,7 @@ class JeevesAuthenticationBackend(object):
         try:
             account = models.Account.objects.get(email = username)
             if account.password == password:
+                account.is_authenticated = True
                 return account
             else:
                 return None
@@ -23,4 +24,5 @@ class JeevesAuthenticationBackend(object):
         try:
             return models.Account.objects.get(pk = user_id)
         except models.Account.DoesNotExist:
+            print "non"
             return None

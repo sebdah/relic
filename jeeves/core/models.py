@@ -14,3 +14,8 @@ class Account(models.Model):
     last_updated        = models.DateTimeField(blank = True, auto_now = True)
     registered          = models.DateTimeField(blank = True, auto_now_add = True)
     is_active           = models.BooleanField(default = True)
+    
+    # Authentication methods
+    is_authenticated    = False
+    def is_authenticated(self):
+        return self.is_authenticated

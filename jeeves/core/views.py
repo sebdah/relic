@@ -21,7 +21,7 @@ def login(request):
         account = auth.authenticate(username = request.POST['email'],
                                     password = request.POST['password'])
         
-        if account is not None:
+        if account:
             if account.is_active:
                 auth.login(request, account)
                 return redirect("/")

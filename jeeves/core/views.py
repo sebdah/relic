@@ -2,14 +2,13 @@ from core import forms
 from django.shortcuts import redirect
 from django.views.generic.simple import direct_to_template
 from django.views.generic import list_detail, create_update
-from django.contrib.auth import authenticate, logout
-from django.contrib.auth import login as auth_login
+from django.contrib import auth
 
 def index(request):
     """
     The very index
     """
-    return direct_to_template(request, 'core/index.html')
+    return direct_to_template(request, 'core/index.html', {'request': request})
 
 def login(request):
     """
@@ -19,21 +18,17 @@ def login(request):
     error_message = None
 
     if request.method == 'POST':
-        account = authenticate( username = request.POST['email'],
-                                password = request.POST['password'])
+        account = auth.authenticate(username = request.POST['email'],
+                                    password = request.POST['password'])
         
         if account is not None:
-            print "not none"
             if account.is_active:
-                print "active"
-                auth_login(request, account)
-                return redirect("/success")
+                auth.login(request, account)
+                return redirect("/")
             else:
-                print "not active"
                 error = True
                 error_message = "Your account has been disabled!"
         else:
-            print "none"
             error = True
             error_message = "Your username and password were incorrect."
     
@@ -41,7 +36,15 @@ def login(request):
                                 'core/login.html',
                                 {'form': forms.AuthenticationForm(),
                                 'error': error,
-                                'error_message': error_message})
+                                'error_message': error_message,
+                                'request': request})
+
+def logout(request):
+    """
+    Logout an Account
+    """
+    auth.logout(request)
+    return direct_to_template(request, 'core/logout.html', {'request': request})
 
 def register(request):
     """
@@ -53,7 +56,7 @@ def register(request):
         form_class = forms.AccountForm,
         post_save_redirect = "/register/complete",
         template_name ="core/register.html",
-        extra_context = {}
+        extra_context = {'request': request}
         )
 
 def register_complete(request):
@@ -61,4 +64,4 @@ def register_complete(request):
     This is the page users are redirected to after
     a successful account registration
     """
-    return direct_to_template(request, 'core/register_complete.html')
+    return direct_to_template(request, 'core/register_complete.html', {'request': request})

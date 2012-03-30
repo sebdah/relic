@@ -1,4 +1,5 @@
 from core import forms
+from core import models
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic.simple import direct_to_template
@@ -11,6 +12,28 @@ def account_index(request):
     The 'startpage' for logged in users
     """
     return direct_to_template(request, 'core/account_index.html', {'request': request})
+
+@login_required
+def account_edit(request):
+    """
+    Edit account settings
+    """
+    message = ""
+    account = models.Account.objects.get(id = request.user.id)
+    
+    if request.method == 'POST':
+        form = forms.AccountForm(request.POST, instance = account)
+        if form.is_valid():
+            form.save()
+            message = 'Your profile has been updated'
+    else:
+        form = forms.AccountForm(instance = account)
+    
+    return direct_to_template(  request,
+                                'core/account_edit.html',
+                                {   'request': request, 
+                                    'form': form,
+                                    'message': message})
 
 def account_login(request):
     """

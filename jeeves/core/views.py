@@ -35,6 +35,16 @@ def account_edit(request):
                                     'form': form,
                                     'message': message})
 
+@login_required
+def account_delete(request, account_id):
+    """
+    Delete an account given the ID
+    """
+    account = models.Account.objects.get(id = account_id)
+    account.delete()
+    auth.logout(request)
+    return redirect('/')
+
 def account_login(request):
     """
     Method for logging in to Jeeves

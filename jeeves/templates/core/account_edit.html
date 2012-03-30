@@ -21,6 +21,7 @@
     $(document).ready(function(){
         $("#settings").show();
         $("#picture").hide();
+        $("#delete").hide();
     });
     
     /*
@@ -29,6 +30,14 @@
     function hideAll(){
         $("#settings").hide();
         $("#picture").hide();
+        $("#delete").hide();
+    }
+    
+    /* Delete account confirmation */
+    function confirmDelete(msg){
+        if (confirm(msg)) {
+            document.deleteForm.submit();
+        }
     }
 </script>
 {% endblock %}
@@ -39,6 +48,7 @@
     <ul>
         <li onClick='hideAll(); $("#settings").show()'>Settings</li>
         <li onClick='hideAll(); $("#picture").show()'>Picture</li>
+        <li onClick='hideAll(); $("#delete").show()'>Delete account</li>
     </ul>
 </div>
 <div id="settings" class='main-content'>
@@ -67,8 +77,21 @@
         <img src="{% gravatar_url request.user.email %}">
     </div>
     <div style='float: left; margin-left: 20px;'>
-        Add or change your picture via <a href="http://www.gravatar.com">Gravatar.com</a>.
+        Add or change your picture via <a href="http://www.gravatar.com" target='_blank'>Gravatar.com</a>.
     </div>
+</div>
+<div id="delete" class='main-content'>
+    <h2>Delete account</h2>
+    <br />
+    <p>
+        Are you sure that you want to delete your account? This action can not be undone.
+    </p>
+    <br />
+    <form name="deleteForm" method='post' action='/account/delete/{{request.user.id}}'>{% csrf_token %}
+    <p>
+        <a class="btn" onclick="confirmDelete('Are you really sure that you want to delete you account?')">Yes, delete my account &raquo;</a>
+    </p>
+    </form>
 </div>
 <div class='clear'></div>
 {% endblock %}

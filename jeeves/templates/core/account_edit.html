@@ -19,7 +19,7 @@
     Show only Settings when loading the page
     */
     $(document).ready(function(){
-        $("#settings").show();
+        $("#account").show();
         $("#picture").hide();
         $("#delete").hide();
     });
@@ -28,7 +28,7 @@
     Hide all content
     */
     function hideAll(){
-        $("#settings").hide();
+        $("#account").hide();
         $("#picture").hide();
         $("#delete").hide();
     }
@@ -46,12 +46,13 @@
 <div class='side-menu'>
     <h3>Account</h3>
     <ul>
-        <li onClick='hideAll(); $("#settings").show()'>Settings</li>
+        <li onClick='hideAll(); $("#account").show()'>Account details</li>
         <li onClick='hideAll(); $("#picture").show()'>Picture</li>
         <li onClick='hideAll(); $("#delete").show()'>Delete account</li>
     </ul>
 </div>
-<div id="settings" class='main-content'>
+<div id="account" class='main-content'>
+    <h2>Account details</h2>
     <form name="accountForm" method='post' action=''>{% csrf_token %}
     <table ="table">
         {% for field in form %}

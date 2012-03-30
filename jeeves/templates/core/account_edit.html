@@ -3,19 +3,6 @@
 {% block javascript_head %}
 <script language='javascript'>
     /*
-    Handle message box
-    */
-    $(document).ready(function(){
-        if ($("#message").text().length < 1) {
-            $("#message").hide();
-        } else {
-            $("#message").fadeOut(10000, function(){ 
-                $("#message").remove()
-            });
-        }
-    });
-    
-    /*
     Show only Settings when loading the page
     */
     $(document).ready(function(){
@@ -42,13 +29,12 @@
 </script>
 {% endblock %}
 {% block main %}
-<span id="message" class='message' onload='$(div#message).hide()'>{{message}}</span>
 <div class='side-menu'>
     <h3>Account</h3>
     <ul>
-        <li onClick='hideAll(); $("#account").show()'>Account details</li>
-        <li onClick='hideAll(); $("#picture").show()'>Picture</li>
-        <li onClick='hideAll(); $("#delete").show()'>Delete account</li>
+        <li onClick='hideAll(); $("#account").show(150)'>Account details</li>
+        <li onClick='hideAll(); $("#picture").show(150)'>Picture</li>
+        <li onClick='hideAll(); $("#delete").show(150)'>Delete account</li>
     </ul>
 </div>
 <div id="account" class='main-content'>

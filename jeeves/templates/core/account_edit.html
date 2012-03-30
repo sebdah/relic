@@ -62,8 +62,13 @@
     </form>
 </div>
 <div id="picture" class='main-content'>
-    <strong>Picture</strong><br />
-    <img src="{% gravatar_url request.user.email %}">
+    <h2>Picture</h2><br />
+    <div style='float: left;'>
+        <img src="{% gravatar_url request.user.email %}">
+    </div>
+    <div style='float: left; margin-left: 20px;'>
+        Add or change your picture via <a href="http://www.gravatar.com">Gravatar.com</a>.
+    </div>
 </div>
 <div class='clear'></div>
 {% endblock %}

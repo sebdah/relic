@@ -12,7 +12,7 @@ def account_index(request):
     """
     The 'startpage' for logged in users
     """
-    return direct_to_template(request, 'core/account_index.html', {'request': request})
+    return direct_to_template(request, 'core/account/index.html', {'request': request})
 
 @login_required
 def account_edit(request):
@@ -31,7 +31,7 @@ def account_edit(request):
         form = forms.AccountForm(instance = account)
     
     return direct_to_template(  request,
-                                'core/account_edit.html',
+                                'core/account/edit.html',
                                 {   'request': request, 
                                     'form': form,
                                     'message': message})
@@ -69,7 +69,7 @@ def account_login(request):
             error_message = "Your username and password were incorrect."
     
     return direct_to_template(  request,
-                                'core/account_login.html',
+                                'core/account/login.html',
                                 {'form': forms.AuthenticationForm(),
                                 'error': error,
                                 'error_message': error_message,
@@ -80,7 +80,7 @@ def account_logout(request):
     Logout an Account
     """
     auth.logout(request)
-    return direct_to_template(request, 'core/account_logout.html', {'request': request})
+    return direct_to_template(request, 'core/account/logout.html', {'request': request})
 
 def account_register(request):
     """
@@ -91,7 +91,7 @@ def account_register(request):
         login_required = False,
         form_class = forms.AccountForm,
         post_save_redirect = "/account/register/complete",
-        template_name ="core/account_register.html",
+        template_name ="core/account/register.html",
         extra_context = {'request': request}
         )
 
@@ -100,7 +100,7 @@ def account_register_complete(request):
     This is the page users are redirected to after
     a successful account registration
     """
-    return direct_to_template(request, 'core/account_register_complete.html', {'request': request})
+    return direct_to_template(request, 'core/account/register_complete.html', {'request': request})
 
 @login_required
 def cloud_index(request):

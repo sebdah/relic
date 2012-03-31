@@ -1,19 +1,24 @@
 from django.forms import ModelForm
-from django.forms.widgets import PasswordInput
+from django.forms import widgets
 from core import models
 
 class AccountForm(ModelForm):
-	class Meta:
-		model = models.Account
-		fields = ('email', 'password', 'first_name', 'last_name')
-		widgets = {
-            'password': PasswordInput,
+    class Meta:
+        model = models.Account
+        fields = ('email', 'password', 'first_name', 'last_name')
+        widgets = {
+            'password': widgets.PasswordInput,
         }
 
 class AuthenticationForm(ModelForm):
-	class Meta:
-		model = models.Account
-		fields = ('email', 'password')
-		widgets = {
-            'password': PasswordInput,
+    class Meta:
+        model = models.Account
+        fields = ('email', 'password')
+        widgets = {
+            'password': widgets.PasswordInput,
         }
+    
+class CloudForm(ModelForm):
+    class Meta:
+        model = models.Cloud
+        fields = ('name', 'aws_id', 'aws_secret')

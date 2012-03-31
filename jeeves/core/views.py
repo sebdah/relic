@@ -1,3 +1,4 @@
+import uuid
 from core import forms
 from core import models
 from django.shortcuts import redirect
@@ -100,6 +101,29 @@ def account_register_complete(request):
     a successful account registration
     """
     return direct_to_template(request, 'core/account_register_complete.html', {'request': request})
+
+@login_required
+def cloud_index(request):
+    """
+    Show the clouds registered for the authenticated user
+    """
+    message = ''
+    if request.method == 'POST':
+        form = forms.CloudForm(request.POST)
+        if form.is_valid():
+            form_instance = form.save(commit = False)
+            form_instance.owner = request.user
+            form_instance.uuid = uuid.uuid4()
+            form_instance.save()
+            message = 'Your cloud has been created'
+    else:
+        form = forms.CloudForm()
+    
+    return direct_to_template(  request,
+                                'core/cloud/index.html',
+                                {'request': request,
+                                'form': form,
+                                'message': message, })
 
 def index(request):
     """

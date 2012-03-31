@@ -43,6 +43,7 @@
             <ul class="nav">
               <li class="active"><a href="/">Start page</a></li>
               {% if request.user.is_authenticated %}
+              <li><a href="/cloud">Clouds</a></li>
                 <li><a href="/account/edit">Account</a></li>
                 <li><a href="/account/logout">Logout</a></li>
               {% else %}

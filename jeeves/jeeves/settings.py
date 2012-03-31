@@ -158,5 +158,6 @@ LOGGING = {
     }
 }
 
-AUTHENTICATION_BACKENDS = ('core.backends.JeevesAuthenticationBackend',)
+AUTHENTICATION_BACKENDS = ( 'django.contrib.auth.backends.ModelBackend',
+                            'core.backends.JeevesAuthenticationBackend',)
 

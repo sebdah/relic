@@ -14,7 +14,7 @@
             <div class="cloud-box-container">
                 {% for cloud in cloud_row %}
                     <div class="cloud-box" onclick="location.href='/cloud/{{cloud.uuid}}'">
-                        <h3>{{cloud}}</h3>
+                        <h3>{{cloud.name}}</h3>
                         <table>
                             <tr>
                                 <th>Servers</th>

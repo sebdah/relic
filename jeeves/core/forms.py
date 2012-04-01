@@ -17,8 +17,3 @@ class AuthenticationForm(ModelForm):
         widgets = {
             'password': widgets.PasswordInput,
         }
-    
-class CloudForm(ModelForm):
-    class Meta:
-        model = models.Cloud
-        fields = ('name', 'aws_id', 'aws_secret')

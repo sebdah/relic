@@ -103,9 +103,9 @@ def account_register_complete(request):
     return direct_to_template(request, 'core/account/register_complete.html', {'request': request})
 
 @login_required
-def cloud_index(request):
+def cloud_add(request):
     """
-    Show the clouds registered for the authenticated user
+    Create a new cloud
     """
     message = ''
     if request.method == 'POST':
@@ -116,14 +116,28 @@ def cloud_index(request):
             form_instance.uuid = uuid.uuid4()
             form_instance.save()
             message = 'Your cloud has been created'
+            form = forms.CloudForm()
     else:
         form = forms.CloudForm()
+
+    return direct_to_template(  request,
+                                'core/cloud/add.html',
+                                {'request': request,
+                                'form': form,
+                                'message': message, })
+
+@login_required
+def cloud_index(request):
+    """
+    Show the clouds registered for the authenticated user
+    """
+    # List clouds
+    clouds = models.Cloud.objects.filter(owner = request.user)
     
     return direct_to_template(  request,
                                 'core/cloud/index.html',
                                 {'request': request,
-                                'form': form,
-                                'message': message, })
+                                'clouds': clouds })
 
 def index(request):
     """

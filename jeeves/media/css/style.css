@@ -2,6 +2,13 @@
 Author: Sebastian Dahlgren <sebastian.dahlgren@gmail.com>
 ========================================================================== */
 
+footer {
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    width: 600px;
+}
+
 .clear { clear: both; }
 
 .main-content {

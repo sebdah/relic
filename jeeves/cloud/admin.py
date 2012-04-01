@@ -5,10 +5,12 @@ class CloudAdmin(admin.ModelAdmin):
     list_display = ('uuid', 'name', 'owner')
 
 class RoleAdmin(admin.ModelAdmin):
-    list_display = ('cloud', 'name')
+    list_display = ('cloud', 'name', 'is_global')
+    list_filter = ('is_global',)
 
 class InstanceAdmin(admin.ModelAdmin):
     list_display = ('role', 'hostname', 'instance_id', 'availability_zone')
+    list_filter = ('availability_zone',)
     
 class PackageAdmin(admin.ModelAdmin):
     list_display = ('role', 'name')

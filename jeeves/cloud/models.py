@@ -31,7 +31,8 @@ class Role(models.Model):
         return self.name
 
     name                = models.CharField(blank = False, max_length = 30)
-    cloud               = models.ForeignKey(Cloud)
+    cloud               = models.ForeignKey(Cloud, blank = True, null = True)
+    is_global           = models.BooleanField(default = False)
 
 class Instance(models.Model):
     """

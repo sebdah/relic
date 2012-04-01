@@ -36,9 +36,12 @@ def index(request, uuid):
     """
     The overview of a single cloud
     """
+    roles = models.Role.objects.filter(cloud__uuid = uuid)
     return direct_to_template(  request,
                                 'cloud/index.html',
-                                {'request': request})
+                                {'request': request,
+                                'roles': roles,
+                                'uuid': uuid})
 
 @login_required
 def list(request):

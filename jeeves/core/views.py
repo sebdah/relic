@@ -131,9 +131,7 @@ def cloud_index(request):
     """
     Show the clouds registered for the authenticated user
     """
-    # List clouds
-    clouds = models.Cloud.objects.filter(owner = request.user)
-    
+    clouds = models.Cloud.objects.filter(owner = request.user).order_by('name')
     return direct_to_template(  request,
                                 'core/cloud/index.html',
                                 {'request': request,

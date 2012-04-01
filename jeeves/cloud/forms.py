@@ -10,7 +10,12 @@ class CloudForm(ModelForm):
 class RoleForm(ModelForm):
     class Meta:
         model = models.Role
-        fields = ('name', 'cloud')
+        fields = ('name',)
+
+class RoleRelationForm(ModelForm):
+    class Meta:
+        model = models.RoleRelation
+        fields = ('role',)
 
 class InstanceForm(ModelForm):
     class Meta:

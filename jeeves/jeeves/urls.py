@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     url(r'^cloud$', 'cloud.views.list'),
     url(r'^cloud/add$', 'cloud.views.add'),
     url(r'^cloud/(?P<uuid>[\w-]+)$', 'cloud.views.index'),
+    url(r'^cloud/(?P<uuid>[\w-]+)/role/assign$', 'cloud.views.role_assign'),
     
     url(r'^admin/', include(admin.site.urls)),
 )

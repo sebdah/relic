@@ -31,8 +31,14 @@ class Role(models.Model):
         return self.name
 
     name                = models.CharField(blank = False, max_length = 30)
-    cloud               = models.ForeignKey(Cloud, blank = True, null = True)
     is_global           = models.BooleanField(default = False)
+
+class RoleRelation(models.Model):
+    """
+    Defines which cloud has which role
+    """
+    cloud               = models.ForeignKey(Cloud)
+    role                = models.ForeignKey(Role)
 
 class Instance(models.Model):
     """
@@ -42,14 +48,16 @@ class Instance(models.Model):
         return self.hostname
     
     role                = models.ForeignKey(Role)
+    cloud               = models.ForeignKey(Cloud)
     hostname            = models.CharField( blank = False,
                                             max_length = 30)
-    instance_id         = models.CharField(max_length = 10)
+    instance_id         = models.CharField( max_length = 10,
+                                            verbose_name = 'Instance ID')
     instance_type       = models.CharField( blank = False,
                                             max_length = 10,
                                             choices = definitions.INSTANCE_TYPES)
     availability_zone   = models.CharField( blank = False,
-                                            max_length = 10,
+                                            max_length = 20,
                                             choices = definitions.AVAILABILITY_ZONES)
 
 class Package(models.Model):
@@ -61,6 +69,7 @@ class Package(models.Model):
     
     name                = models.CharField(blank = False, max_length = 60)
     role                = models.ForeignKey(Role)
+    cloud               = models.ForeignKey(Cloud)
 
 class EBSVolume(models.Model):
     """
@@ -72,6 +81,7 @@ class EBSVolume(models.Model):
     mountpoint          = models.CharField(blank = False, max_length = 250)
     size                = models.IntegerField(blank = False, default = 10)
     role                = models.ForeignKey(Role)
+    cloud               = models.ForeignKey(Cloud)
 
 class ElasticIP(models.Model):
     """
@@ -82,3 +92,4 @@ class ElasticIP(models.Model):
     
     dns_name            = models.CharField(blank = False, max_length = 250)
     role                = models.ForeignKey(Role)
+    cloud               = models.ForeignKey(Cloud)

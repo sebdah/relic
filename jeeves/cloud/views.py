@@ -22,6 +22,7 @@ def add(request):
             form_instance.save()
             message = 'Your cloud has been created'
             form = forms.CloudForm()
+            return redirect('/cloud')
     else:
         form = forms.CloudForm()
 
@@ -36,12 +37,30 @@ def index(request, uuid):
     """
     The overview of a single cloud
     """
-    roles = models.Role.objects.filter(cloud__uuid = uuid)
+    # Get the role relations (cloud <-> role) for this cloud
+    role_relations = models.RoleRelation.objects.filter(cloud__uuid = uuid)
+    
+    # Then loop over each relation to pick out the role object
+    roles = []
+    for role_relation in role_relations:
+        roles.append(role_relation.role)
+    
+    # Get instances for each role [{'role.name': [instance, n..]}]
+    instances = []
+    for role in roles:
+        role_instances = []
+        for instance in models.Instance.objects.filter(role = role):
+            role_instances.append(instance)
+        
+        if len(role_instances) > 0:
+            instances.append({role: role_instances})
+    
+    print instances
     return direct_to_template(  request,
                                 'cloud/index.html',
                                 {'request': request,
                                 'roles': roles,
-                                'uuid': uuid})
+                                'cloud': models.Cloud.objects.get(uuid = uuid)})
 
 @login_required
 def list(request):
@@ -72,3 +91,28 @@ def list(request):
                                 {'request': request,
                                 'clouds': clouds,
                                 'num_clouds': len(cloud_query) })
+
+@login_required
+def role_assign(request, uuid):
+    """
+    Assign roles to a cloud
+    """
+    message = ''
+    if request.method == 'POST':
+        form = forms.RoleRelationForm(request.POST)
+        if form.is_valid():
+            form_instance = form.save(commit = False)
+            form_instance.cloud = models.Cloud.objects.get(uuid = uuid)
+            form_instance.save()
+            message = 'Role added'
+            return redirect('/cloud/%s' % uuid)
+    else:
+        form = forms.RoleRelationForm()
+        form.fields['role'].queryset = models.Role.objects.filter(is_global = True)
+
+    return direct_to_template(  request,
+                                'cloud/role_assign.html',
+                                {   'request': request,
+                                    'form': form,
+                                    'message': message,
+                                    'cloud': models.Cloud.objects.get(uuid = uuid), })

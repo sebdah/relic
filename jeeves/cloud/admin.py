@@ -5,8 +5,11 @@ class CloudAdmin(admin.ModelAdmin):
     list_display = ('uuid', 'name', 'owner')
 
 class RoleAdmin(admin.ModelAdmin):
-    list_display = ('cloud', 'name', 'is_global')
+    list_display = ('name', 'is_global')
     list_filter = ('is_global',)
+
+class RoleRelationAdmin(admin.ModelAdmin):
+    list_display = ('cloud', 'role')
 
 class InstanceAdmin(admin.ModelAdmin):
     list_display = ('role', 'hostname', 'instance_id', 'availability_zone')
@@ -23,6 +26,7 @@ class ElasticIPAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Cloud, CloudAdmin)
 admin.site.register(models.Role, RoleAdmin)
+admin.site.register(models.RoleRelation, RoleRelationAdmin)
 admin.site.register(models.Instance, InstanceAdmin)
 admin.site.register(models.Package, PackageAdmin)
 admin.site.register(models.EBSVolume, EBSVolumeAdmin)

@@ -9,6 +9,11 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+JEEVES_AWS_CREDENTIALS = {
+    'id':       'AKIAJXZUCJMCURVEZ33A',
+    'secret':   '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',
+}
+
 # Used for building absolute paths
 JEEVES_DIR = '/Users/sebastian/git/jeeves'
 

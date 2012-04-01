@@ -76,7 +76,9 @@ footer {
 
 .cloud-box {
     float: left;
-    background-color: #F7FFC4;
+    background-image:url('http://www.wonderbackgrounds.com/nature/cloud/backgrounds/cloud_2.gif');
+    background-attachment:fixed;
+    background-repeat:repeat;
     width: 200px;
     height: 150px;
     margin-right: 20px;
@@ -89,6 +91,6 @@ footer {
 }
 
 .cloud-box:hover { 
-    background-color: #F7FFC4;
+    background-color: #A3DDFF;
     box-shadow: 10px 10px 5px #CCC;
 }

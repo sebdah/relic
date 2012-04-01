@@ -8,7 +8,7 @@ class Cloud(models.Model):
     Definition of a Cloud
     """
     def __unicode__(self):
-        return self.name
+        return self.uuid
     
     uuid                = models.CharField(blank = False, unique = True, max_length = 36)
     name                = models.CharField(blank = False, max_length = 30)

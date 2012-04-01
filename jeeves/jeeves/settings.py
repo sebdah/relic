@@ -44,7 +44,7 @@ USE_I18N = True
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
-USE_L10N = True
+USE_L10N = False
 
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
@@ -161,3 +161,6 @@ LOGGING = {
 AUTHENTICATION_BACKENDS = ( 'django.contrib.auth.backends.ModelBackend',
                             'core.backends.JeevesAuthenticationBackend',)
 
+DATETIME_FORMAT     = "Y-m-d H:i:s"
+DATE_FORMAT         = "Y-m-d"
+TIME_FORMAT         = "H:i:s"

@@ -16,8 +16,9 @@ urlpatterns = patterns('',
     url(r'^account/register$', 'core.views.account_register'),
     url(r'^account/register/complete$', 'core.views.account_register_complete'),
     
-    url(r'^cloud$', 'core.views.cloud_index'),
+    url(r'^cloud$', 'core.views.cloud_list'),
     url(r'^cloud/add$', 'core.views.cloud_add'),
+    url(r'^cloud/(?P<uuid>[\w-]+)$', 'core.views.cloud_add'),
     
     url(r'^admin/', include(admin.site.urls)),
 )

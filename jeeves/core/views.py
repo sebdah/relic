@@ -127,7 +127,7 @@ def cloud_add(request):
                                 'message': message, })
 
 @login_required
-def cloud_index(request):
+def cloud_list(request):
     """
     Show the clouds registered for the authenticated user
     
@@ -151,7 +151,7 @@ def cloud_index(request):
     
     print clouds
     return direct_to_template(  request,
-                                'core/cloud/index.html',
+                                'core/cloud/list.html',
                                 {'request': request,
                                 'clouds': clouds,
                                 'num_clouds': len(cloud_query) })

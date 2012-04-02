@@ -177,6 +177,25 @@ def instance_delete(request, uuid, role_id, instance_id):
                                 })
 
 @login_required
+def instance_delete_ebs(request, uuid, role_id, instance_id, ebs_id):
+    """
+    Delete an server Instance
+    """
+    if request.method == 'POST':
+        ebs = models.EBSVolume.objects.get(id = ebs_id)
+        ebs.delete()
+        return redirect('/cloud/%s/role/%s/instance/%s/ebs' % (  uuid, role_id, instance_id))
+
+    return direct_to_template(  request,
+                                'cloud/instance_ebs_delete.html',
+                                {'request': request,
+                                'cloud': models.Cloud.objects.get(uuid = uuid),
+                                'role_id': role_id,
+                                'instance': models.Instance.objects.get(id = instance_id),
+                                'ebs': models.EBSVolume.objects.get(id = ebs_id),
+                                })
+
+@login_required
 def list(request):
     """
     Show the clouds registered for the authenticated user

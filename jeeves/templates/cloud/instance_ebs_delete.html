@@ -9,15 +9,15 @@
     </ul>
 </div>
 <div class='main-content'>
-    <h2>General settings</h2>
-    <form name='updateInstanceForm' action='' method='post'>{% csrf_token %}
-        {% for field in form %}
-            <p>
-                <strong>{{field.label}}</strong><br />
-                {{field}} {% for error in field.errors %} {{error}} {% endfor %}
-            </p>
-        {% endfor %}
-    <p><a class="btn" onclick="document.updateInstanceForm.submit()">Update instance &raquo;</a></p>
+    <h2>Confirm delete</h2><br />
+    <p>
+        Are you sure you want to delete the EBS <strong>{{ebs.mountpoint}} ({{ebs.size}} GB)</strong>?
+    </p><br />
+    <form name='EBSDelete' action='' method='post'>{% csrf_token %}
+    <p>
+        <a class="btn" onclick='location.href="/cloud/{{cloud.uuid}}/role/{{role_id}}/instance/{{instance.id}}/ebs"'>&laquo; No, take me back &raquo;</a>
+        <a class="btn" onclick="document.EBSDelete.submit()">Yes, delete EBS &raquo;</a>
+    </p>
     </form>
 </div>
 <div class='clear'></div>

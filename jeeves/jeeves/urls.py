@@ -1,11 +1,16 @@
 import settings
 from django.conf.urls import patterns, include, url
+from django.views.generic.simple import redirect_to
 
 from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+    
+    # Redirect login attempts
+    (r'^accounts/login', redirect_to, {'url': '/account/login'}),
+    
     url(r'^$', 'core.views.index'),
     
     url(r'^account$', 'core.views.account_index'),

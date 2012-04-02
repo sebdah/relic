@@ -71,6 +71,30 @@ def index(request, uuid):
                                 'cloud': models.Cloud.objects.get(uuid = uuid)})
 
 @login_required
+def instance_add(request, uuid):
+    """
+    Add a new instance to the cloud
+    """
+    message = ''
+    if request.method == 'POST':
+        print "hit"
+        form = forms.InstanceForm(request.POST)
+        if form.is_valid():
+            form_instance = form.save(commit = False)
+            form_instance.cloud = models.Cloud.objects.get(uuid = uuid)
+            form_instance.save()
+            message = 'Your instance has been added'
+            return redirect('/cloud/%s' % uuid)
+    else:
+        form = forms.InstanceForm()
+
+    return direct_to_template(  request,
+                                'cloud/instance_add.html',
+                                {'request': request,
+                                'form': form,
+                                'message': message, })
+
+@login_required
 def list(request):
     """
     Show the clouds registered for the authenticated user

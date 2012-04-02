@@ -30,9 +30,9 @@ class Package(ModelForm):
 class EBSVolume(ModelForm):
     class Meta:
         model = models.EBSVolume
-        fields = ('mountpoint', 'size', 'role')
+        fields = ('mountpoint', 'size', 'instance')
 
 class ElasticIP(ModelForm):
     class Meta:
         model = models.ElasticIP
-        fields = ('dns_name', 'role')
+        fields = ('dns_name', 'instance')

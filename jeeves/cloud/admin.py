@@ -19,10 +19,10 @@ class PackageAdmin(admin.ModelAdmin):
     list_display = ('role', 'name')
     
 class EBSVolumeAdmin(admin.ModelAdmin):
-    list_display = ('role', 'mountpoint', 'size')
+    list_display = ('instance', 'mountpoint', 'size')
     
 class ElasticIPAdmin(admin.ModelAdmin):
-    list_display = ('role', 'dns_name')
+    list_display = ('instance', 'dns_name')
 
 admin.site.register(models.Cloud, CloudAdmin)
 admin.site.register(models.Role, RoleAdmin)

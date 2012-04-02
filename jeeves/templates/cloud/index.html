@@ -14,7 +14,7 @@
     {% if roles %}
         {% for role in roles %}
             <h2>{{role.name}}</h2>
-            <p><a href='/cloud/{{cloud.uuid}}/instance/add'>Add instance</a></p>
+            <p><a href='/cloud/{{cloud.uuid}}/instance/add?role={{role.id}}'>Add instance</a></p>
             <div class='instance-box-container'>
                 {% for role_instances in instances %}
                     {% for role_obj, instance_objs in role_instances.items %}

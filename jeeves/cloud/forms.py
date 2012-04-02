@@ -20,7 +20,7 @@ class RoleRelationForm(ModelForm):
 class InstanceForm(ModelForm):
     class Meta:
         model = models.Instance
-        fields = ('role', 'hostname', 'instance_type', 'availability_zone')
+        fields = ('hostname', 'instance_type', 'availability_zone')
 
 class Package(ModelForm):
     class Meta:

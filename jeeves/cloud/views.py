@@ -86,6 +86,7 @@ def instance_add(request, uuid):
         if form.is_valid():
             form_instance = form.save(commit = False)
             form_instance.cloud = models.Cloud.objects.get(uuid = uuid)
+            form_instance.role = models.Role.objects.get(id = request.GET['role'])
             form_instance.save()
             message = 'Your instance has been added'
             return redirect('/cloud/%s' % uuid)

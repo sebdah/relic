@@ -26,7 +26,8 @@ urlpatterns = patterns('',
     url(r'^cloud/(?P<uuid>[\w-]+)$', 'cloud.views.index'),
     url(r'^cloud/(?P<uuid>[\w-]+)/role/assign$', 'cloud.views.role_assign'),
     url(r'^cloud/(?P<uuid>[\w-]+)/role/list/(?P<role_id>[\w-]+)$', 'cloud.views.index'),
-    url(r'^cloud/(?P<uuid>[\w-]+)/instance/add$', 'cloud.views.instance_add'),
+    url(r'^cloud/(?P<uuid>[\w-]+)/role/(?P<role_id>[\w-]+)/instance/add$', 'cloud.views.instance_add'),
+    url(r'^cloud/(?P<uuid>[\w-]+)/role/(?P<role_id>[\w-]+)/instance/(?P<instance_id>[\w-]+)$', 'cloud.views.instance_edit'),
     
     url(r'^admin/', include(admin.site.urls)),
 )

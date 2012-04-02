@@ -75,7 +75,7 @@ def index(request, uuid, role_id = None):
                                 'cloud': models.Cloud.objects.get(uuid = uuid)})
 
 @login_required
-def instance_add(request, uuid):
+def instance_add(request, uuid, role_id):
     """
     Add a new instance to the cloud
     """
@@ -86,7 +86,7 @@ def instance_add(request, uuid):
         if form.is_valid():
             form_instance = form.save(commit = False)
             form_instance.cloud = models.Cloud.objects.get(uuid = uuid)
-            form_instance.role = models.Role.objects.get(id = request.GET['role'])
+            form_instance.role = models.Role.objects.get(id = role_id)
             form_instance.save()
             message = 'Your instance has been added'
             return redirect('/cloud/%s' % uuid)
@@ -95,6 +95,33 @@ def instance_add(request, uuid):
 
     return direct_to_template(  request,
                                 'cloud/instance_add.html',
+                                {'request': request,
+                                'form': form,
+                                'cloud': models.Cloud.objects.get(uuid = uuid),
+                                'all_roles': models.RoleRelation.objects.filter(cloud__uuid = uuid),
+                                'message': message, })
+
+@login_required
+def instance_edit(request, uuid, role_id, instance_id):
+    """
+    Add a new instance to the cloud
+    """
+    message = ''
+    if request.method == 'POST':
+        print "hit"
+        form = forms.InstanceForm(request.POST)
+        if form.is_valid():
+            form_instance = form.save(commit = False)
+            form_instance.cloud = models.Cloud.objects.get(uuid = uuid)
+            form_instance.role = models.Role.objects.get(id = role_id)
+            form_instance.save()
+            message = 'Your instance has been added'
+            return redirect('/cloud/%s' % uuid)
+    else:
+        form = forms.InstanceForm(instance = models.Instance.objects.get(id = instance_id))
+
+    return direct_to_template(  request,
+                                'cloud/instance_edit.html',
                                 {'request': request,
                                 'form': form,
                                 'cloud': models.Cloud.objects.get(uuid = uuid),

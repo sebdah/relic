@@ -80,7 +80,7 @@ class EBSVolume(models.Model):
     
     mountpoint          = models.CharField(blank = False, max_length = 250)
     size                = models.IntegerField(blank = False, default = 10)
-    role                = models.ForeignKey(Role)
+    instance            = models.ForeignKey(Role)
     cloud               = models.ForeignKey(Cloud)
 
 class ElasticIP(models.Model):

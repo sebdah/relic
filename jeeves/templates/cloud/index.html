@@ -11,6 +11,37 @@
     {% if roles %}
         {% for role in roles %}
             <h2>{{role.name}}</h2>
+            <div class='instance-box-container'>
+                {% for role_instances in instances %}
+                    {% for role_obj, instance_objs in role_instances.items %}
+                        {% if role_obj.name == role.name %}
+                            {% for instance in instance_objs %}
+                                <div class='instance-box'>
+                                    <h3>{{instance}}</h3>
+                                    <table>
+                                        <tr>
+                                            <th>Host type</th>
+                                            <td>{{instance.instance_type}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Zone</th>
+                                            <td>{{instance.availability_zone}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Memory usage</th>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <th>CPU</th>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
         {% endfor %}
     {% else %}
         No roles has been added to this cloud

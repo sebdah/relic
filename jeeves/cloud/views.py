@@ -67,6 +67,7 @@ def index(request, uuid):
                                 'cloud/index.html',
                                 {'request': request,
                                 'roles': roles,
+                                'instances': instances,
                                 'cloud': models.Cloud.objects.get(uuid = uuid)})
 
 @login_required

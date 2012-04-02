@@ -6,11 +6,11 @@ table th {
   font-weight: bold;
   vertical-align: middle;
   text-align: left;
-  padding: 0px 3px 0px 3px;
+  padding: 0px 2px 0px 2px;
 }
 table td {
   vertical-align: top;
-  padding: 3px;
+  padding: 0px;
 }
 
 footer {
@@ -70,6 +70,25 @@ footer {
 .side-menu ul li { padding-left: 5px; }
 .side-menu ul li:hover { background-color: #E1E1E1; }
 
+.instance-box-container {
+    clear: left;
+    width: 700px;
+}
+
+.instance-box {
+    float: left;
+    width: 200px;
+    height: 150px;
+    background-color: #A3DDFF;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    padding: 5px;
+    
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
 .cloud-box-container {
     clear: left;
 }
@@ -90,7 +109,6 @@ footer {
     border-radius: 10px;
 }
 
-.cloud-box:hover { 
-    background-color: #A3DDFF;
+.cloud-box:hover, .instance-box:hover {
     box-shadow: 10px 10px 5px #CCC;
 }

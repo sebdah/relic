@@ -65,7 +65,6 @@ def index(request, uuid, role_id = None):
         if len(role_instances) > 0:
             instances.append({role: role_instances})
     
-    print instances
     return direct_to_template(  request,
                                 'cloud/index.html',
                                 {'request': request,
@@ -81,7 +80,6 @@ def instance_add(request, uuid, role_id):
     """
     message = ''
     if request.method == 'POST':
-        print "hit"
         form = forms.InstanceForm(request.POST)
         if form.is_valid():
             form_instance = form.save(commit = False)
@@ -109,7 +107,8 @@ def instance_edit(request, uuid, role_id, instance_id):
     message = ''
     if request.method == 'POST':
         print "hit"
-        form = forms.InstanceForm(request.POST)
+        form = forms.InstanceForm(  request.POST, 
+                                    instance = models.Instance.objects.get(id = instance_id))
         if form.is_valid():
             form_instance = form.save(commit = False)
             form_instance.cloud = models.Cloud.objects.get(uuid = uuid)

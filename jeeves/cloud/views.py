@@ -37,6 +37,12 @@ def index(request, uuid):
     """
     The overview of a single cloud
     """
+    # Get the Cloud object
+    #try:
+    cloud = models.Cloud.objects.get(uuid = uuid)
+    #except models.Cloud.DoesNotExist:
+    #    raise Http404 
+
     # Get the role relations (cloud <-> role) for this cloud
     role_relations = models.RoleRelation.objects.filter(cloud__uuid = uuid)
     
@@ -103,8 +109,14 @@ def role_assign(request, uuid):
         if form.is_valid():
             form_instance = form.save(commit = False)
             form_instance.cloud = models.Cloud.objects.get(uuid = uuid)
-            form_instance.save()
-            message = 'Role added'
+            print len(models.RoleRelation.objects.filter(cloud = form_instance.cloud, role = form_instance.role))
+            
+            if len(models.RoleRelation.objects.filter(cloud = form_instance.cloud, role = form_instance.role)) > 0:
+                message = 'Role already assigned'
+            else: 
+                form_instance.save()
+                message = 'Role added'
+
             return redirect('/cloud/%s' % uuid)
     else:
         form = forms.RoleRelationForm()

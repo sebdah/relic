@@ -128,6 +128,24 @@ def instance_edit(request, uuid, role_id, instance_id):
                                 'message': message, })
 
 @login_required
+def instance_delete(request, uuid, role_id, instance_id):
+    """
+    Delete an server Instance
+    """
+    if request.method == 'POST':
+        instance = models.Instance.objects.get(id = instance_id)
+        instance.delete()
+        return redirect('/cloud/%s' % uuid)
+    
+    return direct_to_template(  request,
+                                'cloud/instance_delete.html',
+                                {'request': request,
+                                'cloud': models.Cloud.objects.get(uuid = uuid),
+                                'all_roles': models.RoleRelation.objects.filter(cloud__uuid = uuid),
+                                'instance': models.Instance.objects.get(id = instance_id)
+                                })
+
+@login_required
 def list(request):
     """
     Show the clouds registered for the authenticated user

@@ -89,6 +89,13 @@ footer {
     border-radius: 10px;
 }
 
+.instance-box-footer {
+    clear: left;
+    position: relative;
+    bottom: -20%;
+    left: 145px;
+}
+
 .cloud-box-container {
     clear: left;
 }

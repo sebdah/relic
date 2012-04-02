@@ -1,0 +1,26 @@
+{% extends "template.html" %}
+{% block main %}
+<div class='side-menu'>
+    <h3>{{cloud.name}}</h3>
+    <ul>
+        <li onclick="location.href='/cloud/{{cloud.uuid}}'">Overview</li>
+        {% for role in all_roles %}
+            <li onclick="location.href='/cloud/{{cloud.uuid}}/role/list/{{role.id}}'">- {{role.role}}</li>
+        {% endfor %}
+        <li onclick="location.href='/cloud/{{cloud.uuid}}/role/assign'">Assign role</li>
+    </ul>
+</div>
+<div class='main-content'>
+    <h2>Confirm delete</h2><br />
+    <p>
+        Are you sure you want to delete the server instance <strong>{{instance.hostname}}</strong>?
+    </p><br />
+    <form name='instanceDelete' action='' method='post'>{% csrf_token %}
+    <p>
+        <a class="btn" onclick='location.href="/cloud/{{cloud.uuid}}"'>&laquo; No, take me back &raquo;</a>
+        <a class="btn" onclick="document.instanceDelete.submit()">Yes, delete instance &raquo;</a>
+    </p>
+    </form>
+</div>
+<div class='clear'></div>
+{% endblock %}

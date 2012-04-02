@@ -119,3 +119,7 @@ footer {
 .cloud-box:hover, .instance-box:hover {
     box-shadow: 10px 10px 5px #CCC;
 }
+
+.code {
+    font-family: courier;
+}

@@ -22,17 +22,17 @@ class InstanceForm(ModelForm):
         model = models.Instance
         fields = ('hostname', 'instance_type', 'availability_zone')
 
-class Package(ModelForm):
+class PackageForm(ModelForm):
     class Meta:
         model = models.Package
         field = ('name', 'role')
 
-class EBSVolume(ModelForm):
+class EBSVolumeForm(ModelForm):
     class Meta:
         model = models.EBSVolume
-        fields = ('mountpoint', 'size', 'instance')
+        fields = ('mountpoint', 'size',)
 
-class ElasticIP(ModelForm):
+class ElasticIPForm(ModelForm):
     class Meta:
         model = models.ElasticIP
-        fields = ('dns_name', 'instance')
+        fields = ('dns_name',)

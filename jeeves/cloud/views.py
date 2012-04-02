@@ -102,11 +102,10 @@ def instance_add(request, uuid, role_id):
 @login_required
 def instance_edit(request, uuid, role_id, instance_id):
     """
-    Add a new instance to the cloud
+    Add a new Instance to the Cloud
     """
     message = ''
     if request.method == 'POST':
-        print "hit"
         form = forms.InstanceForm(  request.POST, 
                                     instance = models.Instance.objects.get(id = instance_id))
         if form.is_valid():
@@ -124,7 +123,39 @@ def instance_edit(request, uuid, role_id, instance_id):
                                 {'request': request,
                                 'form': form,
                                 'cloud': models.Cloud.objects.get(uuid = uuid),
-                                'all_roles': models.RoleRelation.objects.filter(cloud__uuid = uuid),
+                                'role_id': role_id,
+                                'instance': models.Instance.objects.get(id = instance_id),
+                                'message': message, })
+
+@login_required
+def instance_edit_ebs(request, uuid, role_id, instance_id):
+    """
+    Add a new EBSVolume to the Instance
+    """
+    message = ''
+    if request.method == 'POST':
+        form = forms.EBSVolumeForm(request.POST)
+        if form.is_valid():
+            form_instance = form.save(commit = False)
+            form_instance.cloud = models.Cloud.objects.get(uuid = uuid)
+            form_instance.instance = models.Instance.objects.get(id = instance_id)
+            form_instance.save()
+            
+            message = 'Your EBS has been added'
+            form = forms.EBSVolumeForm()
+    else:
+        form = forms.EBSVolumeForm()
+    
+    ebs_list = models.EBSVolume.objects.filter(instance = instance_id)
+
+    return direct_to_template(  request,
+                                'cloud/instance_edit_ebs.html',
+                                {'request': request,
+                                'form': form,
+                                'cloud': models.Cloud.objects.get(uuid = uuid),
+                                'role_id': role_id,
+                                'ebs_list': ebs_list,
+                                'instance': models.Instance.objects.get(id = instance_id),
                                 'message': message, })
 
 @login_required

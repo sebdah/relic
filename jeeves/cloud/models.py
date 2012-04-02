@@ -79,8 +79,9 @@ class EBSVolume(models.Model):
         return "%s (%i GB)" % (self.mountpoint, self.size)
     
     mountpoint          = models.CharField(blank = False, max_length = 250)
-    size                = models.IntegerField(blank = False, default = 10)
-    instance            = models.ForeignKey(Role)
+    size                = models.IntegerField(  blank = False, default = 10,
+                                                verbose_name = 'Size (GB)')
+    instance            = models.ForeignKey(Instance)
     cloud               = models.ForeignKey(Cloud)
 
 class ElasticIP(models.Model):

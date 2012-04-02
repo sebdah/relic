@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.simple import direct_to_template
 from django.views.generic import list_detail, create_update
 from django.contrib import auth
+from django.http import Http404
 
 @login_required
 def add(request):
@@ -38,10 +39,10 @@ def index(request, uuid):
     The overview of a single cloud
     """
     # Get the Cloud object
-    #try:
-    cloud = models.Cloud.objects.get(uuid = uuid)
-    #except models.Cloud.DoesNotExist:
-    #    raise Http404 
+    try:
+        cloud = models.Cloud.objects.get(uuid = uuid)
+    except models.Cloud.DoesNotExist:
+        raise Http404 
 
     # Get the role relations (cloud <-> role) for this cloud
     role_relations = models.RoleRelation.objects.filter(cloud__uuid = uuid)

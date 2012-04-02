@@ -91,5 +91,5 @@ class ElasticIP(models.Model):
         return self.dns_name
     
     dns_name            = models.CharField(blank = False, max_length = 250)
-    role                = models.ForeignKey(Role)
+    instance            = models.ForeignKey(Instance)
     cloud               = models.ForeignKey(Cloud)

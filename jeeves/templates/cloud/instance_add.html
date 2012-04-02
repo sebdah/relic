@@ -4,6 +4,9 @@
     <h3>{{cloud.name}}</h3>
     <ul>
         <li onclick="location.href='/cloud/{{cloud.uuid}}'">Overview</li>
+        {% for role in all_roles %}
+            <li onclick="location.href='/cloud/{{cloud.uuid}}/role/list/{{role.id}}'">- {{role.role}}</li>
+        {% endfor %}
         <li onclick="location.href='/cloud/{{cloud.uuid}}/role/assign'">Assign role</li>
     </ul>
 </div>

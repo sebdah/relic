@@ -34,7 +34,7 @@ def add(request):
                                 'message': message, })
 
 @login_required
-def index(request, uuid):
+def index(request, uuid, role_id = None):
     """
     The overview of a single cloud
     """
@@ -45,7 +45,10 @@ def index(request, uuid):
         raise Http404 
 
     # Get the role relations (cloud <-> role) for this cloud
-    role_relations = models.RoleRelation.objects.filter(cloud__uuid = uuid)
+    if role_id:
+        role_relations = models.RoleRelation.objects.filter(cloud__uuid = uuid, role = role_id)
+    else:
+        role_relations = models.RoleRelation.objects.filter(cloud__uuid = uuid)
     
     # Then loop over each relation to pick out the role object
     roles = []
@@ -67,6 +70,7 @@ def index(request, uuid):
                                 'cloud/index.html',
                                 {'request': request,
                                 'roles': roles,
+                                'all_roles': models.RoleRelation.objects.filter(cloud__uuid = uuid),
                                 'instances': instances,
                                 'cloud': models.Cloud.objects.get(uuid = uuid)})
 
@@ -92,6 +96,8 @@ def instance_add(request, uuid):
                                 'cloud/instance_add.html',
                                 {'request': request,
                                 'form': form,
+                                'cloud': models.Cloud.objects.get(uuid = uuid),
+                                'all_roles': models.RoleRelation.objects.filter(cloud__uuid = uuid),
                                 'message': message, })
 
 @login_required
@@ -153,4 +159,5 @@ def role_assign(request, uuid):
                                 {   'request': request,
                                     'form': form,
                                     'message': message,
+                                    'all_roles': models.RoleRelation.objects.filter(cloud__uuid = uuid),
                                     'cloud': models.Cloud.objects.get(uuid = uuid), })

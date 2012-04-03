@@ -1,0 +1,25 @@
+{% extends "template.html" %}
+{% block main %}
+<div class='side-menu'>
+    <h3>{{instance.hostname}}</h3>
+    <ul>
+        <li onclick="location.href='/cloud/{{cloud.uuid}}/role/{{role_id}}/instance/{{instance.id}}'">General settings</li>
+        <li onclick="location.href='/cloud/{{cloud.uuid}}/role/{{role_id}}/instance/{{instance.id}}/ebs'">Elastic Block Storage</li>
+        <li onclick="location.href='/cloud/{{cloud.uuid}}/role/{{role_id}}/instance/{{instance.id}}/elastic_ip'">Elastic IP</li>
+        <li onclick="location.href='/cloud/{{cloud.uuid}}'">&laquo; {{cloud.name}}</li>
+    </ul>
+</div>
+<div class='main-content'>
+    <h2>Confirm delete</h2><br />
+    <p>
+        Are you sure you want to delete the Elastic IP <strong>{{elastic_ip.dns_name}}</strong>?
+    </p><br />
+    <form name='ElasticIPDelete' action='' method='post'>{% csrf_token %}
+    <p>
+        <a class="btn" onclick='location.href="/cloud/{{cloud.uuid}}/role/{{role_id}}/instance/{{instance.id}}/ebs"'>&laquo; No, take me back &raquo;</a>
+        <a class="btn" onclick="document.ElasticIPDelete.submit()">Yes, delete Elastic IP &raquo;</a>
+    </p>
+    </form>
+</div>
+<div class='clear'></div>
+{% endblock %}

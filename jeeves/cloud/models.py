@@ -91,6 +91,7 @@ class ElasticIP(models.Model):
     def __unicode__(self):
         return self.dns_name
     
-    dns_name            = models.CharField(blank = False, max_length = 250)
+    dns_name            = models.CharField( blank = False, max_length = 250,
+                                            verbose_name = 'DNS name')
     instance            = models.ForeignKey(Instance)
     cloud               = models.ForeignKey(Cloud)

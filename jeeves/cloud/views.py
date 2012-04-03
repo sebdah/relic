@@ -210,7 +210,7 @@ def instance_delete(request, uuid, role_id, instance_id):
 @login_required
 def instance_delete_ebs(request, uuid, role_id, instance_id, ebs_id):
     """
-    Delete an server Instance
+    Delete an EBSVolume
     """
     if request.method == 'POST':
         ebs = models.EBSVolume.objects.get(id = ebs_id)
@@ -224,6 +224,25 @@ def instance_delete_ebs(request, uuid, role_id, instance_id, ebs_id):
                                 'role_id': role_id,
                                 'instance': models.Instance.objects.get(id = instance_id),
                                 'ebs': models.EBSVolume.objects.get(id = ebs_id),
+                                })
+
+@login_required
+def instance_delete_elastic_ip(request, uuid, role_id, instance_id, elastic_ip_id):
+    """
+    Delete an ElasticIP
+    """
+    if request.method == 'POST':
+        elastic_ip = models.ElasticIP.objects.get(id = elastic_ip_id)
+        elastic_ip.delete()
+        return redirect('/cloud/%s/role/%s/instance/%s/elastic_ip' % (  uuid, role_id, instance_id))
+
+    return direct_to_template(  request,
+                                'cloud/instance_delete_elastic_ip.html',
+                                {'request': request,
+                                'cloud': models.Cloud.objects.get(uuid = uuid),
+                                'role_id': role_id,
+                                'instance': models.Instance.objects.get(id = instance_id),
+                                'elastic_ip': models.ElasticIP.objects.get(id = elastic_ip_id),
                                 })
 
 @login_required

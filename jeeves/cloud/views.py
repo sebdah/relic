@@ -218,7 +218,7 @@ def instance_delete_ebs(request, uuid, role_id, instance_id, ebs_id):
         return redirect('/cloud/%s/role/%s/instance/%s/ebs' % (  uuid, role_id, instance_id))
 
     return direct_to_template(  request,
-                                'cloud/instance_ebs_delete.html',
+                                'cloud/instance_delete_ebs.html',
                                 {'request': request,
                                 'cloud': models.Cloud.objects.get(uuid = uuid),
                                 'role_id': role_id,

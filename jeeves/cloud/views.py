@@ -249,31 +249,12 @@ def instance_delete_elastic_ip(request, uuid, role_id, instance_id, elastic_ip_i
 def list(request):
     """
     Show the clouds registered for the authenticated user
-    
-    The clouds are structured in an list like this:
-    
-    [[cloud1, cloud2, cloud3], [cloud4, cloud5, cloud6]...]
     """
-    cloud_query = models.Cloud.objects.filter(owner = request.user).order_by('name')
-    clouds = [[]]
-    row = 0
-    i = 0
-    for cloud in cloud_query:
-        clouds[row].append(cloud)
-        
-        if i == 2:
-            i = 0
-            row += 1
-            clouds.append([])
-        else:
-            i += 1
-    
-    print clouds
     return direct_to_template(  request,
                                 'cloud/list.html',
                                 {'request': request,
-                                'clouds': clouds,
-                                'num_clouds': len(cloud_query) })
+                                'clouds': models.Cloud.objects.filter(owner = request.user).order_by('name'),
+                                })
 
 @login_required
 def role_assign(request, uuid):

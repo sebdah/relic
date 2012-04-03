@@ -159,6 +159,37 @@ def instance_edit_ebs(request, uuid, role_id, instance_id):
                                 'message': message, })
 
 @login_required
+def instance_edit_elastic_ip(request, uuid, role_id, instance_id):
+    """
+    Add a new Elastic IP to the Instance
+    """
+    message = ''
+    if request.method == 'POST':
+        form = forms.ElasticIPForm(request.POST)
+        if form.is_valid():
+            form_instance = form.save(commit = False)
+            form_instance.cloud = models.Cloud.objects.get(uuid = uuid)
+            form_instance.instance = models.Instance.objects.get(id = instance_id)
+            form_instance.save()
+
+            message = 'Your Elastic IP has been added'
+            form = forms.ElasticIPForm()
+    else:
+        form = forms.ElasticIPForm()
+
+    elastic_ips = models.ElasticIP.objects.filter(instance = instance_id)
+
+    return direct_to_template(  request,
+                                'cloud/instance_edit_elastic_ip.html',
+                                {'request': request,
+                                'form': form,
+                                'cloud': models.Cloud.objects.get(uuid = uuid),
+                                'role_id': role_id,
+                                'elastic_ips': elastic_ips,
+                                'instance': models.Instance.objects.get(id = instance_id),
+                                'message': message, })
+
+@login_required
 def instance_delete(request, uuid, role_id, instance_id):
     """
     Delete an server Instance

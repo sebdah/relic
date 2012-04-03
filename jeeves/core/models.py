@@ -1,4 +1,5 @@
 from django.db import models
+import cloud
 
 class Account(models.Model):
     """
@@ -22,4 +23,10 @@ class Account(models.Model):
     is_authenticated    = False
     def is_authenticated(self):
         return self.is_authenticated
+    
+    def clouds(self):
+        """
+        Return all Cloud objects related to this Account
+        """
+        return cloud.models.Cloud.objects.filter(owner = self.id).order_by('name')
 

@@ -1,4 +1,5 @@
 import uuid
+import core
 from cloud import forms
 from cloud import models
 from django.shortcuts import redirect
@@ -38,39 +39,14 @@ def index(request, uuid, role_id = None):
     """
     The overview of a single cloud
     """
-    # Get the Cloud object
     try:
         cloud = models.Cloud.objects.get(uuid = uuid)
     except models.Cloud.DoesNotExist:
-        raise Http404 
+        raise Http404
 
-    # Get the role relations (cloud <-> role) for this cloud
-    if role_id:
-        role_relations = models.RoleRelation.objects.filter(cloud__uuid = uuid, role = role_id)
-    else:
-        role_relations = models.RoleRelation.objects.filter(cloud__uuid = uuid)
-    
-    # Then loop over each relation to pick out the role object
-    roles = []
-    for role_relation in role_relations:
-        roles.append(role_relation.role)
-    
-    # Get instances for each role [{'role.name': [instance, n..]}]
-    instances = []
-    for role in roles:
-        role_instances = []
-        for instance in models.Instance.objects.filter(role = role):
-            role_instances.append(instance)
-        
-        if len(role_instances) > 0:
-            instances.append({role: role_instances})
-    
     return direct_to_template(  request,
                                 'cloud/index.html',
                                 {'request': request,
-                                'roles': roles,
-                                'all_roles': models.RoleRelation.objects.filter(cloud__uuid = uuid),
-                                'instances': instances,
                                 'cloud': models.Cloud.objects.get(uuid = uuid)})
 
 @login_required
@@ -96,7 +72,6 @@ def instance_add(request, uuid, role_id):
                                 {'request': request,
                                 'form': form,
                                 'cloud': models.Cloud.objects.get(uuid = uuid),
-                                'all_roles': models.RoleRelation.objects.filter(cloud__uuid = uuid),
                                 'message': message, })
 
 @login_required
@@ -145,8 +120,6 @@ def instance_edit_ebs(request, uuid, role_id, instance_id):
             form = forms.EBSVolumeForm()
     else:
         form = forms.EBSVolumeForm()
-    
-    ebs_list = models.EBSVolume.objects.filter(instance = instance_id)
 
     return direct_to_template(  request,
                                 'cloud/instance_edit_ebs.html',
@@ -154,7 +127,6 @@ def instance_edit_ebs(request, uuid, role_id, instance_id):
                                 'form': form,
                                 'cloud': models.Cloud.objects.get(uuid = uuid),
                                 'role_id': role_id,
-                                'ebs_list': ebs_list,
                                 'instance': models.Instance.objects.get(id = instance_id),
                                 'message': message, })
 
@@ -177,15 +149,12 @@ def instance_edit_elastic_ip(request, uuid, role_id, instance_id):
     else:
         form = forms.ElasticIPForm()
 
-    elastic_ips = models.ElasticIP.objects.filter(instance = instance_id)
-
     return direct_to_template(  request,
                                 'cloud/instance_edit_elastic_ip.html',
                                 {'request': request,
                                 'form': form,
                                 'cloud': models.Cloud.objects.get(uuid = uuid),
                                 'role_id': role_id,
-                                'elastic_ips': elastic_ips,
                                 'instance': models.Instance.objects.get(id = instance_id),
                                 'message': message, })
 
@@ -253,8 +222,7 @@ def list(request):
     return direct_to_template(  request,
                                 'cloud/list.html',
                                 {'request': request,
-                                'clouds': models.Cloud.objects.filter(owner = request.user).order_by('name'),
-                                })
+                                'clouds': core.models.Account.clouds(request.user),})
 
 @login_required
 def role_assign(request, uuid):
@@ -285,5 +253,4 @@ def role_assign(request, uuid):
                                 {   'request': request,
                                     'form': form,
                                     'message': message,
-                                    'all_roles': models.RoleRelation.objects.filter(cloud__uuid = uuid),
                                     'cloud': models.Cloud.objects.get(uuid = uuid), })

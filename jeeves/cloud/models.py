@@ -22,6 +22,37 @@ class Cloud(models.Model):
     created             = models.DateTimeField(auto_now_add = True)
     last_updated        = models.DateTimeField(auto_now = True)
     is_active           = models.BooleanField(default = True)
+    
+    def instances(self):
+        """
+        Return all Instances linked to this cloud
+        """
+        return Instance.objects.filter(cloud__uuid = self.uuid)
+    
+    def roles(self):
+        """
+        Return all Role objects matching this cloud
+        """
+        roles = []
+        for role_relation in RoleRelation.objects.filter(cloud__uuid = self.uuid):
+            roles.append(Role.objects.get(id = role_relation.role.id))
+        return roles
+    
+    def role_instances(self):
+        """
+        Return a dict with [{'role': [instance, instance..]}]
+        """
+        instances = []
+
+        for role in self.roles():
+            role_instances = []
+            for instance in Instance.objects.filter(role = role):
+                role_instances.append(instance)
+
+            if len(role_instances) > 0:
+                instances.append({role: role_instances})
+        
+        return instances
 
 class Role(models.Model):
     """
@@ -59,6 +90,18 @@ class Instance(models.Model):
     availability_zone   = models.CharField( blank = False,
                                             max_length = 20,
                                             choices = definitions.AVAILABILITY_ZONES)
+    
+    def ebs_volumes(self):
+        """
+        Return all EBS volumes related to this Instance
+        """
+        return EBSVolume.objects.filter(instance = self.id)
+    
+    def elastic_ips(self):
+        """
+        Return all Elastic IP's related to this Instance
+        """
+        return ElasticIP.objects.filter(instance = self.id)
 
 class Package(models.Model):
     """

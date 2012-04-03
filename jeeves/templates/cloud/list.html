@@ -1,4 +1,5 @@
 {% extends "template.html" %}
+{% load annoying %}
 {% block main %}
 <div class='side-menu'>
     <h3>Clouds</h3>
@@ -17,7 +18,11 @@
                     <table>
                         <tr>
                             <th>Servers</th>
-                            <td>x</td>
+                            <td>{{cloud.instances|length}}</td>
+                        </tr>
+                        <tr>
+                            <th>Roles</th>
+                            <td>{{cloud.roles|length}}</td>
                         </tr>
                         <tr>
                             <th>Created</th>

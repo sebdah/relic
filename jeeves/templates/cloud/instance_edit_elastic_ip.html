@@ -11,14 +11,14 @@
 </div>
 <div class='main-content'>
     <h2>Elastic IP</h2>
-    {% if elastic_ips %}
+    {% if instance.elastic_ips %}
     <h3>Current Elastic IPs</h3>
     <table>
         <tr>
             <th>{{form.dns_name.label}}</th>
             <th>Delete</th>
         </tr>
-        {% for elastic_ip in elastic_ips %}
+        {% for elastic_ip in instance.elastic_ips %}
             <tr>
                 <td><input type='text' value='{{elastic_ip.dns_name}}' readonly></td>
                 <td><a href="/cloud/{{cloud.uuid}}/role/{{role_id}}/instance/{{instance.id}}/elastic_ip/{{elastic_ip.id}}/delete">Remove</td>

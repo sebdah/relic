@@ -11,7 +11,7 @@
 </div>
 <div class='main-content'>
     <h2>Elastic Block Storage</h2>
-    {% if ebs_list %}
+    {% if instance.ebs_volumes %}
     <h3>Current EBS's</h3>
     <table>
         <tr>
@@ -19,7 +19,7 @@
             <th>{{form.size.label}}</th>
             <th>Delete</th>
         </tr>
-        {% for ebs in ebs_list %}
+        {% for ebs in instance.ebs_volumes %}
             <tr>
                 <td><input type='text' value='{{ebs.mountpoint}}' readonly></td>
                 <td><input type='text' value='{{ebs.size}}' readonly></td>

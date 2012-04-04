@@ -98,23 +98,30 @@ class Instance(models.Model):
         Delete associated services
         """
         # If there are no more Instances in the Role, remove the security group
-        if len(Instance.objects.filter(role = self.role)) == 0:
-            cloud = Cloud.objects.get(id = self.cloud.id, )
-            self.security_group = "Jeeves_%s_%s" % (cloud.uuid, self.role.id)
+        if len(Instance.objects.filter(role = self.role.id, region = self.region)) <= 1:
+            cloud = Cloud.objects.get(id = self.cloud.id)
             connection = ec2.connection.EC2Connection(  aws_access_key_id = cloud.aws_id,
                                                         aws_secret_access_key = cloud.aws_secret,
-                                                        region = ec2.get_region(self.region()))
+                                                        region = ec2.get_region(self.region))
+            connection.delete_security_group(self.security_group)
+            print "Removed security group %s" % self.security_group
+        
+        # Save the object
+        super(Instance, self).delete(*args,**kwargs)
 
     def save(self, *args, **kwargs):
         """
         Register a new security group is not existing at AWS
         """
+        # Set the region
+        self.region = self.availability_zone[:-1]
+        
         # Check if a security group exists
         cloud = Cloud.objects.get(id = self.cloud.id)
         self.security_group = "Jeeves_%s_%s" % (cloud.uuid, self.role.id)
         connection = ec2.connection.EC2Connection(  aws_access_key_id = cloud.aws_id,
                                                     aws_secret_access_key = cloud.aws_secret,
-                                                    region = ec2.get_region(self.region()))
+                                                    region = ec2.get_region(self.region))
         is_registered = False
         for registered_sg in connection.get_all_security_groups():
             if self.security_group == registered_sg.name:
@@ -126,9 +133,6 @@ class Instance(models.Model):
             security_group = connection.create_security_group(self.security_group, self.role.name)
             security_group.authorize(ip_protocol = 'icmp', cidr_ip = '0.0.0.0/0')
             security_group.authorize('tcp', 22, 22, '0.0.0.0/0')
-        
-        # Set the region
-        self.region = self.availability_zone[:-1]
         
         # Save the object
         super(Instance, self).save(*args,**kwargs)

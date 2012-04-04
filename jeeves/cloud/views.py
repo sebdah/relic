@@ -91,7 +91,7 @@ def instance_edit(request, uuid, role_id, instance_id):
             return redirect('/cloud/%s' % uuid)
     else:
         form = forms.InstanceForm(instance = models.Instance.objects.get(id = instance_id))
-
+    
     return direct_to_template(  request,
                                 'cloud/instance_edit.html',
                                 {'request': request,

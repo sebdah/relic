@@ -137,4 +137,9 @@ footer {
     padding: 4px;
     margin-top: -8px;
     margin-bottom: 8px;
+    
+    background-color: #F2F2F2;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
 }

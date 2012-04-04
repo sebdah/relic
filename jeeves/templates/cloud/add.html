@@ -1,12 +1,6 @@
 {% extends "template.html" %}
 {% block main %}
-<div class='side-menu'>
-    <h3>Clouds</h3>
-    <ul>
-        <li onclick="location.href='/cloud'">My clouds</li>
-        <li onclick="location.href='/cloud/add'">Create a new cloud</li>
-    </ul>
-</div>
+{% include "cloud/menu.html" %}
 <div id="addCloud" class='main-content'>
     <h2>Create a new cloud</h2>
     <form name='addCloudForm' action='' method='post'>{% csrf_token %}

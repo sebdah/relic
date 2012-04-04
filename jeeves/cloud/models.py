@@ -27,14 +27,14 @@ class Cloud(models.Model):
         """
         Return all Instances linked to this cloud
         """
-        return Instance.objects.filter(cloud__uuid = self.uuid)
+        return Instance.objects.filter(cloud__uuid = self.uuid).order_by('hostname')
     
     def roles(self):
         """
         Return all Role objects matching this cloud
         """
         roles = []
-        for role_relation in RoleRelation.objects.filter(cloud__uuid = self.uuid):
+        for role_relation in RoleRelation.objects.filter(cloud__uuid = self.uuid).order_by('role__name'):
             roles.append(Role.objects.get(id = role_relation.role.id))
         return roles
     
@@ -46,7 +46,7 @@ class Cloud(models.Model):
 
         for role in self.roles():
             role_instances = []
-            for instance in Instance.objects.filter(role = role):
+            for instance in Instance.objects.filter(role = role).order_by('hostname'):
                 role_instances.append(instance)
 
             if len(role_instances) > 0:

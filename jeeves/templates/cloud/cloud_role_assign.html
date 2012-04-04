@@ -1,14 +1,8 @@
 {% extends "template.html" %}
 {% block main %}
-<div class='side-menu'>
-    <h3>{{cloud.name}}</h3>
-    <ul>
-        <li onclick="location.href='/cloud/{{cloud.uuid}}'">Overview</li>
-        <li onclick="location.href='/cloud/{{cloud.uuid}}/role/assign'">Assign role</li>
-    </ul>
-</div>
+{% include "cloud/cloud_menu.html" %}
 <div class='main-content'>
-    <h2>Create a new cloud</h2>
+    <h2>Assign a new role to this cloud</h2>
     <form name='addReleationForm' action='' method='post'>{% csrf_token %}
     {{form}}
     <p><a class="btn" onclick="document.addReleationForm.submit()">Add role &raquo;</a></p>

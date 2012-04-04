@@ -1,14 +1,6 @@
 {% extends "template.html" %}
 {% block main %}
-<div class='side-menu'>
-    <h3>{{instance.hostname}}</h3>
-    <ul>
-        <li onclick="location.href='/cloud/{{cloud.uuid}}/role/{{role_id}}/instance/{{instance.id}}'">General settings</li>
-        <li onclick="location.href='/cloud/{{cloud.uuid}}/role/{{role_id}}/instance/{{instance.id}}/ebs'">Elastic Block Storage</li>
-        <li onclick="location.href='/cloud/{{cloud.uuid}}/role/{{role_id}}/instance/{{instance.id}}/elastic_ip'">Elastic IP</li>
-        <li onclick="location.href='/cloud/{{cloud.uuid}}'">&laquo; {{cloud.name}}</li>
-    </ul>
-</div>
+{% include "cloud/instance_menu.html" %}
 <div class='main-content'>
     <h2>Elastic IP</h2>
     {% if instance.elastic_ips %}

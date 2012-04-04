@@ -45,7 +45,7 @@ def index(request, uuid, role_id = None):
         raise Http404
 
     return direct_to_template(  request,
-                                'cloud/index.html',
+                                'cloud/cloud_index.html',
                                 {'request': request,
                                 'cloud': models.Cloud.objects.get(uuid = uuid)})
 
@@ -249,7 +249,7 @@ def role_assign(request, uuid):
         form.fields['role'].queryset = models.Role.objects.filter(is_global = True)
 
     return direct_to_template(  request,
-                                'cloud/role_assign.html',
+                                'cloud/cloud_role_assign.html',
                                 {   'request': request,
                                     'form': form,
                                     'message': message,

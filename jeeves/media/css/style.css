@@ -111,9 +111,9 @@ footer {
 
 .cloud-box {
     float: left;
-    background-image:url('http://www.wonderbackgrounds.com/nature/cloud/backgrounds/cloud_2.gif');
-    background-attachment:fixed;
-    background-repeat:repeat;
+    background-image: url('http://www.wonderbackgrounds.com/nature/cloud/backgrounds/cloud_2.gif');
+    background-attachment: fixed;
+    background-repeat: repeat;
     width: 200px;
     height: 150px;
     margin-right: 20px;
@@ -135,6 +135,7 @@ footer {
 
 .navigation-bar {
     padding: 4px;
+    padding-left: 8px;
     margin-top: -8px;
     margin-bottom: 8px;
     

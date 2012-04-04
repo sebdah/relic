@@ -5,7 +5,6 @@ from cloud import models
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic.simple import direct_to_template
-from django.views.generic import list_detail, create_update
 from django.contrib import auth
 from django.http import Http404
 

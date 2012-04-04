@@ -90,7 +90,41 @@ class Instance(models.Model):
     availability_zone   = models.CharField( blank = False,
                                             max_length = 20,
                                             choices = definitions.AVAILABILITY_ZONES)
-    
+    security_group      = models.CharField(max_length = 1000)
+
+    def delete(self, *args, **kwargs):
+        """
+        
+        """
+        pass
+
+    def region(self):
+        """
+        Returns the region in which this Instance resides
+        """
+        return self.availability_zone[:-1]
+
+    def save(self, *args, **kwargs):
+        """
+        Register a new security group is not existing at AWS
+        """
+        cloud = Cloud.objects.get(id = self.cloud.id)
+        self.security_group = "Jeeves_%s_%s" % (cloud.uuid, self.role.id)
+        connection = ec2.connection.EC2Connection(  aws_access_key_id = cloud.aws_id,
+                                                    aws_secret_access_key = cloud.aws_secret,
+                                                    region = ec2.get_region(self.region()))
+        is_registered = False
+        for security_group in connection.get_all_security_groups():
+            if self.security_group == security_group:
+                is_registered = True
+        
+        if is_registered:
+            print "SG %s not found. Creating it." % self.security_group
+            security_group = connection.create_security_group(self.security_group, self.role.name)
+            security_group.authorize('tcp', 22, 22, '0.0.0.0/0')
+        
+        super(Instance, self).save(*args,**kwargs)
+        
     def ebs_volumes(self):
         """
         Return all EBS volumes related to this Instance

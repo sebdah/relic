@@ -11,9 +11,9 @@ urlpatterns = patterns('',
     # Redirect login attempts
     (r'^accounts/login', redirect_to, {'url': '/account/login'}),
     
-    url(r'^$', 'core.views.index'),
+    url(r'^$', 'core.views.index', name='root'),
     
-    url(r'^account$', 'core.views.account_index'),
+    url(r'^account$', 'core.views.account_index', name = 'account'),
     url(r'^account/edit$', 'core.views.account_edit'),
     url(r'^account/delete/(?P<account_id>[\w-]+)$', 'core.views.account_delete'),
     url(r'^account/login$', 'core.views.account_login'),
@@ -21,7 +21,7 @@ urlpatterns = patterns('',
     url(r'^account/register$', 'core.views.account_register'),
     url(r'^account/register/complete$', 'core.views.account_register_complete'),
     
-    url(r'^cloud$', 'cloud.views.list'),
+    url(r'^cloud$', 'cloud.views.list', name = 'cloud'),
     url(r'^cloud/add$', 'cloud.views.add'),
     url(r'^cloud/(?P<uuid>[\w-]+)$', 'cloud.views.index'),
     url(r'^cloud/(?P<uuid>[\w-]+)/role/assign$', 'cloud.views.role_assign'),

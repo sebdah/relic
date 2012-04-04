@@ -1,3 +1,4 @@
+{% load base_extras %}
 <!doctype html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
@@ -45,13 +46,13 @@
           {% endif %}
           <div class="nav-collapse">
             <ul class="nav">
-              <li class="active"><a href="/">Start page</a></li>
+              <li class="{% navactive request 'root' %}"><a href="/">Start page</a></li>
               {% if request.user.is_authenticated %}
-                <li><a href="/cloud">Clouds</a></li>
-                <li><a href="/account/edit">Account</a></li>
+                <li class="{% navactive request 'cloud' %}"><a href="/cloud">Clouds</a></li>
+                <li class="{% navactive request 'account' %}"><a href="/account/edit">Account</a></li>
                 <li><a href="/account/logout">Logout</a></li>
               {% else %}
-                <li><a href="/account/register">Register</a></li>
+                <li class="{% navactive request 'account' %}"><a href="/account/register">Register</a></li>
                 <li><a href="/account/login">Login</a></li>
               {% endif %}
             </ul>

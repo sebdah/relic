@@ -1,0 +1,35 @@
+{% extends "template.html" %}
+{% load annoying %}
+{% block main %}
+{% include "cloud/navigation_bar.html" %}
+{% include "cloud/menu.html" %}
+<div id="myClouds" class='main-content'>
+    <h2>My clouds</h2>
+    {% if clouds %}
+        <div class="cloud-box-container">
+            {% for cloud in clouds %}
+                <div class="cloud-box" onclick="location.href='/cloud/{{cloud.uuid}}'">
+                    <h3>{{cloud.name}}</h3>
+                    <table>
+                        <tr>
+                            <th>Servers</th>
+                            <td>{{cloud.instances|length}}</td>
+                        </tr>
+                        <tr>
+                            <th>Roles</th>
+                            <td>{{cloud.roles|length}}</td>
+                        </tr>
+                        <tr>
+                            <th>Created</th>
+                            <td>{{cloud.created}}</td>
+                        </tr>
+                    </table>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        You have no clouds yet, get started by <a href='/cloud/add'>adding one</a>!
+    {% endif %}
+</div>
+<div class='clear'></div>
+{% endblock %}

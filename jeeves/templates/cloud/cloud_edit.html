@@ -1,0 +1,13 @@
+{% extends "template.html" %}
+{% block main %}
+{% include "cloud/cloud_navigation_bar.html" %}
+{% include "cloud/cloud_menu.html" %}
+<div class='main-content'>
+    <h2>Edit {{cloud.name}}</h2>
+    <form name='editCloudForm' action='' method='post'>{% csrf_token %}
+    {{form}}
+    <p><a class="btn" onclick="document.editCloudForm.submit()">Save changes &raquo;</a></p>
+    </form>
+</div>
+<div class='clear'></div>
+{% endblock %}

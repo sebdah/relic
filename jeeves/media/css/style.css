@@ -1,0 +1,146 @@
+/* ===== Primary Styles ========================================================
+Author: Sebastian Dahlgren <sebastian.dahlgren@gmail.com>
+========================================================================== */
+
+table th {
+  font-weight: bold;
+  vertical-align: middle;
+  text-align: left;
+  padding: 0px 2px 0px 2px;
+}
+table td {
+  vertical-align: top;
+  padding: 0px;
+}
+
+footer {
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    width: 600px;
+}
+
+.clear { clear: both; }
+
+.main-content {
+    float: left;
+    margin-left: 20px;
+    height: 100%;
+}
+
+.message {
+    width: 500px;
+    margin: 0 auto;
+    border-radius: 8px;
+    background-color: #FFFCDB;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.side-menu {
+    background-image: linear-gradient(left , rgb(229,229,229) 0%, rgb(241,241,241) 31%);
+    background-image: -o-linear-gradient(left , rgb(229,229,229) 0%, rgb(241,241,241) 31%);
+    background-image: -moz-linear-gradient(left , rgb(229,229,229) 0%, rgb(241,241,241) 31%);
+    background-image: -webkit-linear-gradient(left , rgb(229,229,229) 0%, rgb(241,241,241) 31%);
+    background-image: -ms-linear-gradient(left , rgb(229,229,229) 0%, rgb(241,241,241) 31%);
+
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        right bottom,
+        color-stop(0, rgb(229,229,229)),
+        color-stop(0.31, rgb(241,241,241))
+    );
+    
+    border-radius: 8px;
+    padding: 2px 0px 8px 8px;
+    width: 160px;
+    height: 240px;
+    float: left;
+}
+
+.side-menu ul {
+    margin: 0px;
+    list-style-type: none;
+    width: 100%;
+}
+
+.side-menu ul li { padding-left: 5px; }
+.side-menu ul li:hover { background-color: #E1E1E1; }
+
+.instance-box-container {
+    clear: left;
+    width: 950px;
+}
+
+.instance-box {
+    float: left;
+    width: 200px;
+    height: 150px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    padding: 5px;
+    
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    
+    background: #cdeb8e; /* Old browsers */
+    background: -moz-linear-gradient(top,  #cdeb8e 0%, #a5c956 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cdeb8e), color-stop(100%,#a5c956)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #cdeb8e 0%,#a5c956 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #cdeb8e 0%,#a5c956 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #cdeb8e 0%,#a5c956 100%); /* IE10+ */
+    background: linear-gradient(top,  #cdeb8e 0%,#a5c956 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cdeb8e', endColorstr='#a5c956',GradientType=0 ); /* IE6-9 */
+}
+
+.instance-box-footer {
+    clear: left;
+    position: relative;
+    bottom: -20%;
+    left: 145px;
+}
+
+.cloud-box-container {
+    clear: left;
+    width: 950px;
+}
+
+.cloud-box {
+    float: left;
+    background-image: url('http://www.wonderbackgrounds.com/nature/cloud/backgrounds/cloud_2.gif');
+    background-attachment: fixed;
+    background-repeat: repeat;
+    width: 200px;
+    height: 150px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    padding: 5px;
+    
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.cloud-box:hover, .instance-box:hover {
+    box-shadow: 10px 10px 5px #CCC;
+}
+
+.code {
+    font-family: courier;
+}
+
+.navigation-bar {
+    padding: 4px;
+    padding-left: 8px;
+    margin-top: -8px;
+    margin-bottom: 8px;
+    
+    background-color: #F2F2F2;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}

@@ -1,0 +1,18 @@
+{% extends "template.html" %}
+{% block main %}
+{% include "cloud/instance_navigation_bar.html" %}
+{% include "cloud/instance_menu.html" %}
+<div class='main-content'>
+    <h2>Confirm delete</h2><br />
+    <p>
+        Are you sure you want to delete the server instance <strong>{{instance.hostname}}</strong>?
+    </p><br />
+    <form name='instanceDelete' action='' method='post'>{% csrf_token %}
+    <p>
+        <a class="btn" onclick='location.href="/cloud/{{cloud.uuid}}"'>&laquo; No, take me back</a>
+        <a class="btn" onclick="document.instanceDelete.submit()">Yes, delete instance &raquo;</a>
+    </p>
+    </form>
+</div>
+<div class='clear'></div>
+{% endblock %}

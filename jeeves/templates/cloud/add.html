@@ -1,0 +1,18 @@
+{% extends "template.html" %}
+{% block main %}
+{% include "cloud/navigation_bar.html" %}
+{% include "cloud/menu.html" %}
+<div id="addCloud" class='main-content'>
+    <h2>Create a new cloud</h2>
+    <form name='addCloudForm' action='' method='post'>{% csrf_token %}
+    {% for field in form %}
+        <p>
+            <strong>{{field.label}}</strong><br />
+            {{field}} {% for error in field.errors %} {{error}} {% endfor %}
+        </p>
+    {% endfor %}
+    <p><a class="btn" onclick="document.addCloudForm.submit()">Create cloud &raquo;</a></p>
+    </form>
+</div>
+<div class='clear'></div>
+{% endblock %}

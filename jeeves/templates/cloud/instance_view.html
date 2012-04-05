@@ -1,0 +1,27 @@
+{% extends "template.html" %}
+{% block main %}
+{% include "cloud/instance_navigation_bar.html" %}
+{% include "cloud/instance_menu.html" %}
+<div class='main-content'>
+    <h2>Instance {{instance.hostname}}</h2>
+    <table>
+        <tr>
+            <th>Hostname</th>
+            <td>{{instance.hostname}}</td>
+        </tr>
+        <tr>
+            <th>Instance type</th>
+            <td>{{instance.instance_type}}</td>
+        </tr>
+        <tr>
+            <th>Instance description</th>
+            <td>{{instance.get_instance_type_display}}</td>
+        </tr>
+        <tr>
+            <th>Availability zone</th>
+            <td>{{instance.availability_zone}}</td>
+        </tr>
+    </table>
+</div>
+<div class='clear'></div>
+{% endblock %}

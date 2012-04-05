@@ -38,7 +38,6 @@ def edit(request, uuid):
     """
     Edit preferences in a Cloud
     """
-    message = ''
     cloud = models.Cloud.objects.get(uuid = uuid)
     
     if request.method == 'POST':
@@ -54,7 +53,6 @@ def edit(request, uuid):
                                 'cloud/cloud_edit.html',
                                 {   'request': request,
                                     'form': form,
-                                    'message': message,
                                     'cloud': cloud, })
 
 
@@ -99,32 +97,16 @@ def instance_add(request, uuid, role_id):
                                 'message': message, })
 
 @login_required
-def instance_edit(request, uuid, role_id, instance_id):
+def instance_view(request, uuid, role_id, instance_id):
     """
-    Add a new Instance to the Cloud
+    View details about an Instance
     """
-    message = ''
-    if request.method == 'POST':
-        form = forms.InstanceForm(  request.POST, 
-                                    instance = models.Instance.objects.get(id = instance_id))
-        if form.is_valid():
-            form_instance = form.save(commit = False)
-            form_instance.cloud = models.Cloud.objects.get(uuid = uuid)
-            form_instance.role = models.Role.objects.get(id = role_id)
-            form_instance.save()
-            message = 'Your instance has been added'
-            return redirect('/cloud/%s' % uuid)
-    else:
-        form = forms.InstanceForm(instance = models.Instance.objects.get(id = instance_id))
-    
     return direct_to_template(  request,
-                                'cloud/instance_edit.html',
+                                'cloud/instance_view.html',
                                 {'request': request,
-                                'form': form,
                                 'cloud': models.Cloud.objects.get(uuid = uuid),
                                 'role_id': role_id,
-                                'instance': models.Instance.objects.get(id = instance_id),
-                                'message': message, })
+                                'instance': models.Instance.objects.get(id = instance_id), })
 
 @login_required
 def instance_edit_ebs(request, uuid, role_id, instance_id):

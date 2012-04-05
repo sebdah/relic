@@ -7,6 +7,8 @@ ADMINS = (
     ('Sebastian Dahlgren', 'sebastian.dahlgren@gmail.com'),
 )
 
+VERSION = '0.1-SNAPSHOT'
+
 MANAGERS = ADMINS
 
 JEEVES_AWS_CREDENTIALS = {

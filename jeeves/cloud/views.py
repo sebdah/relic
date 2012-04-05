@@ -34,6 +34,31 @@ def add(request):
                                 'message': message, })
 
 @login_required
+def edit(request, uuid):
+    """
+    Edit preferences in a Cloud
+    """
+    message = ''
+    cloud = models.Cloud.objects.get(uuid = uuid)
+    
+    if request.method == 'POST':
+        form = forms.CloudForm(request.POST, instance = cloud)
+        if form.is_valid():
+            form.save()
+
+            return redirect('/cloud/%s' % uuid)
+    else:
+        form = forms.CloudForm(instance = cloud)
+
+    return direct_to_template(  request,
+                                'cloud/cloud_edit.html',
+                                {   'request': request,
+                                    'form': form,
+                                    'message': message,
+                                    'cloud': cloud, })
+
+
+@login_required
 def index(request, uuid, role_id = None):
     """
     The overview of a single cloud

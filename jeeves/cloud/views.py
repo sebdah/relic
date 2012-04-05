@@ -260,3 +260,25 @@ def role_assign(request, uuid):
                                     'form': form,
                                     'message': message,
                                     'cloud': models.Cloud.objects.get(uuid = uuid), })
+
+@login_required
+def role_unassign(request, uuid, role_id):
+    """
+    Unassign a Role from a Cloud
+    """
+    cloud = models.Cloud.objects.get(uuid = uuid)
+    role = models.Role.objects.get(id = role_id)
+    role_instances = len(models.Instance.objects.filter(role = role.id))
+    
+    if request.method == 'POST':
+        role_relation = models.RoleRelation.objects.get(role = role.id, cloud = cloud.id)
+        role_relation.delete()
+        return redirect('/cloud/%s' % uuid)
+
+    return direct_to_template(  request,
+                                'cloud/cloud_role_unassign.html',
+                                {'request': request,
+                                'cloud': cloud,
+                                'role': role,
+                                'role_instances': role_instances,
+                                })

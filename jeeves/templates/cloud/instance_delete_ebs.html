@@ -9,7 +9,7 @@
     </p><br />
     <form name='EBSDelete' action='' method='post'>{% csrf_token %}
     <p>
-        <a class="btn" onclick='location.href="/cloud/{{cloud.uuid}}/role/{{role_id}}/instance/{{instance.id}}/ebs"'>&laquo; No, take me back &raquo;</a>
+        <a class="btn" onclick='location.href="/cloud/{{cloud.uuid}}/role/{{role_id}}/instance/{{instance.id}}/ebs"'>&laquo; No, take me back</a>
         <a class="btn" onclick="document.EBSDelete.submit()">Yes, delete EBS &raquo;</a>
     </p>
     </form>

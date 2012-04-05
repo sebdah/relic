@@ -6,7 +6,10 @@
     {% if cloud.roles %}
         {% for role in cloud.roles %}
             <h2>{{role.name}}</h2>
-            <p><a href='/cloud/{{cloud.uuid}}/role/{{role.id}}/instance/add'>Add instance</a></p>
+            <p>
+                <a href='/cloud/{{cloud.uuid}}/role/{{role.id}}/unassign'>Unassign role</a> | 
+                <a href='/cloud/{{cloud.uuid}}/role/{{role.id}}/instance/add'>Add instance</a>
+            </p>
             <div class='instance-box-container'>
                 {% for role_instances in cloud.role_instances %}
                     {% for role_obj, instance_objs in role_instances.items %}

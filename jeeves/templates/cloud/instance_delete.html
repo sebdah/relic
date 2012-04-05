@@ -9,7 +9,7 @@
     </p><br />
     <form name='instanceDelete' action='' method='post'>{% csrf_token %}
     <p>
-        <a class="btn" onclick='location.href="/cloud/{{cloud.uuid}}"'>&laquo; No, take me back &raquo;</a>
+        <a class="btn" onclick='location.href="/cloud/{{cloud.uuid}}"'>&laquo; No, take me back</a>
         <a class="btn" onclick="document.instanceDelete.submit()">Yes, delete instance &raquo;</a>
     </p>
     </form>

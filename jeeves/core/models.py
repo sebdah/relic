@@ -14,7 +14,7 @@ class Account(models.Model):
     last_name           = models.CharField(blank = False, max_length = 50)
     last_updated        = models.DateTimeField(auto_now = True)
     registered          = models.DateTimeField(auto_now_add = True)
-    is_active           = models.BooleanField(default = True)
+    is_active           = models.BooleanField(default = False)
     
     # Added for the admin site to work. Should NEVER be True
     is_staff            = False

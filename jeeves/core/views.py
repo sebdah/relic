@@ -3,7 +3,6 @@ from core import models
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic.simple import direct_to_template
-from django.views.generic import create_update
 from django.contrib import auth
 
 @login_required
@@ -85,14 +84,18 @@ def account_register(request):
     """
     Registration form for a new Jeeves account
     """
-    return create_update.create_object(
-        request,
-        login_required = False,
-        form_class = forms.AccountForm,
-        post_save_redirect = "/account/register/complete",
-        template_name ="core/account/register.html",
-        extra_context = {'request': request}
-        )
+    if request.method == 'POST':
+        form = forms.AccountForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/account/register/complete')
+    else:
+        form = forms.AccountForm()
+
+    return direct_to_template(  request,
+                                'core/account/register.html',
+                                {   'request': request,
+                                    'form': form, })
 
 def account_register_complete(request):
     """

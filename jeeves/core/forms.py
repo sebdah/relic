@@ -1,19 +1,20 @@
-from django.forms import ModelForm
-from django.forms import widgets
+from django import forms
 from core import models
 
-class AccountForm(ModelForm):
+class AccountForm(forms.ModelForm):
     class Meta:
         model = models.Account
-        fields = ('email', 'password', 'first_name', 'last_name')
+        fields = ('first_name', 'last_name', 'email', 'password', 'confirm_password')
         widgets = {
-            'password': widgets.PasswordInput,
+            'password': forms.widgets.PasswordInput,
         }
+    
+    confirm_password = forms.CharField(widget = forms.PasswordInput())
 
-class AuthenticationForm(ModelForm):
+class AuthenticationForm(forms.ModelForm):
     class Meta:
         model = models.Account
         fields = ('email', 'password')
         widgets = {
-            'password': widgets.PasswordInput,
+            'password': forms.widgets.PasswordInput,
         }

@@ -42,27 +42,26 @@ class Account(models.Model):
         return cloud.models.Cloud.objects.filter(owner = self.id).order_by('name')
     
     def save(self, *args, **kwargs):
-         """
-         Save a new account
-         """
-         # Generate activation key
-         self.activation_key = uuid.uuid4()
-         
-         # Send activation e-mail
-         message = """\
-Welcome to Jeeves, %s\n\n
+        """
+        Save a new account
+        """
+        # Generate activation key
+        self.activation_key = uuid.uuid4()
+
+        if not self.is_active:
+            # Send activation e-mail
+            message = """Welcome to Jeeves, %s
+
 You (or somebody else) has registrered an account for %s at Jeeves cloud management. Please follow
-the below link in order to activate your account.\n\n
+the below link in order to activate your account.
 
-%s/account/confirm/%s\n\n
+%s/account/confirm/%s?%s
 
-Best regards\n
+Best regards
 Jeeves Team
-""" % (self.first_name, self.email, settings.JEEVES_EXTERNAL_URL, self.activation_key)
-         send_mail( 'Activate your Jeeves account',
-                    message, settings.JEEVES_NO_REPLY_ADDRESS,
-                    [self.email], fail_silently = False)
-         
-         # Save the object
-         super(Account, self).save(*args,**kwargs)
+""" % (self.first_name, self.email, settings.JEEVES_EXTERNAL_URL, self.activation_key, self.email)
 
+            send_mail('Activate your Jeeves account', message, settings.JEEVES_NO_REPLY_ADDRESS, [self.email], fail_silently = False)
+
+        # Save the object
+        super(Account, self).save(*args,**kwargs)

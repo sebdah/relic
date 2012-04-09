@@ -21,6 +21,7 @@ AVAILABILITY_ZONES = (
 )
 
 INSTANCE_TYPES = (
+    ('t1.micro',    'Micro - Micro - 613 MB memory - 1 core, 1 EC2 CU - 64 bit'),
     ('m1.small',    'Standard - Small - 1.7 GB memory - 1 core, 1 EC2 CU - 64 bit'),
     ('m1.medium',   'Standard - Medium - 3.75 GB memory - 1 core, 2 EC2 CU each - 64 bit'),
     ('m1.large',    'Standard - Large - 7.5 GB memory - 2 cores, 2 EC2 CU each - 64 bit'),

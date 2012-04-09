@@ -82,7 +82,7 @@ def account_login(request):
         if account:
             if account.is_active:
                 auth.login(request, account)
-                return redirect("/account")
+                return redirect("/cloud")
             else:
                 error = True
                 error_message = "Your account has been disabled!"

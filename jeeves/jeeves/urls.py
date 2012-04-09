@@ -2,8 +2,13 @@ import settings
 from django.conf.urls import patterns, include, url
 from django.views.generic.simple import redirect_to
 
+# Auto discover for the admin site
 from django.contrib import admin
 admin.autodiscover()
+
+# Auto discover for dajaxice
+from dajaxice.core import dajaxice_autodiscover
+dajaxice_autodiscover()
 
 urlpatterns = patterns('',
     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
@@ -36,5 +41,9 @@ urlpatterns = patterns('',
     url(r'^cloud/(?P<uuid>[\w-]+)/role/(?P<role_id>[\w-]+)/instance/(?P<instance_id>[\w-]+)/elastic_ip/(?P<elastic_ip_id>[\w-]+)/delete$', 'cloud.views.instance_delete_elastic_ip'),
     url(r'^cloud/(?P<uuid>[\w-]+)/role/(?P<role_id>[\w-]+)/instance/(?P<instance_id>[\w-]+)/delete$', 'cloud.views.instance_delete'),
     
+    # Admin site
     url(r'^admin/', include(admin.site.urls)),
+    
+    # Dajax ice URLs
+    (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
 )

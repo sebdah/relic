@@ -100,7 +100,7 @@ SECRET_KEY = 'pyotbr+jeeves+n--k2&amp;8t9-24&342amp;=8sd5(5l(5qmbf^()6%*@'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -136,6 +136,7 @@ INSTALLED_APPS = (
     'core',
     'cloud',
     'annoying',
+    'dajaxice',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -192,3 +193,6 @@ EMAIL_HOST_USER         = 'sebastian.dahlgren@gmail.com'
 EMAIL_HOST_PASSWORD     = 'fr4uSw1eH3'
 EMAIL_PORT              = '587'
 JEEVES_NO_REPLY_ADDRESS  = 'no-reply@jeeves.com'
+
+# Django AJAX project settings
+DAJAXICE_MEDIA_PREFIX="dajaxice"

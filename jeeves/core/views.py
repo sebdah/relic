@@ -1,9 +1,33 @@
 from core import forms
 from core import models
+from django.contrib import auth
 from django.shortcuts import redirect
+from django.core.mail import send_mail
+from django import forms as django_forms
 from django.contrib.auth.decorators import login_required
 from django.views.generic.simple import direct_to_template
-from django.contrib import auth
+
+def account_activate(request, activation_key):
+    """
+    Activate an Jeeves account
+    """
+    activated = False
+    email_address = request.GET['email']
+    email_field = django_forms.EmailField()
+    
+    try:
+        email_field.clean(email_address)
+        account = models.Account.objects.get(email = email_address)
+        if account:
+            if account.activation_key == activation_key:
+                account.activate()
+                activated = True
+    except django_forms.ValidationError:
+        pass
+    except models.Account.DoesNotExist:
+        pass
+    
+    return direct_to_template(request, 'core/account/activate.html', {'activated': activated})
 
 @login_required
 def account_index(request):

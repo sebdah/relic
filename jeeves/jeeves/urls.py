@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^$', 'core.views.index', name='root'),
     
     url(r'^account$', 'core.views.account_index', name = 'account'),
+    url(r'^account/confirm/(?P<activation_key>[\w-]+)$', 'core.views.account_activate'),
     url(r'^account/edit$', 'core.views.account_edit'),
     url(r'^account/delete/(?P<account_id>[\w-]+)$', 'core.views.account_delete'),
     url(r'^account/login$', 'core.views.account_login'),

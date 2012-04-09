@@ -19,6 +19,9 @@ JEEVES_AWS_CREDENTIALS = {
 # Used for building absolute paths
 JEEVES_DIR = '/Users/sebastian/git/jeeves'
 
+# Jeeves external URL
+JEEVES_EXTERNAL_URL = 'http://localhost:8000'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -63,7 +66,7 @@ MEDIA_ROOT = '%s/jeeves/media/' % (JEEVES_DIR)
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = 'http://localhost:8000/media/'
+MEDIA_URL = '%s/media/' % (JEEVES_EXTERNAL_URL)
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -180,3 +183,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 DATETIME_FORMAT     = "Y-m-d H:i:s"
 DATE_FORMAT         = "Y-m-d"
 TIME_FORMAT         = "H:i:s"
+
+# Email settings
+EMAIL_BACKEND           = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS           = True
+EMAIL_HOST              = 'smtp.gmail.com'
+EMAIL_HOST_USER         = 'sebastian.dahlgren@gmail.com'
+EMAIL_HOST_PASSWORD     = 'fr4uSw1eH3'
+EMAIL_PORT              = '587'
+JEEVES_NO_REPLY_ADDRESS  = 'no-reply@jeeves.com'

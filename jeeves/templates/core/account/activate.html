@@ -1,0 +1,28 @@
+{% extends "template.html" %}
+{% block main %}
+<!-- Main hero unit for a primary marketing message or call to action -->
+<div class="row">
+    {% if activated %}
+    <div class="span6">
+        <h1>Yay, you are now registered!</h1><br />
+        <p>
+            Thank you for registering. We have sent you a confirmation e-mail. Please open it and
+            follow the instructions for activating your account before you can start using our
+            services.
+        </p>
+    </div>
+    {% else %}
+    <div class="span6">
+        <h1>Activation failed</h1><br />
+        <p>
+            We could not activate your account. The email address and activation key did not match.
+            Please make sure that you did copy and paste the correct information.
+        </p>
+        <p>
+            If the problem persists, please contact 
+            <a href="mailto:support@jeeves.com">support@jeeves.com</a>.
+        </p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

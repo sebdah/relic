@@ -18,3 +18,8 @@ class AuthenticationForm(forms.ModelForm):
         widgets = {
             'password': forms.widgets.PasswordInput,
         }
+
+class LostPasswordForm(forms.ModelForm):
+    class Meta:
+        model = models.Account
+        fields = ('email',)

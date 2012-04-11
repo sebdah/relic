@@ -11,6 +11,14 @@ class AccountForm(forms.ModelForm):
     
     confirm_password = forms.CharField(widget = forms.PasswordInput())
 
+class AccountEditForm(forms.ModelForm):
+    class Meta:
+        model = models.Account
+        fields = ('first_name', 'last_name', 'email', 'password')
+        widgets = {
+            'password': forms.widgets.PasswordInput,
+        }
+
 class AuthenticationForm(forms.ModelForm):
     class Meta:
         model = models.Account

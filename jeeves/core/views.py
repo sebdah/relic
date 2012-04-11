@@ -47,12 +47,12 @@ def account_edit(request):
     account = models.Account.objects.get(id = request.user.id)
     
     if request.method == 'POST':
-        form = forms.AccountForm(request.POST, instance = account)
+        form = forms.AccountEditForm(request.POST, instance = account)
         if form.is_valid():
             form.save()
             message = 'Your profile has been updated'
     else:
-        form = forms.AccountForm(instance = account)
+        form = forms.AccountEditForm(instance = account)
     
     return direct_to_template(  request,
                                 'core/account/edit.html',
@@ -111,20 +111,21 @@ def account_lost_password(request):
     Lost password page
     """
     if request.method == 'POST':
-        account = models.Account.objects.get(email = request.POST['email'])
- 
-        if account:
-            # Generate new password
-            valid_chars = 'abcdefghijklmnopqrstuvqxyz0123456789_-'
-            password = "".join(random.sample(valid_chars, 14))
+        try:
+            account = models.Account.objects.get(email = request.POST['email'])
             
-            # Update the user's password
-            account.password = password
-            account.save()
-            
-            # Send the e-mail with the new password
-            message = """Hello, %s
-            
+            if account:
+                # Generate new password
+                valid_chars = 'abcdefghijklmnopqrstuvqxyz0123456789_-'
+                password = "".join(random.sample(valid_chars, 14))
+    
+                # Update the user's password
+                account.password = password
+                account.save()
+    
+                # Send the e-mail with the new password
+                message = """Hello, %s
+    
 You (or somebody else) has requested a password reset for %s. Your new password is:
 
 %s
@@ -132,12 +133,14 @@ You (or somebody else) has requested a password reset for %s. Your new password 
 Best regards
 Jeeves Team
 """ % (account.first_name, account.email, password)
-            
-            send_mail('Password reset', message, settings.JEEVES_NO_REPLY_ADDRESS, [account.email], fail_silently = False)
-            
-            return direct_to_template(  request,
-                                        'core/account/lost_password_done.html',
-                                        {'request': request})          
+    
+                send_mail('Password reset', message, settings.JEEVES_NO_REPLY_ADDRESS, [account.email], fail_silently = False)
+    
+                return direct_to_template(  request,
+                                            'core/account/lost_password_done.html',
+                                            {'request': request})
+        except models.Account.DoesNotExist:
+            pass
         
     return direct_to_template(  request,
                                 'core/account/lost_password.html',

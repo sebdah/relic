@@ -5,7 +5,7 @@ from cloud import models
 class CloudForm(ModelForm):
     class Meta:
         model = models.Cloud
-        fields = ('name', 'aws_id', 'aws_secret')
+        fields = ('name', 'aws_id', 'aws_secret', 'aws_key_pair')
 
 class RoleForm(ModelForm):
     class Meta:
@@ -35,4 +35,4 @@ class EBSVolumeForm(ModelForm):
 class ElasticIPForm(ModelForm):
     class Meta:
         model = models.ElasticIP
-        fields = ('dns_name',)
+        fields = ('public_ip',)

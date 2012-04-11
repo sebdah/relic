@@ -22,7 +22,7 @@ class EBSVolumeAdmin(admin.ModelAdmin):
     list_display = ('instance', 'mountpoint', 'size')
     
 class ElasticIPAdmin(admin.ModelAdmin):
-    list_display = ('instance', 'dns_name')
+    list_display = ('instance', 'public_ip')
 
 admin.site.register(models.Cloud, CloudAdmin)
 admin.site.register(models.Role, RoleAdmin)

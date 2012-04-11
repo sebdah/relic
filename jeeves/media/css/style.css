@@ -100,8 +100,8 @@ footer {
 .instance-box-footer {
     clear: left;
     position: relative;
-    bottom: -20%;
-    left: 145px;
+    bottom: -10%;
+    left: 5px;
 }
 
 .cloud-box-container {

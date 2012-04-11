@@ -1,3 +1,15 @@
+AMI = {
+    'ubuntu-12.04-64bit': {
+        'ap-northeast-1': 'ami-c851e0c9',
+        'ap-southeast-1': 'ami-f64e09a4',
+        'eu-west-1': 'ami-7dfac209',
+        'sa-east-1': 'ami-f2bf61ef',
+        'us-east-1': 'ami-b5ea34dc',
+        'us-west-1': 'ami-45a9f100',
+        'us-west-2': 'ami-5adf536a',
+    }
+}
+
 AVAILABILITY_ZONES = (
     ('ap-northeast-1a', 'ap-northeast-1a'),
     ('ap-northeast-1b', 'ap-northeast-1b'),
@@ -21,6 +33,7 @@ AVAILABILITY_ZONES = (
 )
 
 INSTANCE_TYPES = (
+    ('t1.micro',    'Micro - Micro - 613 MB memory - 1 core, 1 EC2 CU - 64 bit'),
     ('m1.small',    'Standard - Small - 1.7 GB memory - 1 core, 1 EC2 CU - 64 bit'),
     ('m1.medium',   'Standard - Medium - 3.75 GB memory - 1 core, 2 EC2 CU each - 64 bit'),
     ('m1.large',    'Standard - Large - 7.5 GB memory - 2 cores, 2 EC2 CU each - 64 bit'),

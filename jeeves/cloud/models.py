@@ -1,3 +1,4 @@
+import time
 from django.db import models
 from core.models import Account
 from boto import ec2
@@ -18,6 +19,9 @@ class Cloud(models.Model):
     aws_secret          = models.CharField( blank = False,
                                             max_length = 60,
                                             verbose_name = 'AWS secret key')
+    aws_key_pair        = models.CharField( blank = False,
+                                            max_length = 50,
+                                            verbose_name = 'AWS key pair name')
     owner               = models.ForeignKey(Account)
     created             = models.DateTimeField(auto_now_add = True)
     last_updated        = models.DateTimeField(auto_now = True)
@@ -91,7 +95,8 @@ class Instance(models.Model):
                                             max_length = 20,
                                             choices = definitions.AVAILABILITY_ZONES)
     region              = models.CharField( blank = False, max_length = 20)
-    security_group      = models.CharField(max_length = 1000)
+    security_group      = models.CharField( max_length = 1000)
+    aws_status          = models.CharField( null = True, blank = True, max_length = 40,)
 
     def delete(self, *args, **kwargs):
         """
@@ -108,7 +113,19 @@ class Instance(models.Model):
         
         # Save the object
         super(Instance, self).delete(*args,**kwargs)
+    
+    def ebs_volumes(self):
+        """
+        Return all EBS volumes related to this Instance
+        """
+        return EBSVolume.objects.filter(instance = self.id)
 
+    def elastic_ips(self):
+        """
+        Return all Elastic IP's related to this Instance
+        """
+        return ElasticIP.objects.filter(instance = self.id)
+    
     def save(self, *args, **kwargs):
         """
         Register a new security group is not existing at AWS
@@ -135,19 +152,60 @@ class Instance(models.Model):
             security_group.authorize('tcp', 22, 22, '0.0.0.0/0')
         
         # Save the object
-        super(Instance, self).save(*args,**kwargs)
+        super(Instance, self).save(*args, **kwargs)
         
-    def ebs_volumes(self):
-        """
-        Return all EBS volumes related to this Instance
-        """
-        return EBSVolume.objects.filter(instance = self.id)
     
-    def elastic_ips(self):
+    def start_instance(self):
         """
-        Return all Elastic IP's related to this Instance
+        Start the Instance in the AWS cloud
         """
-        return ElasticIP.objects.filter(instance = self.id)
+        # Connect to EC2
+        connection = ec2.connection.EC2Connection(  aws_access_key_id = self.cloud.aws_id,
+                                                    aws_secret_access_key = self.cloud.aws_secret,
+                                                    region = ec2.get_region(self.region))
+        
+        # Reserve Instance
+        reservation = connection.run_instances( definitions.AMI['ubuntu-12.04-64bit'][self.region],
+                                                instance_type = self.instance_type,
+                                                placement = self.availability_zone,
+                                                security_groups = [self.security_group],
+                                                key_name = self.cloud.aws_key_pair,)
+        
+        # Only one Instance is returned by default
+        instance = reservation.instances[0]
+        
+        # Save the Instance information locally
+        self.instance_id = instance.id
+        self.aws_status = instance.state
+        self.save()
+        
+        return instance
+    
+    def terminate_instance(self):
+        """
+        Stop a running AWS Instance
+        """
+        # Connect to EC2
+        connection = ec2.connection.EC2Connection(  aws_access_key_id = self.cloud.aws_id,
+                                                    aws_secret_access_key = self.cloud.aws_secret,
+                                                    region = ec2.get_region(self.region))
+        
+        # Get the Instance object
+        reservations = connection.get_all_instances(instance_ids = [self.instance_id])
+        
+        # Messed up syntax, but we are taking the only instance object from a
+        # multidimentional array
+        instance = reservations[0].instances[0]
+        
+        # Terminate the instance
+        instance.terminate()
+        
+        # Set the local state
+        instance.update()
+        self.aws_status = instance.state
+        self.save()
+        
+        return True
 
 class Package(models.Model):
     """
@@ -178,9 +236,9 @@ class ElasticIP(models.Model):
     Definition of an Elastic IP
     """
     def __unicode__(self):
-        return self.dns_name
+        return self.public_ip
     
-    dns_name            = models.CharField( blank = False, max_length = 250,
-                                            verbose_name = 'DNS name')
+    public_ip           = models.CharField( blank = False, max_length = 250,
+                                            verbose_name = 'Public IP address')
     instance            = models.ForeignKey(Instance)
     cloud               = models.ForeignKey(Cloud)

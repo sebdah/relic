@@ -17,12 +17,15 @@ JEEVES_AWS_CREDENTIALS = {
 }
 
 # Used for building absolute paths
-JEEVES_DIR = '/Users/sebastian/git/jeeves'
+JEEVES_DIR = '/Users/sebastian/git/relic/jeeves'
+
+# Jeeves external URL
+JEEVES_EXTERNAL_URL = 'http://localhost:8000'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '%s/jeeves/db.sql' % (JEEVES_DIR),                      # Or path to database file if using sqlite3.
+        'NAME': '%s/db.sql' % (JEEVES_DIR),                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -58,12 +61,12 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = '%s/jeeves/media/' % (JEEVES_DIR)
+MEDIA_ROOT = '%s/media/' % (JEEVES_DIR)
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = 'http://localhost:8000/media/'
+MEDIA_URL = '%s/media/' % (JEEVES_EXTERNAL_URL)
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -97,7 +100,7 @@ SECRET_KEY = 'pyotbr+jeeves+n--k2&amp;8t9-24&342amp;=8sd5(5l(5qmbf^()6%*@'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -119,7 +122,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '%s/jeeves/templates' % (JEEVES_DIR)
+    '%s/templates' % (JEEVES_DIR)
 )
 
 INSTALLED_APPS = (
@@ -133,6 +136,8 @@ INSTALLED_APPS = (
     'core',
     'cloud',
     'annoying',
+    'dajaxice',
+    'dajax',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -180,3 +185,15 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 DATETIME_FORMAT     = "Y-m-d H:i:s"
 DATE_FORMAT         = "Y-m-d"
 TIME_FORMAT         = "H:i:s"
+
+# Email settings
+EMAIL_BACKEND           = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS           = True
+EMAIL_HOST              = 'smtp.gmail.com'
+EMAIL_HOST_USER         = 'sebastian.dahlgren@gmail.com'
+EMAIL_HOST_PASSWORD     = 'fr4uSw1eH3'
+EMAIL_PORT              = '587'
+JEEVES_NO_REPLY_ADDRESS  = 'no-reply@jeeves.com'
+
+# Django AJAX project settings
+DAJAXICE_MEDIA_PREFIX="dajaxice"

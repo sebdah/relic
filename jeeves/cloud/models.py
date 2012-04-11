@@ -19,6 +19,9 @@ class Cloud(models.Model):
     aws_secret          = models.CharField( blank = False,
                                             max_length = 60,
                                             verbose_name = 'AWS secret key')
+    aws_key_pair        = models.CharField( blank = False,
+                                            max_length = 50,
+                                            verbose_name = 'AWS key pair name')
     owner               = models.ForeignKey(Account)
     created             = models.DateTimeField(auto_now_add = True)
     last_updated        = models.DateTimeField(auto_now = True)
@@ -166,7 +169,7 @@ class Instance(models.Model):
                                                 instance_type = self.instance_type,
                                                 placement = self.availability_zone,
                                                 security_groups = [self.security_group],
-                                                key_name = 'sebastian',)
+                                                key_name = self.cloud.aws_key_pair,)
         
         # Only one Instance is returned by default
         instance = reservation.instances[0]

@@ -20,3 +20,9 @@ $('input').keypress(function(e){
         $('input').closest('form').submit();
     }
 });
+
+$('select').keypress(function(e){
+    if(e.which == 13){
+        $('input').closest('form').submit();
+    }
+});

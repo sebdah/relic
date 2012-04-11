@@ -17,7 +17,7 @@ JEEVES_AWS_CREDENTIALS = {
 }
 
 # Used for building absolute paths
-JEEVES_DIR = '/Users/sebastian/git/jeeves'
+JEEVES_DIR = '/Users/sebastian/git/relic/jeeves'
 
 # Jeeves external URL
 JEEVES_EXTERNAL_URL = 'http://localhost:8000'
@@ -25,7 +25,7 @@ JEEVES_EXTERNAL_URL = 'http://localhost:8000'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '%s/jeeves/db.sql' % (JEEVES_DIR),                      # Or path to database file if using sqlite3.
+        'NAME': '%s/db.sql' % (JEEVES_DIR),                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -61,7 +61,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = '%s/jeeves/media/' % (JEEVES_DIR)
+MEDIA_ROOT = '%s/media/' % (JEEVES_DIR)
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -122,7 +122,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '%s/jeeves/templates' % (JEEVES_DIR)
+    '%s/templates' % (JEEVES_DIR)
 )
 
 INSTALLED_APPS = (

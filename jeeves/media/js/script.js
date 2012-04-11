@@ -12,7 +12,11 @@ $(document).ready(function(){
 });
 
 
-
-
-
-
+/*
+Enter key should submit forms.
+*/
+$('input').keypress(function(e){
+    if(e.which == 13){
+        $('input').closest('form').submit();
+    }
+});

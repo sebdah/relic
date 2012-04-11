@@ -152,7 +152,7 @@ class Instance(models.Model):
             security_group.authorize('tcp', 22, 22, '0.0.0.0/0')
         
         # Save the object
-        super(Instance, self).save(*args,**kwargs)
+        super(Instance, self).save(*args, **kwargs)
         
     
     def start_instance(self):

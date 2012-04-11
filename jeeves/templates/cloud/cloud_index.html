@@ -40,6 +40,14 @@ function terminate_instance_callback(data){
                                             <td>{{instance.availability_zone}}</td>
                                         </tr>
                                         <tr>
+                                            <th>Status</th>
+                                            {% if instance.aws_status == '' or instance.aws_status == None or instance.aws_status == 'terminated' %}
+                                                <td>Stopped</td>
+                                            {% else %}
+                                                <td>{{instance.aws_status}}</td>
+                                            {% endif%}
+                                        </tr>
+                                        <tr>
                                             <th>Memory usage</th>
                                             <td>&nbsp;</td>
                                         </tr>
@@ -49,14 +57,13 @@ function terminate_instance_callback(data){
                                         </tr>
                                     </table>
                                     <div class='instance-box-footer'>
-                                        {% if instance.aws_status == '' or instance.aws_status == 'terminated' %}
+                                        {% if instance.aws_status == '' or instance.aws_status == None or instance.aws_status == 'terminated' %}
                                             <span onclick="Dajaxice.cloud.start_instance_mockup(start_instance_callback, {'instance_id': {{instance.id}}})">Start</span> | 
                                         {% else %}
                                             <span onclick="Dajaxice.cloud.terminate_instance(terminate_instance_callback, {'instance_id': {{instance.id}}})">Terminate</span> | 
                                         {% endif %}
                                         <span onclick="location.href='/cloud/{{cloud.uuid}}/role/{{role.id}}/instance/{{instance.id}}'">Edit</span> | 
                                         <span onclick="location.href='/cloud/{{cloud.uuid}}/role/{{role.id}}/instance/{{instance.id}}/delete'">Remove</span>
-                                        <div id="apa" class='apa' name='apa'>apa</div>
                                     </div>
                                 </div>
                             {% endfor %}

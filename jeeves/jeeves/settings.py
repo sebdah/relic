@@ -7,7 +7,7 @@ ADMINS = (
     ('Sebastian Dahlgren', 'sebastian.dahlgren@gmail.com'),
 )
 
-VERSION = '0.1'
+VERSION = '0.2'
 
 MANAGERS = ADMINS
 

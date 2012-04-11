@@ -1,4 +1,17 @@
 {% extends "template.html" %}
+
+{% block javascript_head %}
+<script language="javascript">
+function start_instance_callback(data){
+    alert(data.message);
+}
+
+function terminate_instance_callback(data){
+    alert(data.message);
+}
+</script>
+{% endblock %}
+
 {% block main %}
 {% include "cloud/cloud_navigation_bar.html" %}
 {% include "cloud/cloud_menu.html" %}
@@ -15,7 +28,7 @@
                     {% for role_obj, instance_objs in role_instances.items %}
                         {% if role_obj.name == role.name %}
                             {% for instance in instance_objs %}
-                                <div class='instance-box' onclick='location.href="/cloud/{{cloud.uuid}}/role/{{role.id}}/instance/{{instance.id}}"'>
+                                <div class='instance-box'>
                                     <h3>{{instance}}</h3>
                                     <table>
                                         <tr>
@@ -36,8 +49,14 @@
                                         </tr>
                                     </table>
                                     <div class='instance-box-footer'>
-                                        <a href="/cloud/{{cloud.uuid}}/role/{{role.id}}/instance/{{instance.id}}/delete">Start</a>
-                                        <a href="/cloud/{{cloud.uuid}}/role/{{role.id}}/instance/{{instance.id}}/delete">Remove</a>
+                                        {% if instance.aws_status == '' or instance.aws_status == 'terminated' %}
+                                            <span onclick="Dajaxice.cloud.start_instance_mockup(start_instance_callback, {'instance_id': {{instance.id}}})">Start</span> | 
+                                        {% else %}
+                                            <span onclick="Dajaxice.cloud.terminate_instance(terminate_instance_callback, {'instance_id': {{instance.id}}})">Terminate</span> | 
+                                        {% endif %}
+                                        <span onclick="location.href='/cloud/{{cloud.uuid}}/role/{{role.id}}/instance/{{instance.id}}'">Edit</span> | 
+                                        <span onclick="location.href='/cloud/{{cloud.uuid}}/role/{{role.id}}/instance/{{instance.id}}/delete'">Remove</span>
+                                        <div id="apa" class='apa' name='apa'>apa</div>
                                     </div>
                                 </div>
                             {% endfor %}

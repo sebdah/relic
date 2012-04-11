@@ -55,7 +55,7 @@ class Account(models.Model):
 You (or somebody else) has registrered an account for %s at Jeeves cloud management. Please follow
 the below link in order to activate your account.
 
-%s/account/confirm/%s?%s
+%s/account/confirm/%s?email=%s
 
 Best regards
 Jeeves Team

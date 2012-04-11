@@ -1,4 +1,5 @@
 {% load base_extras %}
+{% load dajaxice_templatetags %}
 <!doctype html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
@@ -26,6 +27,10 @@
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="{{MEDIA_URL}}js/libs/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+    <script src="{{MEDIA_URL}}js/libs/jquery.dajax.core.js"></script>
+    
+    {% dajaxice_js_import %}
+    
     {% block javascript_head %}
     {% endblock %}
 </head>

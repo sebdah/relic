@@ -58,7 +58,7 @@ function terminate_instance_callback(data){
                                     </table>
                                     <div class='instance-box-footer'>
                                         {% if instance.aws_status == '' or instance.aws_status == None or instance.aws_status == 'terminated' %}
-                                            <span onclick="Dajaxice.cloud.start_instance_mockup(start_instance_callback, {'instance_id': {{instance.id}}})">Start</span> | 
+                                            <span onclick="Dajaxice.cloud.start_instance(start_instance_callback, {'instance_id': {{instance.id}}})">Start</span> | 
                                         {% else %}
                                             <span onclick="Dajaxice.cloud.terminate_instance(terminate_instance_callback, {'instance_id': {{instance.id}}})">Terminate</span> | 
                                         {% endif %}

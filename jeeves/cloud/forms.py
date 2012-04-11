@@ -35,4 +35,4 @@ class EBSVolumeForm(ModelForm):
 class ElasticIPForm(ModelForm):
     class Meta:
         model = models.ElasticIP
-        fields = ('dns_name',)
+        fields = ('public_ip',)

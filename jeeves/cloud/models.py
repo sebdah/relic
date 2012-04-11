@@ -236,9 +236,9 @@ class ElasticIP(models.Model):
     Definition of an Elastic IP
     """
     def __unicode__(self):
-        return self.dns_name
+        return self.public_ip
     
-    dns_name            = models.CharField( blank = False, max_length = 250,
-                                            verbose_name = 'DNS name')
+    public_ip           = models.CharField( blank = False, max_length = 250,
+                                            verbose_name = 'Public IP address')
     instance            = models.ForeignKey(Instance)
     cloud               = models.ForeignKey(Cloud)

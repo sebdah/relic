@@ -20,3 +20,15 @@ class Cloud(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
+
+
+class SecurityGroup(models.Model):
+    """
+    Definition of a security group
+    """
+    def __unicode__(self):
+        return self.name
+
+    cloud = models.ForeignKey(Cloud)
+    name = models.CharField(blank=False, max_length=30)
+    description = models.CharField(blank=False, max_length=60)

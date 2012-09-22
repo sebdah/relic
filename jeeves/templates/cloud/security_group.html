@@ -1,0 +1,19 @@
+{% extends "template.html" %}
+{% load annoying %}
+{% block main %}
+{% include "cloud/navigation_bar.html" %}
+{% include "cloud/cloud_menu.html" %}
+<div id="security_groups" class='main-content'>
+    <h2>Security groups</h2>
+    {% if security_groups %}
+        <div class="security_group_container">
+            {% for security_group in security_groups %}
+                {{security_group.name}} {{security_group.description}}<br />
+            {% endfor %}
+        </div>
+    {% else %}
+        You have no security groups yet, get started by <a href='#'>adding one</a>!
+    {% endif %}
+</div>
+<div class='clear'></div>
+{% endblock %}

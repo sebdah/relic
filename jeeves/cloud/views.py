@@ -88,3 +88,17 @@ def list(request):
             'request': request,
             'clouds': core.models.Account.clouds(request.user)
         })
+
+
+@login_required
+def security_group_list(request, uuid):
+    """
+    List all security groups
+    """
+    return direct_to_template(request,
+        'cloud/security_group.html',
+        {
+            'request': request,
+            'security_groups': models.SecurityGroup.objects.filter(
+                                cloud__uuid=uuid)
+        })

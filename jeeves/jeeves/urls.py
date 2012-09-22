@@ -12,12 +12,12 @@ dajaxice_autodiscover()
 
 urlpatterns = patterns('',
     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-    
+
     # Redirect login attempts
     (r'^accounts/login', redirect_to, {'url': '/account/login'}),
-    
+
     url(r'^$', 'core.views.index'),
-    
+
     url(r'^account$', 'core.views.account_index'),
     url(r'^account/confirm/(?P<activation_key>[\w-]+)$', 'core.views.account_activate'),
     url(r'^account/edit$', 'core.views.account_edit'),
@@ -27,24 +27,16 @@ urlpatterns = patterns('',
     url(r'^account/lost_password$', 'core.views.account_lost_password'),
     url(r'^account/register$', 'core.views.account_register'),
     url(r'^account/register/complete$', 'core.views.account_register_complete'),
-    
+
     url(r'^cloud$', 'cloud.views.list'),
     url(r'^cloud/add$', 'cloud.views.add'),
     url(r'^cloud/(?P<uuid>[\w-]+)$', 'cloud.views.index'),
     url(r'^cloud/(?P<uuid>[\w-]+)/edit$', 'cloud.views.edit'),
-    url(r'^cloud/(?P<uuid>[\w-]+)/role/assign$', 'cloud.views.role_assign'),
-    url(r'^cloud/(?P<uuid>[\w-]+)/role/(?P<role_id>[\w-]+)/unassign$', 'cloud.views.role_unassign'),
-    url(r'^cloud/(?P<uuid>[\w-]+)/role/(?P<role_id>[\w-]+)/instance/add$', 'cloud.views.instance_add'),
-    url(r'^cloud/(?P<uuid>[\w-]+)/role/(?P<role_id>[\w-]+)/instance/(?P<instance_id>[\w-]+)$', 'cloud.views.instance_view'),
-    url(r'^cloud/(?P<uuid>[\w-]+)/role/(?P<role_id>[\w-]+)/instance/(?P<instance_id>[\w-]+)/ebs$', 'cloud.views.instance_edit_ebs'),
-    url(r'^cloud/(?P<uuid>[\w-]+)/role/(?P<role_id>[\w-]+)/instance/(?P<instance_id>[\w-]+)/ebs/(?P<ebs_id>[\w-]+)/delete$', 'cloud.views.instance_delete_ebs'),
-    url(r'^cloud/(?P<uuid>[\w-]+)/role/(?P<role_id>[\w-]+)/instance/(?P<instance_id>[\w-]+)/elastic_ip$', 'cloud.views.instance_edit_elastic_ip'),
-    url(r'^cloud/(?P<uuid>[\w-]+)/role/(?P<role_id>[\w-]+)/instance/(?P<instance_id>[\w-]+)/elastic_ip/(?P<elastic_ip_id>[\w-]+)/delete$', 'cloud.views.instance_delete_elastic_ip'),
-    url(r'^cloud/(?P<uuid>[\w-]+)/role/(?P<role_id>[\w-]+)/instance/(?P<instance_id>[\w-]+)/delete$', 'cloud.views.instance_delete'),
-    
+    url(r'^cloud/(?P<uuid>[\w-]+)/security_group$', 'cloud.views.security_group_list'),
+
     # Admin site
     url(r'^admin/', include(admin.site.urls)),
-    
+
     # Dajax ice URLs
     (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
 )

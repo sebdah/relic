@@ -5,6 +5,9 @@
 {% include "cloud/cloud_menu.html" %}
 <div id="security_groups" class='main-content'>
     <h2>Security groups</h2>
+    <p>
+        <a href='/cloud/{{cloud.uuid}}/security_group/add'>Add security group</a>
+    </p>
     {% if security_groups %}
         <div class="security_group_container">
             {% for security_group in security_groups %}
@@ -12,7 +15,7 @@
             {% endfor %}
         </div>
     {% else %}
-        You have no security groups yet, get started by <a href='/cloud/{{cloud_uuid}}/security_group/add'>adding one</a>!
+        You have no security groups yet, get started by <a href='/cloud/{{cloud.uuid}}/security_group/add'>adding one</a>!
     {% endif %}
 </div>
 <div class='clear'></div>

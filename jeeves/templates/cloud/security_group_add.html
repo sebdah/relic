@@ -5,7 +5,7 @@
 <div class='main-content'>
     <h2>Create a new security group</h2>
     <form name='addSecurityGroupForm' action='' method='post'>{% csrf_token %}
-    <input type='hidden' name='cloud' id='id_cloud' value='{{cloud_uuid}}'>
+    <input type='hidden' name='cloud' id='id_cloud' value='{{cloud.uuid}}'>
     {% for field in form %}
         <p>
             <strong>{{field.label}}</strong><br />

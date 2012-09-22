@@ -29,9 +29,11 @@ def add(request):
 
     return direct_to_template(request,
         'cloud/add.html',
-        {'request': request,
-        'form': form,
-        'message': message })
+        {
+            'request': request,
+            'form': form,
+            'message': message
+        })
 
 
 @login_required
@@ -95,11 +97,15 @@ def security_group_list(request, uuid):
     """
     List all security groups
     """
+    try:
+        cloud = models.Cloud.objects.get(uuid=uuid)
+    except models.Cloud.DoesNotExist:
+        raise Http404
     return direct_to_template(request,
         'cloud/security_group.html',
         {
             'request': request,
-            'cloud_uuid': uuid,
+            'cloud': cloud,
             'security_groups': models.SecurityGroup.objects.filter(
                                 cloud__uuid=uuid)
         })
@@ -110,6 +116,13 @@ def security_group_add(request, uuid):
     """
     Add new security groups
     """
+    try:
+        cloud = models.Cloud.objects.get(uuid=uuid)
+    except models.Cloud.DoesNotExist:
+        raise Http404
+
+    message = ''
+
     if request.method == 'POST':
         form = forms.SecurityGroupForm(request.POST)
         if form.is_valid():
@@ -121,11 +134,12 @@ def security_group_add(request, uuid):
             return redirect('cloud/%s/security_group' % uuid)
     else:
         form = forms.SecurityGroupForm()
+
     return direct_to_template(request,
         'cloud/security_group_add.html',
         {
             'request': request,
-            'cloud_uuid': uuid,
+            'cloud': cloud,
             'form': form,
             'message': message
         })

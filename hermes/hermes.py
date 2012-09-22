@@ -10,7 +10,10 @@ import time
 import commander
 from datetime import datetime
 
-def callback(ch, method, properties, body):
+def callback(channel, method, properties, body):
+    """
+    Callback function for recieved messages
+    """
     # Fetch the message
     sys.stdout.write("%s - Receiving message %r.. " % (datetime.utcnow(), body))
     sys.stdout.flush()
@@ -18,9 +21,13 @@ def callback(ch, method, properties, body):
     print "done"
     
     # Acknowledge the message
-    ch.basic_ack(delivery_tag = method.delivery_tag)
+    channel.basic_ack(delivery_tag = method.delivery_tag)
     
+    # 
     # Get the message parts
+    #
+    # We expect x|x|x[|x|..]
+    #
     if len(body.split('|')) > 2:
         cloud, command, args = body.split('|', 2)
     else:
@@ -38,16 +45,18 @@ def callback(ch, method, properties, body):
     
     return True
 
+# Create a connection to RabbitMQ
 connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
 
+# Open a new channel, if not previously existing
 channel = connection.channel()
 channel.queue_declare(queue = 'sdtest', durable = True)
 
-channel.basic_consume(callback,
-                      queue = 'sdtest')
-
+# Define consumer
+channel.basic_consume(callback, queue = 'sdtest')
 channel.start_consuming()
 
+# Close the connection to RabbitMQ
 connection.close()
 
 sys.exit(0)

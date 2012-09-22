@@ -38,9 +38,14 @@ class SecurityGroup(models.Model):
     name = models.CharField(blank=False, max_length=30)
     description = models.CharField(blank=False, max_length=60)
 
-    def add_to_aws():
+    def add_to_aws(self):
         """
         Add this SG to AWS
         """
-        #conn = ec2.connect_to_region()
-        pass
+        conn = ec2.connect_to_region(
+            self.cloud.region,
+            aws_access_key_id=self.cloud.aws_id,
+            aws_secret_access_key=self.cloud.aws_secret)
+        conn.create_security_group(
+            self.name,
+            self.description)

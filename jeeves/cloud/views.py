@@ -129,9 +129,13 @@ def security_group_add(request, uuid):
             form_instance = form.save(commit=False)
             form_instance.cloud = models.Cloud.objects.get(uuid=uuid)
             form_instance.save()
+
+            security_group = models.SecurityGroup.objects.get(id=form_instance.id)
+            security_group.add_to_aws()
+
             message = 'Your security group has been created'
             form = forms.CloudForm()
-            return redirect('cloud/%s/security_group' % uuid)
+            return redirect('/cloud/%s/security_group' % uuid)
     else:
         form = forms.SecurityGroupForm()
 

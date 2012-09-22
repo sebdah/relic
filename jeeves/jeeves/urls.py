@@ -33,6 +33,7 @@ urlpatterns = patterns('',
     url(r'^cloud/(?P<uuid>[\w-]+)$', 'cloud.views.index'),
     url(r'^cloud/(?P<uuid>[\w-]+)/edit$', 'cloud.views.edit'),
     url(r'^cloud/(?P<uuid>[\w-]+)/security_group$', 'cloud.views.security_group_list'),
+    url(r'^cloud/(?P<uuid>[\w-]+)/security_group/add$', 'cloud.views.security_group_add'),
 
     # Admin site
     url(r'^admin/', include(admin.site.urls)),

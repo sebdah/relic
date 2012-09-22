@@ -1,0 +1,19 @@
+{% extends "template.html" %}
+{% block main %}
+{% include "cloud/navigation_bar.html" %}
+{% include "cloud/cloud_menu.html" %}
+<div class='main-content'>
+    <h2>Create a new security group</h2>
+    <form name='addSecurityGroupForm' action='' method='post'>{% csrf_token %}
+    <input type='hidden' name='cloud' id='id_cloud' value='{{cloud_uuid}}'>
+    {% for field in form %}
+        <p>
+            <strong>{{field.label}}</strong><br />
+            {{field}} {% for error in field.errors %} {{error}} {% endfor %}
+        </p>
+    {% endfor %}
+    <p><a class="btn" onclick="document.addSecurityGroupForm.submit()">Create security group &raquo;</a></p>
+    </form>
+</div>
+<div class='clear'></div>
+{% endblock %}

@@ -5,23 +5,23 @@
 {% include "cloud/cloud_menu.html" %}
 <div id="security_groups" class='main-content'>
     <h2>Security groups</h2>
-    <p>
-        <a href='/cloud/{{cloud.uuid}}/security_group/add'>Add security group</a>
-    </p>
     {% if security_groups %}
         <div class="security_group_container">
-            {% for security_group in security_groups %}
-                {{security_group.name}} ({{security_group.description}}) - 
-                <a href="/cloud/{{cloud.uuid}}/security_group/{{security_group.id}}/rules">Edit rules</a> - 
-                {% if security_group.changes_published %}
-                    Published
-                {% else %}
-                    <a href="/cloud/{{cloud.uuid}}/security_group/{{security_group.id}}/publish"><strong>Publish</strong></a>
-                {% endif %}<br />
-            {% endfor %}
+            <table border='0'>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                </tr>
+                {% for security_group in security_groups %}
+                    <tr>
+                        <td>{{security_group.name}}</td>
+                        <td>{{security_group.description}}</td>
+                    </tr>
+                {% endfor %}
+            </table>
         </div>
     {% else %}
-        You have no security groups yet, get started by <a href='/cloud/{{cloud.uuid}}/security_group/add'>adding one</a>!
+        You have not security groups registered in this region
     {% endif %}
 </div>
 <div class='clear'></div>

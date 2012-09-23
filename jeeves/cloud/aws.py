@@ -1,4 +1,5 @@
 import boto.ec2
+from boto.ec2 import autoscale
 from cloud import models
 
 
@@ -8,6 +9,17 @@ class AWSConnectionHandler:
     """
     # AWS EC2 connection
     ec2_connections = {}
+    as_connections = {}
+
+    def connect_to_as(self, cloud_id):
+        """
+        Connect to AWS AS
+        """
+        cloud = models.Cloud.objects.get(uuid=cloud_id)
+        self.as_connections[cloud_id] = autoscale.connect_to_region(
+            cloud.region,
+            aws_access_key_id=cloud.aws_access_key,
+            aws_secret_access_key=cloud.aws_secret_key)
 
     def connect_to_ec2(self, cloud_id):
         """
@@ -29,5 +41,16 @@ class AWSConnectionHandler:
             self.connect_to_ec2(cloud_id)
         finally:
             return self.ec2_connections[cloud_id]
+
+    def get_as_connection(self, cloud_id):
+        """
+        Return AS connection
+        """
+        try:
+            self.as_connections[cloud_id]
+        except KeyError:
+            self.connect_to_as(cloud_id)
+        finally:
+            return self.as_connections[cloud_id]
 
 HANDLER = AWSConnectionHandler()

@@ -1,0 +1,17 @@
+{% extends "template.html" %}
+{% block main %}
+{% include "cloud/navigation_bar.html" %}
+{% include "cloud/cloud_menu.html" %}
+<div class='main-content'>
+    <h2>My launch configurations</h2>
+    <p>
+        <a href="/cloud/{{cloud.uuid}}/launch_config/add">Add launch configuration</a>
+    </p>
+    {% if launch_configs %}
+        {% for launch_config in launch_configs %}
+            {{launch_config.name}} ({{launch_config.description}})
+        {% endfor %}
+    {% endif %}
+</div>
+<div class='clear'></div>
+{% endblock %}

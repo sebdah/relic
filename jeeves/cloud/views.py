@@ -6,6 +6,9 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic.simple import direct_to_template
 from django.http import Http404
+from django.forms.models import inlineformset_factory
+
+from boto import ec2
 
 
 @login_required
@@ -101,49 +104,16 @@ def security_group_list(request, uuid):
         cloud = models.Cloud.objects.get(uuid=uuid)
     except models.Cloud.DoesNotExist:
         raise Http404
+
+    conn = ec2.connect_to_region(
+            cloud.region,
+            aws_access_key_id=cloud.aws_id,
+            aws_secret_access_key=cloud.aws_secret)
+    security_groups = conn.get_all_security_groups()
     return direct_to_template(request,
         'cloud/security_group.html',
         {
             'request': request,
             'cloud': cloud,
-            'security_groups': models.SecurityGroup.objects.filter(
-                                cloud__uuid=uuid)
-        })
-
-
-@login_required
-def security_group_add(request, uuid):
-    """
-    Add new security groups
-    """
-    try:
-        cloud = models.Cloud.objects.get(uuid=uuid)
-    except models.Cloud.DoesNotExist:
-        raise Http404
-
-    message = ''
-
-    if request.method == 'POST':
-        form = forms.SecurityGroupForm(request.POST)
-        if form.is_valid():
-            form_instance = form.save(commit=False)
-            form_instance.cloud = models.Cloud.objects.get(uuid=uuid)
-            form_instance.save()
-
-            security_group = models.SecurityGroup.objects.get(id=form_instance.id)
-            security_group.add_to_aws()
-
-            message = 'Your security group has been created'
-            form = forms.CloudForm()
-            return redirect('/cloud/%s/security_group' % uuid)
-    else:
-        form = forms.SecurityGroupForm()
-
-    return direct_to_template(request,
-        'cloud/security_group_add.html',
-        {
-            'request': request,
-            'cloud': cloud,
-            'form': form,
-            'message': message
+            'security_groups': security_groups
         })

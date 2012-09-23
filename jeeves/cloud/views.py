@@ -1,12 +1,12 @@
 import uuid
 import core
+from cloud import aws
 from cloud import forms
 from cloud import models
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic.simple import direct_to_template
 from django.http import Http404
-from django.forms.models import inlineformset_factory
 
 from boto import ec2
 
@@ -105,10 +105,7 @@ def security_group_list(request, uuid):
     except models.Cloud.DoesNotExist:
         raise Http404
 
-    conn = ec2.connect_to_region(
-            cloud.region,
-            aws_access_key_id=cloud.aws_id,
-            aws_secret_access_key=cloud.aws_secret)
+    conn = aws.HANDLER.get_ec2_connection(uuid)
     security_groups = conn.get_all_security_groups()
     return direct_to_template(request,
         'cloud/security_group.html',

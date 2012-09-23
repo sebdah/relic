@@ -8,8 +8,6 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.simple import direct_to_template
 from django.http import Http404
 
-from boto import ec2
-
 
 @login_required
 def add(request):
@@ -96,7 +94,7 @@ def list(request):
 
 
 @login_required
-def security_group_list(request, uuid):
+def security_group(request, uuid):
     """
     List all security groups
     """

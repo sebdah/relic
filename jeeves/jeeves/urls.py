@@ -6,9 +6,6 @@ from django.views.generic.simple import redirect_to
 from django.contrib import admin
 admin.autodiscover()
 
-# Auto discover for dajaxice
-from dajaxice.core import dajaxice_autodiscover
-dajaxice_autodiscover()
 
 urlpatterns = patterns('',
     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
@@ -32,11 +29,8 @@ urlpatterns = patterns('',
     url(r'^cloud/add$', 'cloud.views.add'),
     url(r'^cloud/(?P<uuid>[\w-]+)$', 'cloud.views.index'),
     url(r'^cloud/(?P<uuid>[\w-]+)/edit$', 'cloud.views.edit'),
-    url(r'^cloud/(?P<uuid>[\w-]+)/security_group$', 'cloud.views.security_group_list'),
+    url(r'^cloud/(?P<uuid>[\w-]+)/security_group$', 'cloud.views.security_group'),
 
     # Admin site
     url(r'^admin/', include(admin.site.urls)),
-
-    # Dajax ice URLs
-    (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
 )

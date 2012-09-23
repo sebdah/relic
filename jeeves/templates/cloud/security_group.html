@@ -11,7 +11,13 @@
     {% if security_groups %}
         <div class="security_group_container">
             {% for security_group in security_groups %}
-                {{security_group.name}} ({{security_group.description}})<br />
+                {{security_group.name}} ({{security_group.description}}) - 
+                <a href="/cloud/{{cloud.uuid}}/security_group/{{security_group.id}}/rules">Edit rules</a> - 
+                {% if security_group.changes_published %}
+                    Published
+                {% else %}
+                    <a href="/cloud/{{cloud.uuid}}/security_group/{{security_group.id}}/publish"><strong>Publish</strong></a>
+                {% endif %}<br />
             {% endfor %}
         </div>
     {% else %}

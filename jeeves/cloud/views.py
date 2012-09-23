@@ -38,6 +38,58 @@ def add(request):
 
 
 @login_required
+def cluster(request, uuid):
+    """
+    List all clusters
+    """
+    try:
+        cloud = models.Cloud.objects.get(uuid=uuid)
+    except models.Cloud.DoesNotExist:
+        raise Http404
+    return direct_to_template(request,
+        'cloud/cluster.html',
+        {
+            'request': request,
+            'cloud': cloud,
+            'clusters': models.Cluster.objects.filter()
+        })
+
+
+@login_required
+def cluster_add(request, uuid):
+    """
+    Create a new cluster
+    """
+    try:
+        cloud = models.Cloud.objects.get(uuid=uuid)
+    except models.Cloud.DoesNotExist:
+        raise Http404
+
+    message = ''
+
+    if request.method == 'POST':
+        form = forms.ClusterForm(request.POST)
+        if form.is_valid():
+            form_instance = form.save(commit=False)
+            form_instance.cloud = models.Cloud.objects.get(uuid=uuid)
+            form_instance.save()
+            message = 'Your cloud has been created'
+            form = forms.CloudForm()
+            return redirect('/cloud/%s/cluster' % cloud.uuid)
+    else:
+        form = forms.ClusterForm()
+
+    return direct_to_template(request,
+        'cloud/cluster_add.html',
+        {
+            'request': request,
+            'form': form,
+            'message': message,
+            'cloud': cloud
+        })
+
+
+@login_required
 def edit(request, uuid):
     """
     Edit preferences in a Cloud

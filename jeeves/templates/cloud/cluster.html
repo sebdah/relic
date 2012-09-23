@@ -1,0 +1,17 @@
+{% extends "template.html" %}
+{% block main %}
+{% include "cloud/navigation_bar.html" %}
+{% include "cloud/cloud_menu.html" %}
+<div id="listCluster" class='main-content'>
+    <h2>My clusters</h2>
+    <p>
+        <a href="/cloud/{{cloud.uuid}}/cluster/add">Add cluster</a>
+    </p>
+    {% if clusters %}
+        {% for cluster in clusters %}
+            {{cluster.name}} ({{cluster.description}})
+        {% endfor %}
+    {% endif %}
+</div>
+<div class='clear'></div>
+{% endblock %}

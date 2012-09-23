@@ -28,6 +28,8 @@ urlpatterns = patterns('',
     url(r'^cloud$', 'cloud.views.list'),
     url(r'^cloud/add$', 'cloud.views.add'),
     url(r'^cloud/(?P<uuid>[\w-]+)$', 'cloud.views.index'),
+    url(r'^cloud/(?P<uuid>[\w-]+)/cluster/add$', 'cloud.views.cluster_add'),
+    url(r'^cloud/(?P<uuid>[\w-]+)/cluster$', 'cloud.views.cluster'),
     url(r'^cloud/(?P<uuid>[\w-]+)/edit$', 'cloud.views.edit'),
     url(r'^cloud/(?P<uuid>[\w-]+)/security_group$', 'cloud.views.security_group'),
 

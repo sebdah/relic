@@ -231,6 +231,28 @@ def launch_config_delete(request, uuid, launch_config_name):
 
 
 @login_required
+def load_balancer(request, uuid):
+    """
+    List all load balancers
+    """
+    try:
+        cloud = models.Cloud.objects.get(uuid=uuid)
+    except models.Cloud.DoesNotExist:
+        raise Http404
+
+    conn = aws.HANDLER.get_elb_connection(uuid)
+    load_balancers = conn.get_all_load_balancers()
+
+    return direct_to_template(request,
+        'cloud/load_balancer.html',
+        {
+            'request': request,
+            'cloud': cloud,
+            'load_balancers': load_balancers
+        })
+
+
+@login_required
 def list(request):
     """
     Show the clouds registered for the authenticated user

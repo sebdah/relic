@@ -1,0 +1,21 @@
+{% extends "template.html" %}
+{% block main %}
+{% include "cloud/navigation_bar.html" %}
+{% include "cloud/cloud_menu.html" %}
+<div class='main-content'>
+    <h2>My load balancers</h2>
+    <p>
+        <strong>Note!</strong>
+        It is currently not possible to manage Elastic Load Balancers in this interface. Please 
+        go to the AWS Console to add, edit and remove load balancers.
+    </p>
+    {% if load_balancers %}
+        {% for load_balancer in load_balancers %}
+            {{load_balancer.name}}<br />
+        {% endfor %}
+    {% else %}
+        No load balancers are currently registered for this AWS account.
+    {% endif %}
+</div>
+<div class='clear'></div>
+{% endblock %}

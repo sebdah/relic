@@ -34,6 +34,7 @@ urlpatterns = patterns('',
     url(r'^cloud/(?P<uuid>[\w-]+)/launch_config/add$', 'cloud.views.launch_config_add'),
     url(r'^cloud/(?P<uuid>[\w-]+)/launch_config/delete/(?P<launch_config_name>[\w-]+)$', 'cloud.views.launch_config_delete'),
     url(r'^cloud/(?P<uuid>[\w-]+)/launch_config$', 'cloud.views.launch_config'),
+    url(r'^cloud/(?P<uuid>[\w-]+)/load_balancer$', 'cloud.views.load_balancer'),
     url(r'^cloud/(?P<uuid>[\w-]+)/security_group$', 'cloud.views.security_group'),
 
     # Admin site

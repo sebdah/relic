@@ -124,6 +124,9 @@ def edit(request, uuid):
         if form.is_valid():
             form.save()
 
+            # Terminate all AWS connections for this cloud
+            aws.HANDLER.terminate(uuid)
+
             return redirect('/cloud/%s' % uuid)
     else:
         form = forms.CloudForm(instance=cloud)

@@ -11,7 +11,6 @@ class AWSConnectionHandler:
     as_connections = {}
     ec2_connections = {}
     elb_connections = {}
-    
 
     def connect_to_as(self, cloud_id):
         """
@@ -75,5 +74,13 @@ class AWSConnectionHandler:
             self.connect_to_elb(cloud_id)
         finally:
             return self.elb_connections[cloud_id]
+
+    def terminate_connections(self, cloud_id):
+        """
+        Terminate all AWS connections
+        """
+        self.as_connections.pop(cloud_id)
+        self.ec2_connections.pop(cloud_id)
+        self.elb_connections.pop(cloud_id)
 
 HANDLER = AWSConnectionHandler()

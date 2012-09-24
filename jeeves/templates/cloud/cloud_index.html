@@ -15,61 +15,6 @@ function terminate_instance_callback(data){
 {% block main %}
 {% include "cloud/cloud_navigation_bar.html" %}
 {% include "cloud/cloud_menu.html" %}
-<div class='main-content'>
-    {% if cloud.roles %}
-        {% for role in cloud.roles %}
-            <h2>{{role.name}}</h2>
-            <p>
-                <a href='/cloud/{{cloud.uuid}}/role/{{role.id}}/unassign'>Unassign role</a> | 
-                <a href='/cloud/{{cloud.uuid}}/role/{{role.id}}/instance/add'>Add instance</a>
-            </p>
-            <div class='instance-box-container'>
-                {% for role_instances in cloud.role_instances %}
-                    {% for role_obj, instance_objs in role_instances.items %}
-                        {% if role_obj.name == role.name %}
-                            {% for instance in instance_objs %}
-                                <div class='instance-box'>
-                                    <h3>{{instance}}</h3>
-                                    <table>
-                                        <tr>
-                                            <th>Host type</th>
-                                            <td>{{instance.instance_type}}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Zone</th>
-                                            <td>{{instance.availability_zone}}</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Status</th>
-                                            {% if instance.aws_status == '' or instance.aws_status == None or instance.aws_status == 'terminated' %}
-                                                <td>Stopped</td>
-                                            {% else %}
-                                                <td>{{instance.aws_status}}</td>
-                                            {% endif%}
-                                        </tr>
-                                        <tr>
-                                            <th>Memory usage</th>
-                                            <td>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <th>CPU</th>
-                                            <td>&nbsp;</td>
-                                        </tr>
-                                    </table>
-                                    <div class='instance-box-footer'>
-                                        &nbsp;
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
-                {% endfor %}
-            </div>
-            <div class='clear'></div>
-        {% endfor %}
-    {% else %}
-        No roles has been added to this cloud
-    {% endif %}
-</div>
+<div class='main-content'></div>
 <div class='clear'></div>
 {% endblock %}

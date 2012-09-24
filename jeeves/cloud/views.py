@@ -208,6 +208,29 @@ def launch_config_add(request, uuid):
 
 
 @login_required
+def launch_config_delete(request, uuid, launch_config_name):
+    """
+    Delete launch configuration
+    """
+    try:
+        cloud = models.Cloud.objects.get(uuid=uuid)
+    except models.Cloud.DoesNotExist:
+        raise Http404
+
+    conn = aws.HANDLER.get_as_connection(uuid)
+    launch_configs = conn.get_all_launch_configurations(
+        names=[launch_config_name])
+    if len(launch_configs) == 1:
+        for launch_config in launch_configs:
+            launch_config.delete()
+    else:
+        # TODO. Use real logger
+        print "ERROR - Too many launch configs found"
+
+    return redirect('/cloud/%s/launch_config' % cloud.uuid)
+
+
+@login_required
 def list(request):
     """
     Show the clouds registered for the authenticated user

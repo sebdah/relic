@@ -9,7 +9,7 @@
     </p>
     {% if launch_configs %}
         {% for launch_config in launch_configs %}
-            {{launch_config.name}}<br />
+            {{launch_config.name}} - <a href="/cloud/{{cloud.uuid}}/launch_config/delete/{{launch_config.name}}">Delete</a><br />
         {% endfor %}
     {% endif %}
 </div>

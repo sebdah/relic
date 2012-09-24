@@ -32,6 +32,7 @@ urlpatterns = patterns('',
     url(r'^cloud/(?P<uuid>[\w-]+)/cluster$', 'cloud.views.cluster'),
     url(r'^cloud/(?P<uuid>[\w-]+)/edit$', 'cloud.views.edit'),
     url(r'^cloud/(?P<uuid>[\w-]+)/launch_config/add$', 'cloud.views.launch_config_add'),
+    url(r'^cloud/(?P<uuid>[\w-]+)/launch_config/delete/(?P<launch_config_name>[\w-]+)$', 'cloud.views.launch_config_delete'),
     url(r'^cloud/(?P<uuid>[\w-]+)/launch_config$', 'cloud.views.launch_config'),
     url(r'^cloud/(?P<uuid>[\w-]+)/security_group$', 'cloud.views.security_group'),
 

@@ -24,4 +24,5 @@ class LaunchConfigForm(forms.Form):
     image_id = forms.CharField(required=True, min_length=12, max_length=12)
     key_name = forms.CharField(required=True, max_length=30)
     user_data = forms.CharField(widget=forms.Textarea)
-    instance_type = forms.ChoiceField(required=True, choices=definitions.INSTANCE_TYPES)
+    instance_type = forms.ChoiceField(required=True,
+        choices=definitions.INSTANCE_TYPES)

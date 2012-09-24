@@ -136,8 +136,6 @@ INSTALLED_APPS = (
     'core',
     'cloud',
     'annoying',
-    'dajaxice',
-    'dajax',
 )
 
 # A sample logging configuration. The only tangible logging

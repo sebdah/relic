@@ -39,6 +39,28 @@ def add(request):
 
 
 @login_required
+def auto_scaling_group(request, uuid):
+    """
+    List all auto scaling groups
+    """
+    try:
+        cloud = models.Cloud.objects.get(uuid=uuid)
+    except models.Cloud.DoesNotExist:
+        raise Http404
+
+    conn = aws.HANDLER.get_as_connection(uuid)
+    auto_scaling_groups = conn.get_all_groups()
+
+    return direct_to_template(request,
+        'cloud/auto_scaling_group.html',
+        {
+            'request': request,
+            'cloud': cloud,
+            'auto_scaling_groups': auto_scaling_groups
+        })
+
+
+@login_required
 def cluster(request, uuid):
     """
     List all clusters

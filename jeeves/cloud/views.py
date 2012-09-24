@@ -166,28 +166,36 @@ def launch_config_add(request, uuid):
         raise Http404
 
     message = ''
+    
+    conn = aws.HANDLER.get_ec2_connection(uuid)
+    sgs = conn.get_all_security_groups()
+    security_groups = []
+    for sg in sgs:
+        security_groups.append((sg.name, sg.name))
+    keys = conn.get_all_key_pairs()
+    key_pairs = []
+    for key in keys:
+        key_pairs.append((key.name, key.name))
 
     if request.method == 'POST':
-        form = forms.LaunchConfigForm(request.POST)
-        print "OK"
+        form = forms.LaunchConfigForm(security_groups, key_pairs, request.POST)
         if form.is_valid():
             conn = aws.HANDLER.get_as_connection(uuid)
             conn.create_launch_configuration(LaunchConfiguration(
                 name=form.cleaned_data['name'],
                 image_id=form.cleaned_data['image_id'],
                 key_name=form.cleaned_data['key_name'],
-                security_groups=[],
+                security_groups=form.cleaned_data['security_groups'],
                 user_data=form.cleaned_data['user_data'],))
             message = 'Your launch config has been created'
             return redirect('/cloud/%s/launch_config' % cloud.uuid)
+        else:
+            for field in form:
+                for error in field.errors:
+                    print error
+            print "Not valid"
     else:
-        conn = aws.HANDLER.get_ec2_connection(uuid)
-        sgs = conn.get_all_security_groups()
-        security_groups = []
-        for sg in sgs:
-            security_groups.append((sg.name, sg.name))
-        print security_groups
-        form = forms.LaunchConfigForm(sg_choices=security_groups)
+        form = forms.LaunchConfigForm(security_groups, key_pairs)
 
     return direct_to_template(request,
         'cloud/launch_config_add.html',

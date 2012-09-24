@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.simple import direct_to_template
 from django.http import Http404
 from boto.ec2.autoscale import LaunchConfiguration
+from boto.ec2.autoscale.group import AutoScalingGroup
 
 
 @login_required
@@ -57,6 +58,49 @@ def auto_scaling_group(request, uuid):
             'request': request,
             'cloud': cloud,
             'auto_scaling_groups': auto_scaling_groups
+        })
+
+
+@login_required
+def auto_scaling_group_add(request, uuid):
+    """
+    Create a new auto scaling group
+    """
+    try:
+        cloud = models.Cloud.objects.get(uuid=uuid)
+    except models.Cloud.DoesNotExist:
+        raise Http404
+
+    message = ''
+
+    conn = aws.HANDLER.get_as_connection(uuid)
+    lcs = conn.get_all_launch_configurations()
+    launch_configurations = [('', 'None')]
+    for lc in lcs:
+        launch_configurations.append((lc.name, lc.name))
+
+    if request.method == 'POST':
+        form = forms.AutoScalingGroupForm(launch_configurations, request.POST)
+        if form.is_valid():
+            conn = aws.HANDLER.get_as_connection(uuid)
+            conn.create_auto_scaling_group(AutoScalingGroup(
+                group_name=form.cleaned_data['name'],
+                availability_zones=form.cleaned_data['availability_zones'],
+                launch_config=form.cleaned_data['launch_config_name'],
+                min_size=form.cleaned_data['min_size'],
+                max_size=form.cleaned_data['max_size'],))
+            message = 'Your auto scaling group has been created'
+            return redirect('/cloud/%s/auto_scaling_group' % cloud.uuid)
+    else:
+        form = forms.AutoScalingGroupForm(launch_configurations)
+
+    return direct_to_template(request,
+        'cloud/auto_scaling_group_add.html',
+        {
+            'request': request,
+            'form': form,
+            'message': message,
+            'cloud': cloud
         })
 
 
@@ -191,7 +235,7 @@ def launch_config_add(request, uuid):
         raise Http404
 
     message = ''
-    
+
     conn = aws.HANDLER.get_ec2_connection(uuid)
     sgs = conn.get_all_security_groups()
     security_groups = []
@@ -214,11 +258,6 @@ def launch_config_add(request, uuid):
                 user_data=form.cleaned_data['user_data'],))
             message = 'Your launch config has been created'
             return redirect('/cloud/%s/launch_config' % cloud.uuid)
-        else:
-            for field in form:
-                for error in field.errors:
-                    print error
-            print "Not valid"
     else:
         form = forms.LaunchConfigForm(security_groups, key_pairs)
 

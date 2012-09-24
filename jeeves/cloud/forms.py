@@ -14,6 +14,19 @@ class ClusterForm(forms.ModelForm):
         exclude = ('cloud',)
 
 
+class AutoScalingGroupForm(forms.Form):
+    def __init__(self, launch_configs, *args, **kwargs):
+        super(AutoScalingGroupForm, self).__init__(*args, **kwargs)
+        self.fields['launch_config_name'].choices = launch_configs
+
+    name = forms.CharField(required=True, max_length=30)
+    availability_zones = forms.MultipleChoiceField(required=True,
+        choices=definitions.AVAILABILITY_ZONES)
+    launch_config_name = forms.ChoiceField(required=True)
+    min_size = forms.IntegerField(required=True, initial=1)
+    max_size = forms.IntegerField(required=True, initial=1)
+
+
 class LaunchConfigForm(forms.Form):
     def __init__(self, sg_choices, key_pairs, *args, **kwargs):
         super(LaunchConfigForm, self).__init__(*args, **kwargs)

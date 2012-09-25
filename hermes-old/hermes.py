@@ -17,7 +17,7 @@ def callback(channel, method, properties, body):
     # Fetch the message
     sys.stdout.write("%s - Receiving message %r.. " % (datetime.utcnow(), body))
     sys.stdout.flush()
-    time.sleep( body.count('.') )
+    time.sleep(body.count('.'))
     print "done"
     
     # Acknowledge the message
@@ -37,7 +37,7 @@ def callback(channel, method, properties, body):
     
     # Execute the command
     try:
-        cmd = commander.Commander(command, args)
+        commander.Commander(command, args)
     except AttributeError:
         print "%s - %s is not a valid command. Throwing message.. " % \
                 (datetime.utcnow(), command)

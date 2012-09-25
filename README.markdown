@@ -1,5 +1,5 @@
-Relic
-=====
+Jeeves
+======
 
 Cloud server management tool
 
@@ -10,13 +10,14 @@ Author
 Jeeves requirements
 -------------------
 
-Jeeves depends on Python 2.7 and Django >1.4 (`sudo pip install Django`). Other Python package requirements:
+Jeeves depends on the following software:
 
-	boto    
+- Python 2.7 
+- Django >1.4 (`sudo pip install Django`)
+- RabbitMQ
 
-Hermes requirements
--------------------
+And the following Python packages:
 
-Hermes depends on Python 2.7, with the following required Python packages:
-
+	boto
 	pika
+	PyMySQL

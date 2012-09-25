@@ -5,9 +5,10 @@ Hermes worker implementation
 import sys
 import pika
 import time
+import cloud
 from datetime import datetime
 from optparse import make_option
-from django.core.management.base import BaseCommand#, CommandError
+from django.core.management.base import BaseCommand
 
 
 class Commander():
@@ -22,11 +23,34 @@ class Commander():
     
     def echo(self, *args):
         """
-        Echo the message to the prompt
+        Dummy function for testing. Echo the message to the prompt
         
         args[0]:        message to print
         """
         print args[0]
+        return True
+
+    def remove_auto_scaling_group(self, *args):
+        """
+        Remove an auto scaling group.
+
+        Workflow:
+        - Shutdown all instances
+        - Force delete the ASG
+
+        Expected parameters:
+        args[0]     cloud_id
+        args[1]     auto_scaling_group
+        """
+        conn = cloud.aws.HANDLER.get_as_connection(args[0])
+        auto_scaling_group = conn.get_all_groups(names=[args[1]])
+
+        print "Sent shutdown signal to all instances"
+        auto_scaling_group.shutdown_instances()
+
+        print "Deleted the auto scaling group %s" % args[1]
+        auto_scaling_group.delete(force_delete=True)
+
         return True
 
 

@@ -1,5 +1,5 @@
 """
-Hermes worker implementation
+Hermes sender implementation
 """
 
 import sys

@@ -8,6 +8,8 @@ import sys
 import pika
 import time
 import argparse
+import commander
+from datetime import datetime
 
 def main():
     """
@@ -43,7 +45,19 @@ def main():
         Callback function for message processing
         """
         print " [x] Received %r" % (body,)
-        time.sleep( body.count('.') )
+        time.sleep(body.count('.'))
+        
+        command = body.split('|')[0]
+        arguments = body.split('|')[1:]
+        
+        # Execute the command
+        try:
+            commander.Commander(command, arguments)
+        except AttributeError:
+            print "%s - %s is not a valid command. Throwing message.. " % (
+                datetime.utcnow(), command)
+            return False
+        
         print " [x] Done"
         ch.basic_ack(delivery_tag = method.delivery_tag)
 

@@ -44,11 +44,7 @@ def auto_scaling_group(request, uuid):
     """
     List all auto scaling groups
     """
-    try:
-        cloud = models.Cloud.objects.get(uuid=uuid)
-    except models.Cloud.DoesNotExist:
-        raise Http404
-
+    cloud = get_object_or_404(models.Cloud, uuid=uuid)
     conn = aws.HANDLER.get_as_connection(uuid)
     auto_scaling_groups = conn.get_all_groups()
 
@@ -66,10 +62,7 @@ def auto_scaling_group_add(request, uuid):
     """
     Create a new auto scaling group
     """
-    try:
-        cloud = models.Cloud.objects.get(uuid=uuid)
-    except models.Cloud.DoesNotExist:
-        raise Http404
+    cloud = get_object_or_404(models.Cloud, uuid=uuid)
 
     message = ''
 
@@ -109,10 +102,7 @@ def cluster(request, uuid):
     """
     List all clusters
     """
-    try:
-        cloud = models.Cloud.objects.get(uuid=uuid)
-    except models.Cloud.DoesNotExist:
-        raise Http404
+    cloud = get_object_or_404(models.Cloud, uuid=uuid)
     return direct_to_template(request,
         'cloud/cluster.html',
         {
@@ -127,10 +117,7 @@ def cluster_add(request, uuid):
     """
     Create a new cluster
     """
-    try:
-        cloud = models.Cloud.objects.get(uuid=uuid)
-    except models.Cloud.DoesNotExist:
-        raise Http404
+    cloud = get_object_or_404(models.Cloud, uuid=uuid)
 
     message = ''
 
@@ -178,7 +165,7 @@ def edit(request, uuid):
     """
     Edit preferences in a Cloud
     """
-    cloud = models.Cloud.objects.get(uuid=uuid)
+    cloud = get_object_or_404(models.Cloud, uuid=uuid)
 
     if request.method == 'POST':
         form = forms.CloudForm(request.POST, instance=cloud)
@@ -206,10 +193,7 @@ def index(request, uuid):
     """
     The overview of a single cloud
     """
-    try:
-        cloud = models.Cloud.objects.get(uuid=uuid)
-    except models.Cloud.DoesNotExist:
-        raise Http404
+    cloud = get_object_or_404(models.Cloud, uuid=uuid)
 
     return direct_to_template(request,
         'cloud/cloud_index.html',
@@ -224,10 +208,7 @@ def launch_config(request, uuid):
     """
     List all launch configurations
     """
-    try:
-        cloud = models.Cloud.objects.get(uuid=uuid)
-    except models.Cloud.DoesNotExist:
-        raise Http404
+    cloud = get_object_or_404(models.Cloud, uuid=uuid)
 
     conn = aws.HANDLER.get_as_connection(uuid)
     launch_configs = conn.get_all_launch_configurations()
@@ -246,10 +227,7 @@ def launch_config_add(request, uuid):
     """
     Create a new launch configuration
     """
-    try:
-        cloud = models.Cloud.objects.get(uuid=uuid)
-    except models.Cloud.DoesNotExist:
-        raise Http404
+    cloud = get_object_or_404(models.Cloud, uuid=uuid)
 
     message = ''
 
@@ -293,10 +271,7 @@ def launch_config_delete(request, uuid, launch_config_name):
     """
     Delete launch configuration
     """
-    try:
-        cloud = models.Cloud.objects.get(uuid=uuid)
-    except models.Cloud.DoesNotExist:
-        raise Http404
+    cloud = get_object_or_404(models.Cloud, uuid=uuid)
 
     conn = aws.HANDLER.get_as_connection(uuid)
     launch_configs = conn.get_all_launch_configurations(
@@ -316,10 +291,7 @@ def load_balancer(request, uuid):
     """
     List all load balancers
     """
-    try:
-        cloud = models.Cloud.objects.get(uuid=uuid)
-    except models.Cloud.DoesNotExist:
-        raise Http404
+    cloud = get_object_or_404(models.Cloud, uuid=uuid)
 
     conn = aws.HANDLER.get_elb_connection(uuid)
     load_balancers = conn.get_all_load_balancers()
@@ -351,10 +323,7 @@ def security_group(request, uuid):
     """
     List all security groups
     """
-    try:
-        cloud = models.Cloud.objects.get(uuid=uuid)
-    except models.Cloud.DoesNotExist:
-        raise Http404
+    cloud = get_object_or_404(models.Cloud, uuid=uuid)
 
     conn = aws.HANDLER.get_ec2_connection(uuid)
     security_groups = conn.get_all_security_groups()

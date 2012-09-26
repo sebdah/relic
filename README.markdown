@@ -3,10 +3,6 @@ Jeeves
 
 Cloud server management tool
 
-Author
-------
-**Sebastian Dahlgren** <sebastian.dahlgren@gmail.com>
-
 Jeeves requirements
 -------------------
 
@@ -21,3 +17,7 @@ And the following Python packages:
 	boto
 	pika
 	PyMySQL
+
+Author
+------
+**Sebastian Dahlgren** <sebastian.dahlgren@gmail.com>

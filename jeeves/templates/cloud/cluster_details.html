@@ -5,9 +5,13 @@
 <div id="listCluster" class='main-content'>
     <h2>{{cluster.name}}</h2>
     <p>
-        <h3>Description</h3>
-        {{cluster.description}}
+    	<a href="/cloud/{{cloud.uuid}}/cluster/{{cluster.id}}/add_asg_def">Add auto scaling group definition</a>
     </p>
+    {% if asg_defs %}
+    	{% for asg_def in asg_defs %}
+    		{{asg_def}}<br />
+    	{% endfor %}
+    {% endif %}
 </div>
 <div class='clear'></div>
 {% endblock %}

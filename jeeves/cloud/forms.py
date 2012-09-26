@@ -14,6 +14,12 @@ class ClusterForm(forms.ModelForm):
         exclude = ('cloud',)
 
 
+class AutoScalingGroupDefinitionForm(forms.ModelForm):
+    class Meta:
+        model = models.AutoScalingGroupDefinition
+        exclude = ('cluster', 'created')
+
+
 class AutoScalingGroupForm(forms.Form):
     def __init__(self, launch_configs, *args, **kwargs):
         super(AutoScalingGroupForm, self).__init__(*args, **kwargs)

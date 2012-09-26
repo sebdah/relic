@@ -6,7 +6,6 @@ from cloud import models
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.generic.simple import direct_to_template
-from django.http import Http404
 from boto.ec2.autoscale import LaunchConfiguration
 from boto.ec2.autoscale.group import AutoScalingGroup
 
@@ -150,11 +149,48 @@ def cluster_details(request, uuid, cluster_id):
     """
     cloud = get_object_or_404(models.Cloud, uuid=uuid)
     cluster = get_object_or_404(models.Cluster, pk=cluster_id)
+    asg_defs = models.AutoScalingGroupDefinition.objects.filter(
+        cluster=cluster_id)
 
     return direct_to_template(request,
         'cloud/cluster_details.html',
         {
             'request': request,
+            'cloud': cloud,
+            'cluster': cluster,
+            'asg_defs': asg_defs
+        })
+
+
+@login_required
+def cluster_asg_def_add(request, uuid, cluster_id):
+    """
+    Add new auto scaling group definition
+    """
+    cloud = get_object_or_404(models.Cloud, uuid=uuid)
+    cluster = get_object_or_404(models.Cluster, pk=cluster_id)
+
+    message = ''
+
+    if request.method == 'POST':
+        form = forms.AutoScalingGroupDefinitionForm(request.POST)
+        if form.is_valid():
+            form_instance = form.save(commit=False)
+            form_instance.cluster = models.Cluster.objects.get(pk=cluster_id)
+            form_instance.save()
+            message = 'New ASG definition created'
+            form = forms.CloudForm()
+            return redirect('/cloud/%s/cluster/%s' % (
+                cloud.uuid, cluster_id))
+    else:
+        form = forms.AutoScalingGroupDefinitionForm()
+
+    return direct_to_template(request,
+        'cloud/cluster_add.html',
+        {
+            'request': request,
+            'form': form,
+            'message': message,
             'cloud': cloud,
             'cluster': cluster
         })
@@ -280,7 +316,6 @@ def launch_config_delete(request, uuid, launch_config_name):
         for launch_config in launch_configs:
             launch_config.delete()
     else:
-        # TODO. Use real logger
         print "ERROR - Too many launch configs found"
 
     return redirect('/cloud/%s/launch_config' % cloud.uuid)

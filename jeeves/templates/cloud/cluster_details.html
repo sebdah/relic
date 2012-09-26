@@ -1,0 +1,13 @@
+{% extends "template.html" %}
+{% block main %}
+{% include "cloud/navigation_bar.html" %}
+{% include "cloud/cloud_menu.html" %}
+<div id="listCluster" class='main-content'>
+    <h2>{{cluster.name}}</h2>
+    <p>
+        <h3>Description</h3>
+        {{cluster.description}}
+    </p>
+</div>
+<div class='clear'></div>
+{% endblock %}

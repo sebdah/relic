@@ -3,7 +3,7 @@ import core
 from cloud import aws
 from cloud import forms
 from cloud import models
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.generic.simple import direct_to_template
 from django.http import Http404
@@ -118,7 +118,7 @@ def cluster(request, uuid):
         {
             'request': request,
             'cloud': cloud,
-            'clusters': models.Cluster.objects.filter()
+            'clusters': models.Cluster.objects.filter(cloud__uuid=uuid)
         })
 
 
@@ -153,6 +153,23 @@ def cluster_add(request, uuid):
             'form': form,
             'message': message,
             'cloud': cloud
+        })
+
+
+@login_required
+def cluster_details(request, uuid, cluster_id):
+    """
+    Overview of a given cluster
+    """
+    cloud = get_object_or_404(models.Cloud, uuid=uuid)
+    cluster = get_object_or_404(models.Cluster, pk=cluster_id)
+
+    return direct_to_template(request,
+        'cloud/cluster_details.html',
+        {
+            'request': request,
+            'cloud': cloud,
+            'cluster': cluster
         })
 
 

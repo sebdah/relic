@@ -35,3 +35,20 @@ class Cluster(models.Model):
     cloud = models.ForeignKey(Cloud)
     name = models.CharField(blank=False, max_length=30)
     description = models.TextField(blank=False)
+
+class AutoScalingGroupDefinition(models.Model):
+    """
+    Definition of an auto scaling group
+    """
+    def __unicode__(self):
+        return '%s-v%i' % (self.name, self.version)
+    cluster = models.ForeignKey(Cluster)
+    version = models.IntegerField(blank=False)
+    created = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(blank=False, max_length=30)
+    availability_zones = models.CharField(blank=False,
+        max_length=20,
+        choices=definitions.AVAILABILITY_ZONES)
+    launch_config_name = models.CharField(blank=False, max_length=40)
+    min_size = models.IntegerField(blank=False, default=1)
+    max_size = models.IntegerField(blank=False, default=1)

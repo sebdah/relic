@@ -9,7 +9,7 @@
     </p>
     {% if clusters %}
         {% for cluster in clusters %}
-            {{cluster.name}} ({{cluster.description}})
+            <a href="/cloud/{{cloud.uuid}}/cluster/{{cluster.id}}">{{cluster.name}} ({{cluster.description}})</a>
         {% endfor %}
     {% endif %}
 </div>

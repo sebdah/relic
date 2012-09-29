@@ -37,23 +37,37 @@ class Cluster(models.Model):
         return self.name
 
 
+class AvailabilityZone(models.Model):
+    """
+    Definition of a Availability Zone
+    """
+    availability_zone = models.CharField(blank=False, max_length=20)
+
+    def __unicode__(self):
+        return self.availability_zone
+
+
 class AutoScalingGroupDefinition(models.Model):
     """
     Definition of an auto scaling group
     """
     class Meta:
-        unique_together=('cluster', 'version')
+        unique_together = ('cluster', 'version')
 
     cluster = models.ForeignKey(Cluster)
     created = models.DateTimeField(auto_now_add=True)
     name = models.CharField(blank=False, max_length=30)
-    availability_zones = models.CharField(blank=False,
-        max_length=20,
-        choices=definitions.AVAILABILITY_ZONES)
+    availability_zones = models.ManyToManyField(AvailabilityZone)
     launch_config_name = models.CharField(blank=False, max_length=40)
     min_size = models.IntegerField(blank=False, default=1)
     max_size = models.IntegerField(blank=False, default=1)
     version = models.CharField(blank=False, max_length=10, unique=True)
+    load_balancing_type = models.CharField(blank=False, max_length=3,
+        choices=[
+            ('EIP', 'Elastic IP'),
+            ('ELB', 'Elastic Load Balancer')
+        ])
+    load_balancer = models.CharField(blank=False, max_length=60)
 
     def __unicode__(self):
         return '%s-%s' % (self.name, self.version)

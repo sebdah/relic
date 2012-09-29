@@ -15,9 +15,15 @@ class ClusterForm(forms.ModelForm):
 
 
 class AutoScalingGroupDefinitionForm(forms.ModelForm):
+    def __init__(self, lc_choices, lb_choices, *args, **kwargs):
+        super(AutoScalingGroupDefinitionForm, self).__init__(*args, **kwargs)
+        self.fields['launch_config_name'] = forms.ChoiceField(
+            choices=lc_choices)
+        self.fields['load_balancer'] = forms.ChoiceField(choices=lb_choices)
+
     class Meta:
         model = models.AutoScalingGroupDefinition
-        exclude = ('cluster', 'created')
+        exclude = ('cluster', 'created',)
 
 
 class AutoScalingGroupForm(forms.Form):

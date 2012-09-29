@@ -3,7 +3,7 @@
 {% include "cloud/navigation_bar.html" %}
 {% include "cloud/cloud_menu.html" %}
 <div id="listCluster" class='main-content'>
-    <h2>Add new cluster</h2>
+    <h2>Add new auto scaling group definition</h2>
     <form name='addClusterASGDefForm' action='' method='post'>{% csrf_token %}
     <input type='hidden' name='cluster' id='id_cluster' value='{{cluster.id}}'>
     {% for field in form %}

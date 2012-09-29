@@ -172,8 +172,26 @@ def cluster_asg_def_add(request, uuid, cluster_id):
 
     message = ''
 
+    # Get the possible choices
+    as_con = aws.HANDLER.get_as_connection(uuid)
+    lc_choices = []
+    for launch_config in as_con.get_all_launch_configurations():
+        lc_choices.append((launch_config.name, launch_config.name))
+    lb_choices = []
+    ec2 = aws.HANDLER.get_ec2_connection(uuid)
+    for address in ec2.get_all_addresses():
+        lb_choices.append((
+            address.public_ip,
+            'Elastic IP - %s' % address.public_ip))
+    elb = aws.HANDLER.get_elb_connection(uuid)
+    for load_balancer in elb.get_all_load_balancers():
+        lb_choices.append((
+            u'%s' % load_balancer.name,
+            'ELB - %s' % load_balancer.name))
+
     if request.method == 'POST':
-        form = forms.AutoScalingGroupDefinitionForm(request.POST)
+        form = forms.AutoScalingGroupDefinitionForm(lc_choices,
+            lb_choices, request.POST)
         if form.is_valid():
             form_instance = form.save(commit=False)
             form_instance.cluster = models.Cluster.objects.get(pk=cluster_id)
@@ -183,10 +201,10 @@ def cluster_asg_def_add(request, uuid, cluster_id):
             return redirect('/cloud/%s/cluster/%s' % (
                 cloud.uuid, cluster_id))
     else:
-        form = forms.AutoScalingGroupDefinitionForm()
+        form = forms.AutoScalingGroupDefinitionForm(lc_choices, lb_choices)
 
     return direct_to_template(request,
-        'cloud/cluster_add.html',
+        'cloud/cluster_asg_def_add.html',
         {
             'request': request,
             'form': form,

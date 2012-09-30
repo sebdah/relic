@@ -42,7 +42,7 @@
                 {% if asg_def.has_instances %}
                   <a href="/cloud/{{cloud.uuid}}/cluster/{{cluster.id}}/{{asg_def.id}}/stop_instances">Stop instances</a>
                 {% else %}
-                  <a href="/cloud/{{cloud.uuid}}/cluster/{{cluster.id}}/{{asg_def.id}}/delete_asg">Delete Auto scaling group</a>
+                  <a href="/cloud/{{cloud.uuid}}/cluster/{{cluster.id}}/{{asg_def.id}}/deregister_asg">De-register Auto scaling group from AWS</a>
                 {% endif %}
               {% else %}
                 <a href="/cloud/{{cloud.uuid}}/cluster/{{cluster.id}}/{{asg_def.id}}/start">Start Auto Scaling Group</a>

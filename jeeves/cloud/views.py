@@ -131,6 +131,14 @@ def auto_scaling_group_def_handle(request, uuid, cluster_id, asg_def_id, action)
 
         # Set the ASGDef is_registered & has_instance flags to True
         asg_def.set_has_instances(False)
+    elif action is 'delete_asg':
+        # Stop instances
+        asg = conn.get_all_groups(
+            names=['%s-%s' % (cluster.name, asg_def.version)])[0]
+        asg.delete()
+
+        # Set the ASGDef is_registered & has_instance flags to True
+        asg_def.set_is_registered(False)
 
     return redirect('/cloud/%s/cluster/%s' % (uuid, cluster_id))
 

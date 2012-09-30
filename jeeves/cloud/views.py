@@ -110,9 +110,9 @@ def auto_scaling_group_def_handle(request, uuid, cluster_id, asg_def_id, action)
     availability_zones = \
         [az.availability_zone for az in asg_def.availability_zones.all()]
 
+    conn = aws.HANDLER.get_as_connection(uuid)
     if action is 'start':
         # Start the ASG
-        conn = aws.HANDLER.get_as_connection(uuid)
         conn.create_auto_scaling_group(AutoScalingGroup(
                     group_name='%s-%s' % (cluster.name, asg_def.version),
                     availability_zones=availability_zones,
@@ -120,10 +120,19 @@ def auto_scaling_group_def_handle(request, uuid, cluster_id, asg_def_id, action)
                     min_size=asg_def.min_size,
                     max_size=asg_def.max_size,))
 
-        # Set the ASGDef is_registered flag to True
+        # Set the ASGDef is_registered & has_instance flags to True
         asg_def.set_is_registered(True)
+        asg_def.set_has_instances(True)
+    elif action is 'stop_instances':
+        # Stop instances
+        asg = conn.get_all_groups(
+            names=['%s-%s' % (cluster.name, asg_def.version)])[0]
+        asg.shutdown_instances()
 
-    return redirect(request.path)
+        # Set the ASGDef is_registered & has_instance flags to True
+        asg_def.set_has_instances(False)
+
+    return redirect('/cloud/%s/cluster/%s' % (uuid, cluster_id))
 
 
 @login_required

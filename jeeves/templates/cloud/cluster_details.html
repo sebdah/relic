@@ -10,7 +10,7 @@
     	{% for asg_def in asg_defs %}
         <table border='1'>
           <tr>
-            <th>Auto Scaling Group name</th>
+            <th>Auto scaling group name</th>
             <td>{{cluster.name}}-{{asg_def.version}}</td>
           </tr>
     		  <tr>
@@ -24,10 +24,26 @@
             </td>
           </tr>
           <tr>
+            <th>Has instances?</th>
+            <td>
+              {% if asg_def.has_instances %}Yes{% else %}No{% endif%}
+            </td>
+          </tr>
+          <tr>
+            <th>Is registered at AWS?</th>
+            <td>
+              {% if asg_def.is_registered %}Yes{% else %}No{% endif%}
+            </td>
+          </tr>
+          <tr>
             <th>Manage</th>
             <td>
               {% if asg_def.is_registered %}
-                Is registered. Case not yet handled.
+                {% if asg_def.has_instances %}
+                  <a href="/cloud/{{cloud.uuid}}/cluster/{{cluster.id}}/{{asg_def.id}}/stop_instances">Stop instances</a>
+                {% else %}
+                  <a href="/cloud/{{cloud.uuid}}/cluster/{{cluster.id}}/{{asg_def.id}}/delete_asg">Delete Auto scaling group</a>
+                {% endif %}
               {% else %}
                 <a href="/cloud/{{cloud.uuid}}/cluster/{{cluster.id}}/{{asg_def.id}}/start">Start Auto Scaling Group</a>
               {% endif %}

@@ -56,12 +56,11 @@ class AutoScalingGroupDefinition(models.Model):
 
     cluster = models.ForeignKey(Cluster)
     created = models.DateTimeField(auto_now_add=True)
-    name = models.CharField(blank=False, max_length=30)
+    version = models.CharField(blank=False, max_length=10, unique=True)
     availability_zones = models.ManyToManyField(AvailabilityZone)
     launch_config_name = models.CharField(blank=False, max_length=40)
     min_size = models.IntegerField(blank=False, default=1)
     max_size = models.IntegerField(blank=False, default=1)
-    version = models.CharField(blank=False, max_length=10, unique=True)
     load_balancing_type = models.CharField(blank=False, max_length=3,
         choices=[
             ('EIP', 'Elastic IP'),
@@ -70,4 +69,4 @@ class AutoScalingGroupDefinition(models.Model):
     load_balancer = models.CharField(blank=False, max_length=60)
 
     def __unicode__(self):
-        return '%s-%s' % (self.name, self.version)
+        return self.version

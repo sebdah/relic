@@ -68,5 +68,18 @@ class AutoScalingGroupDefinition(models.Model):
         ])
     load_balancer = models.CharField(blank=False, max_length=60)
 
+    # Is the ASG registered (running) @ AWS
+    is_registered = models.BooleanField(default=False)
+
+    # Are there instances running in this ASG
+    has_instances = models.BooleanField(default=False)
+
+    # Is the ASG enabled for traffic via Elastic IP or ELB?
+    enabled = models.BooleanField(default=False)
+
     def __unicode__(self):
         return self.version
+
+    def set_is_registered(self, val):
+        self.is_registered = val
+        self.save()

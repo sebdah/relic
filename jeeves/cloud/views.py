@@ -97,6 +97,36 @@ def auto_scaling_group_add(request, uuid):
 
 
 @login_required
+def auto_scaling_group_def_handle(request, uuid, cluster_id, asg_def_id, action):
+    """
+    Handle commands to an auto scaling group def
+    """
+    get_object_or_404(models.Cloud, uuid=uuid)
+    cluster = get_object_or_404(models.Cluster, pk=cluster_id)
+    asg_def = get_object_or_404(models.AutoScalingGroupDefinition,
+        pk=asg_def_id)
+
+    # Get a list of the AZs
+    availability_zones = \
+        [az.availability_zone for az in asg_def.availability_zones.all()]
+
+    if action is 'start':
+        # Start the ASG
+        conn = aws.HANDLER.get_as_connection(uuid)
+        conn.create_auto_scaling_group(AutoScalingGroup(
+                    group_name='%s-%s' % (cluster.name, asg_def.version),
+                    availability_zones=availability_zones,
+                    launch_config=asg_def.launch_config_name,
+                    min_size=asg_def.min_size,
+                    max_size=asg_def.max_size,))
+
+        # Set the ASGDef is_registered flag to True
+        asg_def.set_is_registered(True)
+
+    return redirect(request.path)
+
+
+@login_required
 def cluster(request, uuid):
     """
     List all clusters
@@ -197,6 +227,14 @@ def cluster_asg_def_add(request, uuid, cluster_id):
             form_instance.cluster = models.Cluster.objects.get(pk=cluster_id)
             form_instance.save()
             message = 'New ASG definition created'
+
+            # Now add the availability zones
+            # in the many-to-amany field
+            asg_def = models.AutoScalingGroupDefinition.objects.get(
+                pk=form_instance.id)
+            for availability_zone in form.cleaned_data['availability_zones']:
+                asg_def.availability_zones.add(availability_zone)
+
             form = forms.CloudForm()
             return redirect('/cloud/%s/cluster/%s' % (
                 cloud.uuid, cluster_id))

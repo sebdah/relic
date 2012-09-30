@@ -23,7 +23,9 @@ class AutoScalingGroupDefinitionForm(forms.ModelForm):
 
     class Meta:
         model = models.AutoScalingGroupDefinition
-        exclude = ('cluster', 'created',)
+        exclude = (
+            'cluster', 'created', 'is_registered',
+            'has_instances', 'enabled')
 
 
 class AutoScalingGroupForm(forms.Form):

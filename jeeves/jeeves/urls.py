@@ -8,7 +8,8 @@ admin.autodiscover()
 
 
 urlpatterns = patterns('',
-    (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+    (r'^media/(?P<path>.*)$',
+        'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 
     # Redirect login attempts
     (r'^accounts/login', redirect_to, {'url': '/account/login'}),
@@ -31,6 +32,7 @@ urlpatterns = patterns('',
     url(r'^cloud/(?P<uuid>[\w-]+)/auto_scaling_group/add$', 'cloud.views.auto_scaling_group_add'),
     url(r'^cloud/(?P<uuid>[\w-]+)/auto_scaling_group$', 'cloud.views.auto_scaling_group'),
     url(r'^cloud/(?P<uuid>[\w-]+)/cluster/add$', 'cloud.views.cluster_add'),
+    url(r'^cloud/(?P<uuid>[\w-]+)/cluster/(?P<cluster_id>[\w-]+)/(?P<asg_def_id>[\w-]+)/start$', 'cloud.views.auto_scaling_group_def_handle', {'action': 'start'}),
     url(r'^cloud/(?P<uuid>[\w-]+)/cluster/(?P<cluster_id>[\w-]+)/add_asg_def$', 'cloud.views.cluster_asg_def_add'),
     url(r'^cloud/(?P<uuid>[\w-]+)/cluster/(?P<cluster_id>[\w-]+)$', 'cloud.views.cluster_details'),
     url(r'^cloud/(?P<uuid>[\w-]+)/cluster$', 'cloud.views.cluster'),

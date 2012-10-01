@@ -32,27 +32,29 @@ class Command(BaseCommand):
 
         for cloud in clouds:
             # Connect to EC2
-            as_con = aws.HANDLE.get_as_connection(cloud.uuid)
-            ec2_con = aws.HANDLE.get_ec2_connection(cloud.uuid)
+            as_con = aws.HANDLER.get_as_connection(cloud.uuid)
+            ec2_con = aws.HANDLER.get_ec2_connection(cloud.uuid)
 
             #
             # CHECK 1: Update has_instances flag for ASGDefs
             #
             LOGGER.debug("%s - Scanning cloud %s" % (cloud.uuid, cloud.name))
-            for asg_def in models.AutoScalingGroupDefinition.objects.all():
-                LOGGER.debug("Scanning ASG %s" % asg_def.get_asg_name())
+            for asg_def in models.AutoScalingGroupDefinition.objects.filter(cluster__cloud=cloud):
+                LOGGER.debug("%s - Scanning Auto scaling group %s" % (
+                    cloud.uuid, asg_def.get_asg_name()))
                 asg = as_con.get_all_groups(names=[asg_def.get_asg_name()])
 
                 # If the asg_def has no ASG in AWS
                 if len(asg) == 0:
                     LOGGER.debug("%s - %s is not registered at AWS" % (
                         cloud.uuid, asg_def.get_asg_name()))
-                    asg_def.is_registered(False)
-                    asg_def.has_instances(False)
+                    asg_def.set_is_registered(False)
+                    asg_def.set_has_instances(False)
                     asg_def.save()
                 else:
+                    asg = asg[0]
                     # Find out if there are any instances assigned
-                    instance_ids = [i.id for i in asg.instances]
+                    instance_ids = [i.instance_id for i in asg.instances]
                     reservations = ec2_con.get_all_instances(instance_ids)
                     instances = [i for r in reservations for i in r.instances]
 
@@ -66,16 +68,16 @@ class Command(BaseCommand):
 
                     # Update model
                     if running_count > 0:
-                        asg_def.has_instances(True)
+                        asg_def.set_has_instances(True)
                         LOGGER.info("""\
 %s - %s has %i running/pending instances""" % (
     cloud.uuid, asg_def.get_asg_name(), running_count))
                     else:
-                        asg_def.has_instances(False)
+                        asg_def.set_has_instances(False)
                         LOGGER.info("""\
  %s - %s is registered but has no running instances""" % (
-    cloud.uuid, asg_def.get_asg_name(), running_count))
-                    asg_def.is_registered(True)
+    cloud.uuid, asg_def.get_asg_name()))
+                    asg_def.set_is_registered(True)
                     asg_def.save()
 
         sys.exit(0)

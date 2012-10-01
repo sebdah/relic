@@ -179,6 +179,11 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
+        'core.cmd.scan': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',

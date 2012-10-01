@@ -3,9 +3,13 @@ Scanning command for updating database according to AWS reality
 """
 
 import sys
+import logging
 from cloud import models, aws
 from optparse import make_option
 from django.core.management.base import BaseCommand  # CommandError
+
+# Define logger
+LOGGER = logging.getLogger('core.cmd.scan')
 
 
 class Command(BaseCommand):
@@ -34,16 +38,15 @@ class Command(BaseCommand):
             #
             # CHECK 1: Update has_instances flag for ASGDefs
             #
-            print "Scanning cloud %s (%s)" % (cloud.name, cloud.uuid)
+            LOGGER.debug("%s - Scanning cloud %s" % (cloud.uuid, cloud.name))
             for asg_def in models.AutoScalingGroupDefinition.objects.all():
-                print " * Scanning ASG %s-%s" % (cloud.name, asg_def.version)
-                asg = as_con.get_all_groups(names=['%s-%s' % (
-                    cloud.name, asg_def.version)])
+                LOGGER.debug("Scanning ASG %s" % asg_def.get_asg_name())
+                asg = as_con.get_all_groups(names=[asg_def.get_asg_name()])
 
                 # If the asg_def has no ASG in AWS
                 if len(asg) == 0:
-                    print " * %s-%s is not registered at AWS" % (
-                        cloud.name, asg_def.version)
+                    LOGGER.debug("%s - %s is not registered at AWS" % (
+                        cloud.uuid, asg_def.get_asg_name()))
                     asg_def.is_registered(False)
                     asg_def.has_instances(False)
                     asg_def.save()
@@ -64,13 +67,14 @@ class Command(BaseCommand):
                     # Update model
                     if running_count > 0:
                         asg_def.has_instances(True)
-                        print " * %s-%s has %i running/pending instances" % (
-                            cloud.name, asg_def.version, running_count)
+                        LOGGER.info("""\
+%s - %s has %i running/pending instances""" % (
+    cloud.uuid, asg_def.get_asg_name(), running_count))
                     else:
                         asg_def.has_instances(False)
-                        print """\
- * %s-%s is registered but has no running instances""" % (
-    cloud.name, asg_def.version, running_count)
+                        LOGGER.info("""\
+ %s - %s is registered but has no running instances""" % (
+    cloud.uuid, asg_def.get_asg_name(), running_count))
                     asg_def.is_registered(True)
                     asg_def.save()
 

@@ -28,7 +28,7 @@ class Command(BaseCommand):
         # Get the clouds
         clouds = models.Cloud.objects.all()
         if options.get('cloud') is not '':
-            clouds = models.Clouds.objects.filter(uuid=options.get('cloud'))
+            clouds = models.Cloud.objects.filter(uuid=options.get('cloud'))
 
         for cloud in clouds:
             # Connect to EC2
@@ -61,9 +61,10 @@ class Command(BaseCommand):
                     # Count only running or pending instances
                     running_count = 0
                     for instance in instances:
-                        if instance.state_code in [0, 16]:
+                        if instance.state_code in [0, 16, 32]:
                             # 0 == Pending
                             # 16 == Running
+                            # 32 == Shutting down
                             running_count += 1
 
                     # Update model

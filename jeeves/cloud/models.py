@@ -80,6 +80,9 @@ class AutoScalingGroupDefinition(models.Model):
     def __unicode__(self):
         return self.version
 
+    def get_asg_name(self):
+        return '%s-%s' % (self.cluster.name, self.version)
+
     def set_is_registered(self, val):
         self.is_registered = val
 

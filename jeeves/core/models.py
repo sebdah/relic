@@ -1,8 +1,13 @@
 import uuid
 import cloud
+import logging
 from jeeves import settings
 from django.db import models
 from django.core.mail import send_mail
+
+# Define logger
+LOGGER = logging.getLogger('core.models')
+
 
 class Account(models.Model):
     """
@@ -62,6 +67,7 @@ Jeeves Team
 """ % (self.first_name, self.email, settings.JEEVES_EXTERNAL_URL, self.activation_key, self.email)
 
             send_mail('Activate your Jeeves account', message, settings.JEEVES_NO_REPLY_ADDRESS, [self.email], fail_silently = False)
+            LOGGER.info('Sent activation e-mail to %s' % self.email)
 
         # Save the object
         super(Account, self).save(*args,**kwargs)

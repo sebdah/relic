@@ -11,7 +11,7 @@ from boto.ec2.autoscale import LaunchConfiguration
 from boto.ec2.autoscale.group import AutoScalingGroup
 
 # Define logger
-LOGGER = logging.getLogger('cloud.view')
+LOGGER = logging.getLogger('cloud.views')
 
 
 @login_required

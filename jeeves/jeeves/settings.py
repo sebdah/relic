@@ -174,12 +174,22 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
-        'cloud.view': {
+        'cloud.views': {
             'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True,
         },
         'core.cmd.scan': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'core.models': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'core.views': {
             'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True,

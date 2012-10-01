@@ -1,4 +1,5 @@
 import random
+import logging
 from core import forms
 from core import models
 from jeeves import settings
@@ -8,6 +9,10 @@ from django.core.mail import send_mail
 from django import forms as django_forms
 from django.contrib.auth.decorators import login_required
 from django.views.generic.simple import direct_to_template
+
+# Define logger
+LOGGER = logging.getLogger('core.views')
+
 
 def account_activate(request, activation_key):
     """
@@ -24,6 +29,7 @@ def account_activate(request, activation_key):
             if account.activation_key == activation_key:
                 account.activate()
                 activated = True
+                LOGGER.info('Account %s activated' % account)
     except django_forms.ValidationError:
         pass
     except models.Account.DoesNotExist:
@@ -66,6 +72,7 @@ def account_delete(request, account_id):
     Delete an account given the ID
     """
     account = models.Account.objects.get(id = account_id)
+    LOGGER.info('Removing account %s' % account)
     account.delete()
     auth.logout(request)
     return redirect('/')
@@ -135,6 +142,7 @@ Jeeves Team
 """ % (account.first_name, account.email, password)
     
                 send_mail('Password reset', message, settings.JEEVES_NO_REPLY_ADDRESS, [account.email], fail_silently = False)
+                LOGGER.info('Sent password reset mail to %s' % account.email)
     
                 return direct_to_template(  request,
                                             'core/account/lost_password_done.html',

@@ -1,5 +1,6 @@
 import uuid
 import core
+import logging
 from cloud import aws
 from cloud import forms
 from cloud import models
@@ -8,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.simple import direct_to_template
 from boto.ec2.autoscale import LaunchConfiguration
 from boto.ec2.autoscale.group import AutoScalingGroup
+
+LOGGER = logging.getLogger('cloud.view')
 
 
 @login_required

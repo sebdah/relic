@@ -11,6 +11,9 @@ urlpatterns = patterns('',
     (r'^media/(?P<path>.*)$',
         'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 
+    # Favicon
+    (r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/media/img/favicon.ico'}),
+
     # Redirect login attempts
     (r'^accounts/login', redirect_to, {'url': '/account/login'}),
 

@@ -82,8 +82,6 @@ class AutoScalingGroupDefinition(models.Model):
 
     def set_is_registered(self, val):
         self.is_registered = val
-        self.save()
 
     def set_has_instances(self, val):
         self.has_instances = val
-        self.save()

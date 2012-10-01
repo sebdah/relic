@@ -183,6 +183,7 @@ def auto_scaling_group_def_handle(request, uuid, cluster_id, asg_def_id, action)
         # Set the ASGDef is_registered & has_instance flags to True
         asg_def.set_is_registered(True)
         asg_def.set_has_instances(True)
+        asg_def.save()
     elif action is 'stop_instances':
         # Stop instances
         asg = conn.get_all_groups(
@@ -191,6 +192,7 @@ def auto_scaling_group_def_handle(request, uuid, cluster_id, asg_def_id, action)
 
         # Set the ASGDef is_registered & has_instance flags to True
         asg_def.set_has_instances(False)
+        asg_def.save()
     elif action is 'deregister_asg':
         # Stop instances
         asg = conn.get_all_groups(
@@ -199,6 +201,7 @@ def auto_scaling_group_def_handle(request, uuid, cluster_id, asg_def_id, action)
 
         # Set the ASGDef is_registered & has_instance flags to True
         asg_def.set_is_registered(False)
+        asg_def.save()
 
     return redirect('/cloud/%s/cluster/%s' % (uuid, cluster_id))
 

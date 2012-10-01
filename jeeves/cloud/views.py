@@ -86,7 +86,8 @@ def auto_scaling_group_add(request, uuid):
                 min_size=form.cleaned_data['min_size'],
                 max_size=form.cleaned_data['max_size'],))
             message = 'Your auto scaling group has been created'
-            LOGGER.info('Registered ASG %s at AWS' % form.cleaned_data['name'])
+            LOGGER.info('%s - Registered ASG %s at AWS' % (
+                cloud.uuid, form.cleaned_data['name']))
             return redirect('/cloud/%s/auto_scaling_group' % cloud.uuid)
     else:
         form = forms.AutoScalingGroupForm(launch_configurations)
@@ -143,8 +144,8 @@ def auto_scaling_group_def_add(request, uuid, cluster_id):
                 pk=form_instance.id)
             for availability_zone in form.cleaned_data['availability_zones']:
                 asg_def.availability_zones.add(availability_zone)
-            LOGGER.info('Added ASGDefinition %i for cloud %s and cluster %i' % (
-                asg_def.id, cloud.uuid, cluster.id))
+            LOGGER.info('%s - Added ASGDefinition %s for cluster %s' % (
+                cloud.uuid, asg_def.id, cluster.id))
 
             form = forms.CloudForm()
             return redirect('/cloud/%s/cluster/%s' % (
@@ -186,8 +187,8 @@ def auto_scaling_group_def_handle(request, uuid, cluster_id, asg_def_id, action)
                     launch_config=asg_def.launch_config_name,
                     min_size=asg_def.min_size,
                     max_size=asg_def.max_size,))
-        LOGGER.info('Adding Auto scaling group %i to AWS. (Cloud: %s, Cluster: %s)' % (
-            asg_def.id, cloud.uuid, cluster.id))
+        LOGGER.info('%s - Adding Auto scaling group %i to AWS. (Cluster: %s)' % (
+            cloud.uuid, asg_def.id, cluster.id))
 
         # Set the ASGDef is_registered & has_instance flags to True
         asg_def.set_is_registered(True)
@@ -199,15 +200,15 @@ def auto_scaling_group_def_handle(request, uuid, cluster_id, asg_def_id, action)
             names=['%s-%s' % (cluster.name, asg_def.version)])[0]
         asg.shutdown_instances()
         LOGGER.info("""\
-Shutting down instances for ASG %s-%s to AWS. (Cloud: %s, Cluster: %s)""" % (
-            cluster.name, asg_def.version, cloud.uuid, cluster.id))
+%s - Shutting down instances for ASG %s-%s to AWS. (Cluster: %s)""" % (
+            cloud.uuid, cluster.name, asg_def.version, cluster.id))
     elif action is 'deregister_asg':
         # Stop instances
         asg = conn.get_all_groups(
             names=['%s-%s' % (cluster.name, asg_def.version)])[0]
         asg.delete()
-        LOGGER.info("Removing ASG %s-%s to AWS. (Cloud: %s, Cluster: %s)" % (
-            cluster.name, asg_def.version, cloud.uuid, cluster.id))
+        LOGGER.info("%s - Removing ASG %s-%s to AWS. (Cluster: %s)" % (
+            cloud.uuid, cluster.name, asg_def.version, cluster.id))
 
     return redirect('/cloud/%s/cluster/%s' % (uuid, cluster_id))
 
@@ -243,8 +244,8 @@ def cluster_add(request, uuid):
             form_instance.cloud = models.Cloud.objects.get(uuid=uuid)
             form_instance.save()
             message = 'Your cloud has been created'
-            LOGGER.info("Added cluster %i for cloud %s" % (
-                form_instance.id, cloud.uuid))
+            LOGGER.info("%s - Added cluster %i" % (
+                cloud.uuid, form_instance.id))
             form = forms.CloudForm()
             return redirect('/cloud/%s/cluster' % cloud.uuid)
     else:
@@ -372,8 +373,8 @@ def launch_config_add(request, uuid):
                 security_groups=form.cleaned_data['security_groups'],
                 user_data=form.cleaned_data['user_data'],))
             message = 'Your launch config has been created'
-            LOGGER.info('Launch config %s added to AWS. (Cloud: %s)' % (
-                form.cleaned_data['name'], cloud.uuid))
+            LOGGER.info('%s - Launch config %s added to AWS.' % (
+                cloud.uuid, form.cleaned_data['name']))
             return redirect('/cloud/%s/launch_config' % cloud.uuid)
     else:
         form = forms.LaunchConfigForm(security_groups, key_pairs)
@@ -400,8 +401,8 @@ def launch_config_delete(request, uuid, launch_config_name):
         names=[launch_config_name])
     if len(launch_configs) == 1:
         for launch_config in launch_configs:
-            LOGGER.info('Removed launch config %s. (Cloud: %s)' % (
-                launch_config.name, cloud.uuid))
+            LOGGER.info('%s - Removed launch config %s' % (
+                cloud.uuid, launch_config.name))
             launch_config.delete()
     else:
         print "ERROR - Too many launch configs found"

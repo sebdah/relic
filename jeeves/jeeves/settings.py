@@ -169,6 +169,11 @@ LOGGING = {
         }
     },
     'loggers': {
+        'cloud.aws': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
         'cloud.view': {
             'handlers': ['console'],
             'level': 'DEBUG',

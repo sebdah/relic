@@ -1,6 +1,10 @@
+import logging
 import boto.ec2
 from boto.ec2 import autoscale, elb
 from cloud import models
+
+# Define logger
+LOGGER = logging.getLogger('cloud.aws')
 
 
 class AWSConnectionHandler:
@@ -21,6 +25,7 @@ class AWSConnectionHandler:
             cloud.region,
             aws_access_key_id=cloud.aws_access_key,
             aws_secret_access_key=cloud.aws_secret_key)
+        LOGGER.info('%s - Connected to AWS Auto Scaling Service' % (cloud_id))
 
     def connect_to_ec2(self, cloud_id):
         """
@@ -31,6 +36,7 @@ class AWSConnectionHandler:
             cloud.region,
             aws_access_key_id=cloud.aws_access_key,
             aws_secret_access_key=cloud.aws_secret_key)
+        LOGGER.info('%s - Connected to AWS EC2 Service' % (cloud_id))
 
     def connect_to_elb(self, cloud_id):
         """
@@ -41,6 +47,8 @@ class AWSConnectionHandler:
             cloud.region,
             aws_access_key_id=cloud.aws_access_key,
             aws_secret_access_key=cloud.aws_secret_key)
+        LOGGER.info('%s - Connected to AWS Elastic Load Balancing Service' % (
+            cloud_id))
 
     def get_as_connection(self, cloud_id):
         """
